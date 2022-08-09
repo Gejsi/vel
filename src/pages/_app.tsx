@@ -3,22 +3,30 @@ import { httpLink } from '@trpc/client/links/httpLink'
 import { loggerLink } from '@trpc/client/links/loggerLink'
 import { splitLink } from '@trpc/client/links/splitLink'
 import { withTRPC } from '@trpc/next'
-import { SessionProvider } from 'next-auth/react'
+import { AppProps } from 'next/app'
 import type { AppType } from 'next/dist/shared/lib/utils'
+import type { NextPage } from 'next/types'
+import type { ReactElement, ReactNode } from 'react'
 import superjson from 'superjson'
+import DefaultLayout from '../components/DefaultLayout'
 import type { AppRouter } from '../server/router'
 import '../styles/globals.css'
 
-const MyApp: AppType = ({
-  Component,
-  pageProps: { session, ...pageProps },
-}) => {
-  return (
-    <SessionProvider session={session}>
-      <Component {...pageProps} />
-    </SessionProvider>
-  )
+export type NextPageWithLayout = NextPage & {
+  // eslint-disable-next-line no-unused-vars
+  getLayout?: (page: ReactElement) => ReactNode
 }
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout
+}
+
+const AppHandler = (({ Component, pageProps }: AppPropsWithLayout) => {
+  const getLayout =
+    Component.getLayout ?? ((page) => <DefaultLayout>{page}</DefaultLayout>)
+
+  return getLayout(<Component {...pageProps} />)
+}) as AppType
 
 const getBaseUrl = () => {
   if (typeof window !== 'undefined') return ''
@@ -74,4 +82,4 @@ export default withTRPC<AppRouter>({
   },
 
   ssr: false,
-})(MyApp)
+})(AppHandler)
