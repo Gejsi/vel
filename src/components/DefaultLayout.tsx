@@ -13,15 +13,14 @@ const DefaultLayout = ({ children }: { children: ReactNode }) => {
     <>
       <Head>
         <link rel='icon' href='/favicon.ico' />
-        <title>bird app</title>
+        <title>Vel</title>
       </Head>
 
-      <Navbar session={session} />
-      <main className='container mx-auto min-h-screen p-4'>
-        <div className='py-4'></div>
-        {children}
-      </main>
-      <Footer />
+      <div className='container mx-auto min-h-screen flex flex-col'>
+        <Navbar session={session} />
+        <main className='flex-1 p-2'>{children}</main>
+        <Footer />
+      </div>
 
       {env.NODE_ENV !== 'production' && (
         <ReactQueryDevtools initialIsOpen={false} />

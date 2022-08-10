@@ -1,12 +1,15 @@
 import { Maybe } from '@trpc/server'
 import type { Session } from 'next-auth'
-import { signIn } from 'next-auth/react'
+import { signIn, signOut } from 'next-auth/react'
+import Link from 'next/link'
 
 const Navbar = ({ session }: { session: Maybe<Session> }) => {
   return (
     <div className='navbar bg-base-200'>
       <div className='flex-1'>
-        <a className='btn btn-ghost normal-case text-xl'>Vel</a>
+        <Link href='/'>
+          <a className='btn btn-ghost normal-case text-xl'>Vel</a>
+        </Link>
       </div>
       <div className='flex-none gap-2'>
         {session ? (
@@ -19,26 +22,20 @@ const Navbar = ({ session }: { session: Maybe<Session> }) => {
               />
             </div>
             <div className='dropdown dropdown-end'>
-              <label tabIndex={0} className='btn btn-ghost btn-circle avatar'>
+              <button className='btn btn-ghost btn-circle avatar'>
                 <div className='w-10 rounded-full'>
                   <img src={session.user?.image!} />
                 </div>
-              </label>
-              <ul
-                tabIndex={0}
-                className='mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52'
-              >
+              </button>
+              <ul className='mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52'>
                 <li>
-                  <a className='justify-between'>
-                    Profile
-                    <span className='badge'>New</span>
-                  </a>
+                  <button>Profile</button>
                 </li>
                 <li>
-                  <a>Settings</a>
+                  <button>Settings</button>
                 </li>
                 <li>
-                  <a>Logout</a>
+                  <button onClick={() => signOut()}>Logout</button>
                 </li>
               </ul>
             </div>
@@ -52,4 +49,5 @@ const Navbar = ({ session }: { session: Maybe<Session> }) => {
     </div>
   )
 }
+
 export default Navbar
