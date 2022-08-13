@@ -1,9 +1,9 @@
-import { Maybe } from '@trpc/server'
-import type { Session } from 'next-auth'
-import { signIn, signOut } from 'next-auth/react'
+import { signIn, signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 
-const Navbar = ({ session }: { session: Maybe<Session> }) => {
+const Navbar = () => {
+  const { data: session, status } = useSession()
+
   return (
     <div className='navbar bg-base-200'>
       <div className='flex-1'>
@@ -12,7 +12,7 @@ const Navbar = ({ session }: { session: Maybe<Session> }) => {
         </Link>
       </div>
       <div className='flex-none gap-2'>
-        {session ? (
+        {status === 'authenticated' ? (
           <>
             <div className='form-control'>
               <input
@@ -22,17 +22,21 @@ const Navbar = ({ session }: { session: Maybe<Session> }) => {
               />
             </div>
             <div className='dropdown dropdown-end'>
-              <button className='btn btn-ghost btn-circle avatar'>
+              <label tabIndex={0} className='btn btn-ghost btn-circle avatar'>
                 <div className='w-10 rounded-full'>
                   <img src={session.user?.image!} />
                 </div>
-              </button>
-              <ul className='mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52'>
+              </label>
+              <ul className='mt-2 p-2 border-2 border-solid border-primary menu menu-compact dropdown-content rounded-box space-y-2'>
                 <li>
-                  <button>Profile</button>
+                  <Link href='/me'>
+                    <a>Profile</a>
+                  </Link>
                 </li>
                 <li>
-                  <button>Settings</button>
+                  <Link href='/settings'>
+                    <a>Settings</a>
+                  </Link>
                 </li>
                 <li>
                   <button onClick={() => signOut()}>Logout</button>
@@ -40,11 +44,11 @@ const Navbar = ({ session }: { session: Maybe<Session> }) => {
               </ul>
             </div>
           </>
-        ) : (
+        ) : status === 'unauthenticated' ? (
           <button className='btn' onClick={() => signIn()}>
             Sign in
           </button>
-        )}
+        ) : null}
       </div>
     </div>
   )

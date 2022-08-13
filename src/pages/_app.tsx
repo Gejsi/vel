@@ -1,6 +1,7 @@
 import { httpBatchLink } from '@trpc/client/links/httpBatchLink'
 import { loggerLink } from '@trpc/client/links/loggerLink'
 import { withTRPC } from '@trpc/next'
+import { SessionProvider } from 'next-auth/react'
 import { AppProps } from 'next/app'
 import type { AppType } from 'next/dist/shared/lib/utils'
 import type { NextPage } from 'next/types'
@@ -19,11 +20,23 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout
 }
 
-const AppHandler = (({ Component, pageProps }: AppPropsWithLayout) => {
+const AppHandler = (({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppPropsWithLayout) => {
   const getLayout =
-    Component.getLayout ?? ((page) => <DefaultLayout>{page}</DefaultLayout>)
+    Component.getLayout ??
+    ((page) => (
+      <SessionProvider session={session}>
+        <DefaultLayout>{page}</DefaultLayout>
+      </SessionProvider>
+    ))
 
-  return getLayout(<Component {...pageProps} />)
+  return getLayout(
+    <SessionProvider session={session}>
+      <Component {...pageProps} />
+    </SessionProvider>
+  )
 }) as AppType
 
 const getBaseUrl = () => {
