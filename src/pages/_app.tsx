@@ -1,7 +1,5 @@
 import { httpBatchLink } from '@trpc/client/links/httpBatchLink'
-import { httpLink } from '@trpc/client/links/httpLink'
 import { loggerLink } from '@trpc/client/links/loggerLink'
-import { splitLink } from '@trpc/client/links/splitLink'
 import { withTRPC } from '@trpc/next'
 import { AppProps } from 'next/app'
 import type { AppType } from 'next/dist/shared/lib/utils'
@@ -54,16 +52,7 @@ export default withTRPC<AppRouter>({
             process.env.NODE_ENV === 'development' ||
             (opts.direction === 'down' && opts.result instanceof Error),
         }),
-        splitLink({
-          condition({ context }) {
-            // check for context property `includeBatch`
-            return context.includeBatch === true
-          },
-          // when condition is true, use batching
-          true: httpBatchLink({ url }),
-          // when condition is false, use normal request
-          false: httpLink({ url }),
-        }),
+        httpBatchLink({ url, maxBatchSize: 10 }),
       ],
       url,
       transformer: superjson,
@@ -80,6 +69,5 @@ export default withTRPC<AppRouter>({
       },
     }
   },
-
   ssr: false,
 })(AppHandler)
