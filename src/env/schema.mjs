@@ -20,7 +20,9 @@ export const serverSchema = z.object({
  * To expose them to the client, prefix them with `NEXT_PUBLIC_`.
  */
 export const clientSchema = z.object({
-  // NEXT_PUBLIC_BAR: z.string(),
+  NEXT_PUBLIC_NODE_ENV: z.enum(['development', 'test', 'production']),
+  NEXT_PUBLIC_VERCEL_URL: z.string().url(),
+  NEXT_PUBLIC_PORT: z.number(),
 })
 
 /**
@@ -31,4 +33,7 @@ export const clientSchema = z.object({
  */
 export const clientEnv = {
   // NEXT_PUBLIC_BAR: process.env.NEXT_PUBLIC_BAR,
+  NEXT_PUBLIC_NODE_ENV: process.env.NODE_ENV,
+  NEXT_PUBLIC_VERCEL_URL: process.env.VERCEL_URL,
+  NEXT_PUBLIC_PORT: Number(process.env.PORT),
 }

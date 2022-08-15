@@ -1,11 +1,12 @@
 import { useSession } from 'next-auth/react'
 import Head from 'next/head'
+import Spinner from '../components/Spinner'
 import type { NextPageWithLayout } from './_app'
 
 const Me: NextPageWithLayout = () => {
   const { data: session, status } = useSession({ required: true })
 
-  if (status === 'loading') return <h1>Loading</h1>
+  if (status === 'loading') return <Spinner />
 
   return (
     <>

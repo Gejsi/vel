@@ -1,19 +1,33 @@
 import { httpBatchLink } from '@trpc/client/links/httpBatchLink'
 import { loggerLink } from '@trpc/client/links/loggerLink'
 import { withTRPC } from '@trpc/next'
+import type { Maybe } from '@trpc/server'
+import { Session } from 'next-auth'
 import { SessionProvider } from 'next-auth/react'
-import { AppProps } from 'next/app'
+import type { AppProps as NextAppProps } from 'next/app'
 import type { AppType } from 'next/dist/shared/lib/utils'
 import type { NextPage } from 'next/types'
 import type { ReactElement, ReactNode } from 'react'
+import { ReactQueryDevtools } from 'react-query/devtools'
 import superjson from 'superjson'
-import DefaultLayout from '../components/DefaultLayout'
+import Layout from '../components/Layout'
+import { env } from '../env/client.mjs'
 import type { AppRouter } from '../server/router'
 import '../styles/globals.css'
 
 export type NextPageWithLayout = NextPage & {
   // eslint-disable-next-line no-unused-vars
   getLayout?: (page: ReactElement) => ReactNode
+}
+
+type PageProps = {
+  session?: Maybe<Session>
+  [x: string]: any
+}
+
+// omit Next.js default `pageProps` and extend with custom ones
+type AppProps = Omit<NextAppProps<PageProps>, 'pageProps'> & {
+  pageProps: PageProps
 }
 
 type AppPropsWithLayout = AppProps & {
@@ -24,17 +38,15 @@ const AppHandler = (({
   Component,
   pageProps: { session, ...pageProps },
 }: AppPropsWithLayout) => {
-  const getLayout =
-    Component.getLayout ??
-    ((page) => (
-      <SessionProvider session={session}>
-        <DefaultLayout>{page}</DefaultLayout>
-      </SessionProvider>
-    ))
+  const getLayout = Component.getLayout ?? ((page) => <Layout>{page}</Layout>)
 
-  return getLayout(
+  return (
     <SessionProvider session={session}>
-      <Component {...pageProps} />
+      {getLayout(<Component {...pageProps} />)}
+
+      {env.NEXT_PUBLIC_NODE_ENV !== 'production' && (
+        <ReactQueryDevtools initialIsOpen={false} />
+      )}
     </SessionProvider>
   )
 }) as AppType
@@ -42,9 +54,9 @@ const AppHandler = (({
 const getBaseUrl = () => {
   if (typeof window !== 'undefined') return ''
 
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}` // SSR should use vercel url
+  if (env.NEXT_PUBLIC_VERCEL_URL) return `https://${env.NEXT_PUBLIC_VERCEL_URL}` // SSR should use vercel url
 
-  return `http://localhost:${process.env.PORT ?? 3000}` // dev SSR should use localhost
+  return `http://localhost:${env.NEXT_PUBLIC_PORT ?? 3000}` // dev SSR should use localhost
 }
 
 export default withTRPC<AppRouter>({

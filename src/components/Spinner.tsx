@@ -1,5 +1,10 @@
-const Spinner = ({ size }: { size?: number }) => (
-  <div style={{ width: `${size ?? 5}em` }}>
+const Spinner = ({ className }: { className?: string }) => (
+  <div
+    className={
+      className ??
+      'w-20 h-20 absolute inset-1/2 -translate-x-1/2 -translate-y-1/2'
+    }
+  >
     <svg
       version='1.1'
       xmlns='http://www.w3.org/2000/svg'
