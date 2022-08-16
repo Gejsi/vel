@@ -1,11 +1,14 @@
 import { httpBatchLink } from '@trpc/client/links/httpBatchLink'
+import { httpLink } from '@trpc/client/links/httpLink'
 import { loggerLink } from '@trpc/client/links/loggerLink'
+import { splitLink } from '@trpc/client/links/splitLink'
 import { withTRPC } from '@trpc/next'
 import type { Maybe } from '@trpc/server'
 import { Session } from 'next-auth'
 import { SessionProvider } from 'next-auth/react'
 import type { AppProps as NextAppProps } from 'next/app'
 import type { AppType } from 'next/dist/shared/lib/utils'
+import Head from 'next/head'
 import type { NextPage } from 'next/types'
 import type { ReactElement, ReactNode } from 'react'
 import { ReactQueryDevtools } from 'react-query/devtools'
@@ -41,22 +44,30 @@ const AppHandler = (({
   const getLayout = Component.getLayout ?? ((page) => <Layout>{page}</Layout>)
 
   return (
-    <SessionProvider session={session}>
-      {getLayout(<Component {...pageProps} />)}
+    <>
+      <Head>
+        <link rel='icon' href='/favicon.ico' />
+      </Head>
 
-      {env.NEXT_PUBLIC_NODE_ENV !== 'production' && (
-        <ReactQueryDevtools initialIsOpen={false} />
-      )}
-    </SessionProvider>
+      <SessionProvider session={session}>
+        {getLayout(<Component {...pageProps} />)}
+
+        {env.NEXT_PUBLIC_NODE_ENV !== 'production' && (
+          <ReactQueryDevtools initialIsOpen={false} />
+        )}
+      </SessionProvider>
+    </>
   )
 }) as AppType
 
 const getBaseUrl = () => {
   if (typeof window !== 'undefined') return ''
 
-  if (env.NEXT_PUBLIC_VERCEL_URL) return `https://${env.NEXT_PUBLIC_VERCEL_URL}` // SSR should use vercel url
+  // SSR should use vercel url
+  if (env.NEXT_PUBLIC_VERCEL_URL) return `https://${env.NEXT_PUBLIC_VERCEL_URL}`
 
-  return `http://localhost:${env.NEXT_PUBLIC_PORT ?? 3000}` // dev SSR should use localhost
+  // dev SSR should use localhost
+  return `http://localhost:${env.NEXT_PUBLIC_PORT ?? 3000}`
 }
 
 export default withTRPC<AppRouter>({
@@ -77,7 +88,21 @@ export default withTRPC<AppRouter>({
             process.env.NODE_ENV === 'development' ||
             (opts.direction === 'down' && opts.result instanceof Error),
         }),
-        httpBatchLink({ url, maxBatchSize: 10 }),
+        splitLink({
+          condition(op) {
+            // check for context property `skipBatch`
+            return op.context.skipBatch === true
+          },
+          // when condition is true, use normal requests
+          true: httpLink({
+            url,
+          }),
+          // ...otherwise use batching
+          false: httpBatchLink({
+            url,
+            maxBatchSize: 10,
+          }),
+        }),
       ],
       url,
       transformer: superjson,
