@@ -5,7 +5,7 @@ const Navbar = () => {
   const { data: session, status } = useSession()
 
   return (
-    <div className='navbar bg-base-200'>
+    <nav className='navbar bg-base-200'>
       <div className='flex-1'>
         <Link href='/'>
           <a className='btn btn-ghost normal-case text-xl'>Vel</a>
@@ -50,7 +50,7 @@ const Navbar = () => {
           </button>
         ) : null}
       </div>
-    </div>
+    </nav>
   )
 }
 
