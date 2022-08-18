@@ -94,14 +94,9 @@ export default withTRPC<AppRouter>({
             return op.context.skipBatch === true
           },
           // when condition is true, use normal requests
-          true: httpLink({
-            url,
-          }),
+          true: httpLink({ url }),
           // ...otherwise use batching
-          false: httpBatchLink({
-            url,
-            maxBatchSize: 10,
-          }),
+          false: httpBatchLink({ url, maxBatchSize: 10 }),
         }),
       ],
       url,

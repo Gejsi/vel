@@ -1,14 +1,16 @@
 import Head from 'next/head'
+import Toolbar from '../components/Toolbar'
 import type { NextPageWithLayout } from './_app'
 
 const Me: NextPageWithLayout = () => {
   return (
     <>
       <Head>
-        <title>Your profile</title>
+        <title>Vel | Profile</title>
       </Head>
 
-      <h1>Personal page</h1>
+      <Toolbar title='My Profile' />
+      <span>Bro</span>
     </>
   )
 }

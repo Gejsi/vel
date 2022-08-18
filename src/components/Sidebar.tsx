@@ -1,8 +1,8 @@
 import { Session } from 'next-auth'
 import { signOut } from 'next-auth/react'
 import Link from 'next/link'
+import { BiCommand } from 'react-icons/bi'
 import {
-  MdAdd,
   MdDashboard,
   MdKeyboard,
   MdLogout,
@@ -18,10 +18,16 @@ const Sidenav = ({ session }: { session: Session | null }) => (
       </a>
     </Link>
     <div className='divider' />
-    <div className='flex items-center gap-2 w-full px-4'>
-      <img className='w-10 rounded-full' src={session?.user?.image!} />
-      <span className='flex-1'>{session?.user?.name}</span>
-      <div className='tooltip tooltip-bottom' data-tip='Logout'>
+    <div className='flex items-center w-full gap-2'>
+      <li className='flex-1'>
+        <Link href='/me'>
+          <a className=''>
+            <img className='w-7 rounded-full' src={session?.user?.image!} />
+            <span>{session?.user?.name}</span>
+          </a>
+        </Link>
+      </li>
+      <div className='tooltip' data-tip='Logout'>
         <button className='btn btn-square btn-ghost' onClick={() => signOut()}>
           <MdLogout className='w-6 h-6' />
         </button>
@@ -36,15 +42,15 @@ const Sidebar = ({ session }: { session: Session | null }) => (
     <ul className='menu p-4 overflow-y-auto w-64 bg-base-100 border-r-2 border-base-content/10'>
       <Sidenav session={session} />
       <button className='btn gap-2'>
-        <MdAdd className='w-6 h-6' />
-        Create a deck
+        <BiCommand className='w-5 h-5' />
+        Open Commands
       </button>
       <div className='divider' />
       <li>
-        <Link href='/dashboard'>
+        <Link href='/decks'>
           <a>
             <MdDashboard className='w-6 h-6' />
-            Dashboard
+            Decks
           </a>
         </Link>
       </li>
