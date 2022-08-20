@@ -1,6 +1,13 @@
 import { useCallback, type ReactNode } from 'react'
 import usePortal from 'react-useportal'
 
+type TPortal = {
+  openPortal: () => void
+  closePortal: () => void
+  isOpen: boolean
+  Portal: any
+}
+
 const useModal = () => {
   const { openPortal, closePortal, isOpen, Portal } = usePortal({
     onOpen({ portal }) {
@@ -21,16 +28,16 @@ const useModal = () => {
       // close modal after fadeOut transition
       const timeoutId = setTimeout(
         () => portal.current.classList.remove('modal-open'),
-        300
+        300 // hard-coded, check durations in `tailwind.config.cjs`
       )
 
       return () => clearTimeout(timeoutId)
     },
-  })
+  }) as TPortal
 
   const Modal = useCallback(
     ({ children }: { children: ReactNode }) =>
-      isOpen && (
+      isOpen ? (
         <Portal>
           <div className='modal-box z-[101]'>{children}</div>
           {/*
@@ -39,7 +46,7 @@ const useModal = () => {
            */}
           <div className='modal modal-open z-[100]' onClick={closePortal} />
         </Portal>
-      ),
+      ) : null,
     [isOpen]
   )
 
