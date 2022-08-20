@@ -44,6 +44,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  Deck          Deck[]
 }
 
 model VerificationToken {
@@ -52,4 +53,23 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Deck {
+  id       Int    @id @default(autoincrement())
+  title    String @default("Untitled")
+  cards    Card[]
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id])
+}
+
+model Card {
+  id       Int    @id @default(autoincrement())
+  question String
+  answer   String
+  deckId   Int
+  Deck     Deck   @relation(fields: [deckId], references: [id], onDelete: Cascade)
+
+  // https://www.prisma.io/docs/guides/database/using-prisma-with-planetscale#how-to-create-indexes-on-foreign-keys
+  @@index([deckId])
 }
