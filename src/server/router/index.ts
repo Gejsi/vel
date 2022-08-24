@@ -1,10 +1,10 @@
 import superjson from 'superjson'
-import { authRouter } from './auth.router'
 import { createRouter } from './context'
+import { deckRouter } from './deck.router'
 
 export const appRouter = createRouter()
   .transformer(superjson)
-  .merge('auth.', authRouter)
+  .merge('deck.', deckRouter)
 
 // export type definition of API
 export type AppRouter = typeof appRouter
