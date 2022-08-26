@@ -11,13 +11,13 @@ import {
 } from 'react-icons/md'
 
 const Sidenav = ({ session }: { session: Session | null }) => (
-  <nav className='mb-4 flex flex-col items-center'>
+  <nav className='flex flex-col items-center'>
     <Link href='/'>
       <a>
         <h1 className='text-5xl font-bold'>Vel</h1>
       </a>
     </Link>
-    <div className='divider' />
+    <div className='divider mb-0' />
     <div className='flex w-full items-center gap-2'>
       <li className='flex-1'>
         <Link href='/me'>
@@ -39,7 +39,7 @@ const Sidenav = ({ session }: { session: Session | null }) => (
 const Sidebar = ({ session }: { session: Session | null }) => (
   <aside className='drawer-side'>
     <label htmlFor='sidebar' className='drawer-overlay' />
-    <ul className='menu w-64 space-y-2 overflow-y-auto border-r-2 border-base-content/10 bg-base-100 p-4'>
+    <ul className='menu w-64 space-y-2 overflow-y-auto bg-base-300 p-4'>
       <Sidenav session={session} />
       <button className='btn gap-2'>
         <MdKeyboard className='h-6 w-6' />

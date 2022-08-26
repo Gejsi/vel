@@ -22,7 +22,10 @@ const Decks: NextPageWithLayout = () => {
     }
   )
 
-  const btnClass = twMerge('btn gap-2', clsx({ loading: mutationLoading }))
+  const btnClass = twMerge(
+    'btn btn-primary gap-2',
+    clsx({ loading: mutationLoading })
+  )
 
   return (
     <>
@@ -33,7 +36,7 @@ const Decks: NextPageWithLayout = () => {
       <Toolbar title='Decks'>
         <button className={btnClass} onClick={() => createDeck()}>
           {!mutationLoading && <MdAdd className='h-6 w-6' />}
-          Create deck
+          <span className='hidden md:block'>Create deck</span>
         </button>
       </Toolbar>
 
@@ -43,26 +46,10 @@ const Decks: NextPageWithLayout = () => {
         Edit your cards or just practice!
       </p>
 
-      <section className='grid grid-cols-[repeat(auto-fit,_minmax(240px,_1fr))] gap-4'>
+      <section className='grid grid-cols-[repeat(auto-fill,_minmax(300px,_1fr))] gap-4'>
         <Card title='Lorem ipsum sit doloret' />
-        <div className='card bg-primary/10'>
-          <div className='card-body'>
-            <h2 className='card-title'>New album is released!</h2>
-            <p>Click the button to listen on Spotiwhy app.</p>
-            <div className='card-actions justify-center'>
-              <button className='btn btn-primary'>Listen</button>
-            </div>
-          </div>
-        </div>
-        <div className='card bg-primary/10'>
-          <div className='card-body'>
-            <h2 className='card-title'>New album is released!</h2>
-            <p>Click the button to listen on Spotiwhy app.</p>
-            <div className='card-actions justify-center'>
-              <button className='btn btn-primary'>Listen</button>
-            </div>
-          </div>
-        </div>
+        <Card title='Lorem ipsum sit doloret' />
+        <Card title='Lorem ipsum sit doloret' />
       </section>
     </>
   )
