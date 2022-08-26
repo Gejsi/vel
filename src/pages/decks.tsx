@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import { MdAdd } from 'react-icons/md'
 import { twMerge } from 'tailwind-merge'
 import Card from '../components/Card'
+import Spinner from '../components/Spinner'
 import Toolbar from '../components/Toolbar'
 import { useMutation, useQuery } from '../utils/trpc'
 import type { NextPageWithLayout } from './_app'
@@ -40,17 +41,29 @@ const Decks: NextPageWithLayout = () => {
         </button>
       </Toolbar>
 
-      <p className='prose mb-4'>
+      <p className='prose'>
         Click &nbsp;<kbd className='kbd'>+ Create Deck</kbd> to add a new set of
-        flash cards. <br />
-        Edit your cards or just practice!
+        flashcards. <br />
+        Edit your decks or simply start studying through your cards.
       </p>
 
-      <section className='grid grid-cols-[repeat(auto-fill,_minmax(300px,_1fr))] gap-4'>
-        <Card title='Lorem ipsum sit doloret' />
-        <Card title='Lorem ipsum sit doloret' />
-        <Card title='Lorem ipsum sit doloret' />
-      </section>
+      {queryLoading ? (
+        <Spinner />
+      ) : (
+        <section className='grid grid-cols-[repeat(auto-fill,_minmax(280px,_1fr))] gap-4 py-4'>
+          {decks?.map((deck) => (
+            <Card
+              key={deck.id}
+              title={deck.title}
+              amount={34}
+              createdAt='12/01/2022'
+              updatedAt='2 days ago'
+              onStudyClick={() => console.log('study')}
+              onEditClick={() => console.log('edit')}
+            />
+          ))}
+        </section>
+      )}
     </>
   )
 }

@@ -1,10 +1,5 @@
-const Spinner = ({ className }: { className?: string }) => (
-  <div
-    className={
-      className ??
-      'w-20 h-20 absolute inset-1/2 -translate-x-1/2 -translate-y-1/2'
-    }
-  >
+const Spinner = () => (
+  <div className='h-20 w-20'>
     <svg
       version='1.1'
       xmlns='http://www.w3.org/2000/svg'
@@ -14,7 +9,7 @@ const Spinner = ({ className }: { className?: string }) => (
       viewBox='0 0 40 40'
       enableBackground='new 0 0 40 40'
       xmlSpace='preserve'
-      className='w-full h-full'
+      className='h-full w-full'
     >
       <path
         opacity='0.4'

@@ -1,37 +1,54 @@
-import { MdDeviceHub, MdEdit, MdMoreVert } from 'react-icons/md'
+import type { MouseEventHandler } from 'react'
+import { MdDelete, MdDeviceHub, MdEdit } from 'react-icons/md'
 
-const Card = ({ title }: { title: string }) => (
+type CardProps = {
+  title: string
+  amount: number
+  createdAt: string
+  updatedAt: string
+  onStudyClick: MouseEventHandler<HTMLButtonElement>
+  onEditClick: MouseEventHandler<HTMLButtonElement>
+}
+
+const Card = ({
+  title,
+  amount,
+  createdAt,
+  updatedAt,
+  onStudyClick,
+  onEditClick,
+}: CardProps) => (
   <div className='card bg-base-200'>
     <div className='card-body'>
       <div className='flex gap-2'>
         <h2 className='card-title flex-1'>{title}</h2>
-        <button className='btn btn-ghost px-2'>
-          <MdMoreVert className='h-6 w-6' />
+        <button className='btn btn-ghost w-12 px-2'>
+          <MdDelete className='h-6 w-6' />
         </button>
       </div>
       <div className='my-4 flex items-start justify-evenly gap-4 overflow-y-auto rounded-2xl bg-base-100 p-4'>
         <div>
           <h3 className='text-sm opacity-70'>Cards</h3>
-          <p>34</p>
+          <p>{amount}</p>
         </div>
         <div>
           <h3 className='text-sm opacity-70'>Created</h3>
-          <p>12/01/22</p>
+          <p>{createdAt}</p>
         </div>
         <div>
           <h3 className='text-sm opacity-70'>Edited</h3>
-          <p>200 days ago</p>
+          <p>{updatedAt}</p>
         </div>
       </div>
 
       <div className='card-actions mt-2 justify-center'>
         <div className='btn-group' role='group'>
-          <button className='btn'>
+          <button className='btn' onClick={onStudyClick}>
             <MdDeviceHub className='mr-1 h-6 w-6' />
             Study
           </button>
           <div className='w-1 bg-base-content/30' />
-          <button className='btn'>
+          <button className='btn' onClick={onEditClick}>
             <MdEdit className='mr-1 h-6 w-6' />
             Edit
           </button>
