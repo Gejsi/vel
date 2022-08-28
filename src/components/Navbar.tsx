@@ -8,7 +8,7 @@ const Navbar = () => {
     <nav className='navbar bg-base-200'>
       <div className='flex-1'>
         <Link href='/'>
-          <a className='btn btn-ghost normal-case text-xl'>Vel</a>
+          <a className='btn btn-ghost text-xl normal-case'>Vel</a>
         </Link>
       </div>
       <div className='flex-none gap-2'>
@@ -21,13 +21,13 @@ const Navbar = () => {
                 className='input input-bordered'
               />
             </div>
-            <div className='dropdown dropdown-end'>
-              <label tabIndex={0} className='btn btn-ghost btn-circle avatar'>
+            <div className='dropdown-end dropdown'>
+              <label tabIndex={0} className='avatar btn btn-ghost btn-circle'>
                 <div className='w-10 rounded-full'>
                   <img src={session.user?.image!} />
                 </div>
               </label>
-              <ul className='mt-2 p-2 border-2 border-solid border-primary menu menu-compact dropdown-content rounded-box space-y-2'>
+              <ul className='dropdown-content menu rounded-box menu-compact mt-2 space-y-2 border-2 border-solid border-primary p-2'>
                 <li>
                   <Link href='/me'>
                     <a>Profile</a>

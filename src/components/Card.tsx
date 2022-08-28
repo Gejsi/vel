@@ -1,11 +1,12 @@
+import dayjs from 'dayjs'
 import type { MouseEventHandler } from 'react'
 import { MdDelete, MdDeviceHub, MdEdit } from 'react-icons/md'
 
 type CardProps = {
   title: string
   amount: number
-  createdAt: string
-  updatedAt: string
+  createdAt: Date
+  updatedAt: Date
   onStudyClick: MouseEventHandler<HTMLButtonElement>
   onEditClick: MouseEventHandler<HTMLButtonElement>
 }
@@ -33,11 +34,11 @@ const Card = ({
         </div>
         <div>
           <h3 className='text-sm opacity-70'>Created</h3>
-          <p>{createdAt}</p>
+          <p>{dayjs(createdAt).format('DD/MM/YY')}</p>
         </div>
         <div>
           <h3 className='text-sm opacity-70'>Edited</h3>
-          <p>{updatedAt}</p>
+          <p>{dayjs(updatedAt).format('ddd, MMM YYYY')}</p>
         </div>
       </div>
 

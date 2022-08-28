@@ -55,9 +55,9 @@ const Decks: NextPageWithLayout = () => {
             <Card
               key={deck.id}
               title={deck.title}
-              amount={34}
-              createdAt='12/01/2022'
-              updatedAt='2 days ago'
+              amount={deck.cards.length}
+              createdAt={deck.createdAt}
+              updatedAt={deck.updatedAt}
               onStudyClick={() => console.log('study')}
               onEditClick={() => console.log('edit')}
             />
