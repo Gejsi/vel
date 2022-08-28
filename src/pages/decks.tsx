@@ -6,19 +6,25 @@ import { twMerge } from 'tailwind-merge'
 import Card from '../components/Card'
 import Spinner from '../components/Spinner'
 import Toolbar from '../components/Toolbar'
-import { useMutation, useQuery } from '../utils/trpc'
+import { useContext, useMutation, useQuery } from '../utils/trpc'
 import type { NextPageWithLayout } from './_app'
 
 const Decks: NextPageWithLayout = () => {
   const router = useRouter()
+  const utils = useContext()
 
   const { data: decks, isLoading: queryLoading } = useQuery(['deck.getAll'])
 
   const { mutate: createDeck, isLoading: mutationLoading } = useMutation(
     'deck.create',
     {
-      onSuccess() {
-        router.push('/editor')
+      async onSuccess({ id }) {
+        // there is no need to `await` for the query to re-fetch
+        // because the user is sent to the editor, but it should
+        // still be invalidated in case the user goes back to this page
+        utils.invalidateQueries(['deck.getAll'])
+
+        await router.push(`/editor/${id}`)
       },
     }
   )
@@ -59,7 +65,7 @@ const Decks: NextPageWithLayout = () => {
               createdAt={deck.createdAt}
               updatedAt={deck.updatedAt}
               onStudyClick={() => console.log('study')}
-              onEditClick={() => console.log('edit')}
+              onEditClick={() => router.push(`/editor/${deck.id}`)}
             />
           ))}
         </section>

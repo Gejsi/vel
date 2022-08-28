@@ -21,7 +21,7 @@ const Navbar = () => {
                 className='input input-bordered'
               />
             </div>
-            <div className='dropdown-end dropdown'>
+            <div className='dropdown dropdown-end'>
               <label tabIndex={0} className='avatar btn btn-ghost btn-circle'>
                 <div className='w-10 rounded-full'>
                   <img src={session.user?.image!} />
@@ -31,6 +31,11 @@ const Navbar = () => {
                 <li>
                   <Link href='/me'>
                     <a>Profile</a>
+                  </Link>
+                </li>
+                <li>
+                  <Link href='/decks'>
+                    <a>Decks</a>
                   </Link>
                 </li>
                 <li>

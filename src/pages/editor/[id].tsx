@@ -1,8 +1,11 @@
 import Head from 'next/head'
-import Toolbar from '../components/Toolbar'
-import type { NextPageWithLayout } from './_app'
+import { useRouter } from 'next/router'
+import Toolbar from '../../components/Toolbar'
+import type { NextPageWithLayout } from '../_app'
 
 const Editor: NextPageWithLayout = () => {
+  const { id: deckId } = useRouter().query
+
   return (
     <>
       <Head>
@@ -10,7 +13,7 @@ const Editor: NextPageWithLayout = () => {
       </Head>
 
       <Toolbar title='Editor' />
-      <span>Editor</span>
+      <span>Editing deck #{deckId}</span>
     </>
   )
 }
