@@ -1,5 +1,5 @@
 const Spinner = () => (
-  <div className='h-20 w-20'>
+  <div className='h-20 w-full'>
     <svg
       version='1.1'
       xmlns='http://www.w3.org/2000/svg'

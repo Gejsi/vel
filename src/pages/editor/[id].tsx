@@ -1,10 +1,19 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { useMemo } from 'react'
 import Toolbar from '../../components/Toolbar'
+import idSchema from '../../schemas/id.schema'
 import type { NextPageWithLayout } from '../_app'
 
 const Editor: NextPageWithLayout = () => {
-  const { id: deckId } = useRouter().query
+  const { id } = useRouter().query
+  const parsedId = useMemo(
+    () => idSchema.safeParse({ id: parseInt(id, 10) }),
+    [id]
+  )
+
+  if (!parsedId.success)
+    return <h1 className='prose'>this deck doesn't exist</h1>
 
   return (
     <>
@@ -13,7 +22,7 @@ const Editor: NextPageWithLayout = () => {
       </Head>
 
       <Toolbar title='Editor' />
-      <span>Editing deck #{deckId}</span>
+      <span>Editing deck #{id}</span>
     </>
   )
 }

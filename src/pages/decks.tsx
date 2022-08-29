@@ -15,11 +15,11 @@ const Decks: NextPageWithLayout = () => {
 
   const { data: decks, isLoading: queryLoading } = useQuery(['deck.getAll'])
 
-  const { mutate: createDeck, isLoading: mutationLoading } = useMutation(
+  const { mutate: createDeck, isLoading: isCreating } = useMutation(
     'deck.create',
     {
       async onSuccess({ id }) {
-        // there is no need to `await` for the query to re-fetch
+        // there is no need to `await` for the query to refetch
         // because the user is sent to the editor, but it should
         // still be invalidated in case the user goes back to this page
         utils.invalidateQueries(['deck.getAll'])
@@ -29,9 +29,35 @@ const Decks: NextPageWithLayout = () => {
     }
   )
 
+  const { mutate: deleteDeck, isLoading: isDeleting } = useMutation(
+    'deck.delete',
+    {
+      async onMutate(deletedDeck) {
+        // cancel any outgoing refetches (so they don't overwrite the optimistic update)
+        await utils.cancelQuery(['deck.getAll'])
+        // save the previous value
+        const prevData = utils.getQueryData(['deck.getAll'])
+        // optimistically remove a deck by filtering old decks
+        utils.setQueryData(['deck.getAll'], (oldDecks) =>
+          oldDecks!.filter((deck) => deck.id !== deletedDeck.id)
+        )
+        // return a context object with the snapshotted value `prevData`
+        return { prevData }
+      },
+      // if the mutation fails, use the context to roll back
+      onError(err, deletedDeck, context) {
+        utils.setQueryData(['deck.getAll'], context?.prevData!)
+      },
+      // refetch after error or success:
+      onSettled() {
+        utils.invalidateQueries(['deck.getAll'])
+      },
+    }
+  )
+
   const btnClass = twMerge(
     'btn btn-primary gap-2',
-    clsx({ loading: mutationLoading })
+    clsx({ loading: isCreating })
   )
 
   return (
@@ -42,7 +68,7 @@ const Decks: NextPageWithLayout = () => {
 
       <Toolbar title='Decks'>
         <button className={btnClass} onClick={() => createDeck()}>
-          {!mutationLoading && <MdAdd className='h-6 w-6' />}
+          {!isCreating && <MdAdd className='h-6 w-6' />}
           <span className='hidden md:block'>Create deck</span>
         </button>
       </Toolbar>
@@ -64,8 +90,9 @@ const Decks: NextPageWithLayout = () => {
               amount={deck.cards.length}
               createdAt={deck.createdAt}
               updatedAt={deck.updatedAt}
-              onStudyClick={() => console.log('study')}
-              onEditClick={() => router.push(`/editor/${deck.id}`)}
+              onDelete={() => deleteDeck({ id: deck.id })}
+              onStudy={() => console.log('study')}
+              onEdit={() => router.push(`/editor/${deck.id}`)}
             />
           ))}
         </section>
