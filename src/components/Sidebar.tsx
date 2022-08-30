@@ -39,7 +39,7 @@ const Sidenav = ({ session }: { session: Session | null }) => (
 const Sidebar = ({ session }: { session: Session | null }) => (
   <aside className='drawer-side'>
     <label htmlFor='sidebar' className='drawer-overlay' />
-    <ul className='menu w-64 space-y-2 overflow-y-auto bg-base-300 p-4'>
+    <ul className='menu w-64 space-y-2 overflow-y-auto bg-base-200 p-4'>
       <Sidenav session={session} />
       <button className='btn gap-2'>
         <MdKeyboard className='h-6 w-6' />

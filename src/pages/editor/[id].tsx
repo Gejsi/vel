@@ -1,28 +1,39 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useMemo } from 'react'
+import Error from '../../components/Error'
+import Spinner from '../../components/Spinner'
 import Toolbar from '../../components/Toolbar'
-import idSchema from '../../schemas/id.schema'
+import { useQuery } from '../../utils/trpc'
 import type { NextPageWithLayout } from '../_app'
 
 const Editor: NextPageWithLayout = () => {
   const { id } = useRouter().query
-  const parsedId = useMemo(
-    () => idSchema.safeParse({ id: parseInt(id, 10) }),
-    [id]
+  const { data, isLoading, error } = useQuery(
+    ['deck.getById', { id: id as string }],
+    {
+      retry: false,
+      refetchOnWindowFocus: false,
+    }
   )
 
-  if (!parsedId.success)
-    return <h1 className='prose'>this deck doesn't exist</h1>
+  if (error)
+    return (
+      <Error
+        title="This deck doesn't exist"
+        statusCode={error.data?.httpStatus}
+      />
+    )
 
   return (
     <>
       <Head>
-        <title>Vel | Editor</title>
+        <title>Vel &#x2022; {data?.title}</title>
       </Head>
 
       <Toolbar title='Editor' />
-      <span>Editing deck #{id}</span>
+
+      {error && 'Nothing here man'}
+      {isLoading ? <Spinner /> : <span>Editing deck #{id}</span>}
     </>
   )
 }

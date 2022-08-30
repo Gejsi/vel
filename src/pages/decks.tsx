@@ -1,6 +1,7 @@
 import { clsx } from 'clsx'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { useMemo } from 'react'
 import { MdAdd } from 'react-icons/md'
 import { twMerge } from 'tailwind-merge'
 import Card from '../components/Card'
@@ -48,22 +49,22 @@ const Decks: NextPageWithLayout = () => {
       onError(err, deletedDeck, context) {
         utils.setQueryData(['deck.getAll'], context?.prevData!)
       },
-      // refetch after error or success:
+      // refetch after error or success
       onSettled() {
         utils.invalidateQueries(['deck.getAll'])
       },
     }
   )
 
-  const btnClass = twMerge(
-    'btn btn-primary gap-2',
-    clsx({ loading: isCreating })
+  const btnClass = useMemo(
+    () => twMerge('btn btn-primary gap-2', clsx({ loading: isCreating })),
+    [isCreating]
   )
 
   return (
     <>
       <Head>
-        <title>Vel | Decks</title>
+        <title>Vel &#x2022; Decks</title>
       </Head>
 
       <Toolbar title='Decks'>
@@ -74,7 +75,7 @@ const Decks: NextPageWithLayout = () => {
       </Toolbar>
 
       <p className='prose'>
-        Click &nbsp;<kbd className='kbd'>+ Create Deck</kbd> to add a new set of
+        Click <kbd className='kbd mx-1'>+ Create Deck</kbd> to add a new set of
         flashcards. <br />
         Edit your decks or simply start studying through your cards.
       </p>

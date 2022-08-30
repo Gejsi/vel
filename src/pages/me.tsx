@@ -6,7 +6,7 @@ const Me: NextPageWithLayout = () => {
   return (
     <>
       <Head>
-        <title>Vel | Profile</title>
+        <title>Vel &#x2022; Profile</title>
       </Head>
 
       <Toolbar title='My Profile' />
