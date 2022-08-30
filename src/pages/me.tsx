@@ -9,7 +9,7 @@ const Me: NextPageWithLayout = () => {
         <title>Vel &#x2022; Profile</title>
       </Head>
 
-      <Toolbar title='My Profile' />
+      <Toolbar title='Profile' />
       <span>Bro</span>
     </>
   )

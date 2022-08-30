@@ -17,7 +17,7 @@ const Toolbar = ({
       >
         <MdMenu className='h-6 w-6' />
       </label>
-      <h1 className='flex-1 text-2xl md:text-5xl'>{title}</h1>
+      <h1 className='flex-1 text-2xl font-medium md:text-5xl'>{title}</h1>
       {children}
     </div>
   </nav>
