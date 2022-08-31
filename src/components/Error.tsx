@@ -11,7 +11,7 @@ const Error = ({
 }) => (
   <>
     <Head>
-      <title>Vel &#x2022; Error</title>
+      <title>Vel &#x2022; Error ({statusCode})</title>
     </Head>
 
     <Toolbar title='Oops!' />
@@ -20,7 +20,7 @@ const Error = ({
       <p className='text-lg'>({statusCode})</p>
       <h1 className='mb-8 text-xl font-bold md:text-3xl'>{title}</h1>
       <Link href='/decks'>
-        <a className='btn'>Create a new deck</a>
+        <a className='btn'>Go to dashboard</a>
       </Link>
     </div>
   </>
