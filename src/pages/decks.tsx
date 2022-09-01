@@ -1,7 +1,15 @@
+import {
+  Close,
+  Content,
+  Description,
+  Portal,
+  Root,
+  Title,
+} from '@radix-ui/react-dialog'
 import { clsx } from 'clsx'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { MdAdd } from 'react-icons/md'
 import { twMerge } from 'tailwind-merge'
 import Card from '../components/Card'
@@ -11,6 +19,7 @@ import { useContext, useMutation, useQuery } from '../utils/trpc'
 import type { NextPageWithLayout } from './_app'
 
 const Decks: NextPageWithLayout = () => {
+  const [deckId, setDeckId] = useState(-1)
   const router = useRouter()
   const utils = useContext()
 
@@ -91,13 +100,45 @@ const Decks: NextPageWithLayout = () => {
               amount={deck.cards.length}
               createdAt={deck.createdAt}
               updatedAt={deck.updatedAt}
-              onDelete={() => deleteDeck({ id: deck.id })}
+              onDelete={() => setDeckId((prev) => (prev = deck.id))}
               onStudy={() => console.log('study')}
               onEdit={() => router.push(`/editor/${deck.id}`)}
             />
           ))}
         </section>
       )}
+
+      {/* Modal for deleting a deck, it will probably be refactored into a component in the future */}
+      <Root
+        open={deckId >= 0 ? true : false}
+        onOpenChange={() =>
+          setDeckId((prev) => (prev >= 0 ? (prev = -1) : prev))
+        }
+      >
+        <Portal>
+          <div className='modal modal-open modal-bottom animate-fadeIn md:modal-middle'>
+            <Content className='modal-box z-[101]'>
+              <Title className='text-2xl'>Delete this deck</Title>
+              <Description>
+                The deck cannot be restored after the removal.
+              </Description>
+              <div className='modal-action'>
+                <Close asChild>
+                  <button className='btn btn-ghost'>Cancel</button>
+                </Close>
+                <Close asChild>
+                  <button
+                    className='btn btn-error'
+                    onClick={() => deleteDeck({ id: deckId })}
+                  >
+                    Delete Deck
+                  </button>
+                </Close>
+              </div>
+            </Content>
+          </div>
+        </Portal>
+      </Root>
     </>
   )
 }
