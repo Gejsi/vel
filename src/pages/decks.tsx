@@ -10,7 +10,7 @@ import { clsx } from 'clsx'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useMemo, useState } from 'react'
-import { MdAdd } from 'react-icons/md'
+import { MdPostAdd } from 'react-icons/md'
 import { twMerge } from 'tailwind-merge'
 import Card from '../components/Card'
 import Spinner from '../components/Spinner'
@@ -78,7 +78,7 @@ const Decks: NextPageWithLayout = () => {
 
       <Toolbar title='Decks'>
         <button className={btnClass} onClick={() => createDeck()}>
-          {!isCreating && <MdAdd className='h-6 w-6' />}
+          {!isCreating && <MdPostAdd className='h-6 w-6' />}
           <span className='hidden md:block'>Create deck</span>
         </button>
       </Toolbar>
