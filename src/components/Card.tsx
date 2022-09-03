@@ -29,18 +29,22 @@ const Card = ({
           <MdDelete className='h-6 w-6' />
         </button>
       </div>
-      <div className='my-4 flex flex-wrap items-start justify-start gap-x-8 gap-y-2 overflow-y-auto rounded-2xl bg-base-100 p-4'>
-        <div>
-          <h3 className='text-sm opacity-70'>Cards</h3>
-          <p>{amount}</p>
+      <div className='stats stats-vertical shadow'>
+        <div className='stat'>
+          <div className='stat-desc'>Cards</div>
+          <div className='stat-title opacity-100'>{amount}</div>
         </div>
-        <div>
-          <h3 className='text-sm opacity-70'>Created</h3>
-          <p>{dayjs(createdAt).format('DD/MM/YY')}</p>
+        <div className='stat'>
+          <div className='stat-desc'>Created</div>
+          <div className='stat-title opacity-100'>
+            {dayjs(createdAt).format('DD/MM/YY')}
+          </div>
         </div>
-        <div>
-          <h3 className='text-sm opacity-70'>Edited</h3>
-          <p>{dayjs(updatedAt).format('ddd, MMM YYYY')}</p>
+        <div className='stat'>
+          <div className='stat-desc'>Edited</div>
+          <div className='stat-title opacity-100'>
+            {dayjs(updatedAt).format('ddd, MMM YYYY')}
+          </div>
         </div>
       </div>
 

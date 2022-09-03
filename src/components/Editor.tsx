@@ -1,4 +1,4 @@
-import { Plate, type TEditableProps } from '@udecode/plate'
+import { Plate, type TEditableProps } from '@udecode/plate-core'
 
 const editableProps: TEditableProps = {
   placeholder: 'Type...',
