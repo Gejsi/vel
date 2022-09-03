@@ -1,8 +1,14 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { MdFormatAlignJustify, MdSave } from 'react-icons/md'
+import {
+  MdFormatBold,
+  MdFormatColorText,
+  MdFormatItalic,
+  MdFormatListBulleted,
+  MdSave,
+} from 'react-icons/md'
 import { twMerge } from 'tailwind-merge'
-import Editor from '../../components/Editor'
+import Editor from '../../components/editor/Editor'
 import Error from '../../components/Error'
 import ToolbarWithIcons from '../../components/ToolbarWithIcons'
 import { useQuery } from '../../utils/trpc'
@@ -10,13 +16,14 @@ import type { NextPageWithLayout } from '../_app'
 
 const EditorPage: NextPageWithLayout = () => {
   const { id } = useRouter().query
-  const { data, isLoading, error } = useQuery(
-    ['deck.getById', { id: id as string }],
-    {
-      retry: false,
-      refetchOnWindowFocus: false,
-    }
-  )
+  const {
+    data: deck,
+    isLoading,
+    error,
+  } = useQuery(['deck.getById', { id: id as string }], {
+    retry: false,
+    refetchOnWindowFocus: false,
+  })
 
   if (error)
     return (
@@ -31,20 +38,23 @@ const EditorPage: NextPageWithLayout = () => {
   return (
     <>
       <Head>
-        <title>Vel &#x2022; {data?.title}</title>
+        <title>Vel &#x2022; {deck?.title}</title>
       </Head>
 
       <ToolbarWithIcons>
-        <div className='flex flex-1 flex-nowrap justify-start overflow-y-auto md:justify-center'>
+        <div className='flex flex-1 flex-nowrap overflow-y-auto'>
           <div className='btn-group flex-nowrap rounded-lg bg-base-content/10'>
             <button className={iconClass + ' rounded-l-lg'}>
-              <MdFormatAlignJustify className='h-6 w-6' />
+              <MdFormatListBulleted className='h-6 w-6' />
             </button>
             <button className={iconClass}>
-              <MdFormatAlignJustify className='h-6 w-6' />
+              <MdFormatItalic className='h-6 w-6' />
+            </button>
+            <button className={iconClass}>
+              <MdFormatBold className='h-6 w-6' />
             </button>
             <button className={iconClass + ' rounded-r-lg'}>
-              <MdFormatAlignJustify className='h-6 w-6' />
+              <MdFormatColorText className='h-6 w-6' />
             </button>
           </div>
         </div>
@@ -60,7 +70,8 @@ const EditorPage: NextPageWithLayout = () => {
 
       {/* {isLoading ? <Spinner /> : <span>Editing deck #{id}</span>} */}
 
-      <Editor />
+      <h1 className='mb-4 text-5xl font-bold'>{deck?.title}</h1>
+      <Editor id={1} />
     </>
   )
 }

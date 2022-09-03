@@ -649,6 +649,39 @@
     "@typescript-eslint/types" "5.33.0"
     eslint-visitor-keys "^3.3.0"
 
+"@udecode/plate-autoformat@^16.5.0":
+  version "16.5.0"
+  resolved "https://registry.yarnpkg.com/@udecode/plate-autoformat/-/plate-autoformat-16.5.0.tgz#ff1c30a1933e49558912cdbb8d97cd6f704aabef"
+  integrity sha512-6K/XCOgiEfftd+oi1p/n3PQ6hNS6R/8GPnO/LlHN9GsRrY4VAJsLE/dBZbnF3hMdvmEuK7/QQNJNsUb4bTfAiA==
+  dependencies:
+    "@udecode/plate-core" "16.5.0"
+
+"@udecode/plate-basic-elements@^16.5.0":
+  version "16.5.0"
+  resolved "https://registry.yarnpkg.com/@udecode/plate-basic-elements/-/plate-basic-elements-16.5.0.tgz#388ff698d48bb51a7202ffa9215299b780b01cc0"
+  integrity sha512-892LdIi9WbEhSBIfYLiLFnkX+5RmppXzhi1TdTK+bspQ7BBueDldL2k7t2ole3qSLC5AmneWYthC+m0gczk2lg==
+  dependencies:
+    "@udecode/plate-block-quote" "16.5.0"
+    "@udecode/plate-code-block" "16.5.0"
+    "@udecode/plate-core" "16.5.0"
+    "@udecode/plate-heading" "16.5.0"
+    "@udecode/plate-paragraph" "16.5.0"
+
+"@udecode/plate-block-quote@16.5.0":
+  version "16.5.0"
+  resolved "https://registry.yarnpkg.com/@udecode/plate-block-quote/-/plate-block-quote-16.5.0.tgz#51fe2f23f002fb90d09866b22b742eb57d616799"
+  integrity sha512-XHFmKAsb8EiOKR5IHkTx5DZ1Y6g/Adt8ReQbd2LWIm5y9G6S2YHO5EzGBU8o4ja6+oYiN/0bgp9jNnm0n3Jn9A==
+  dependencies:
+    "@udecode/plate-core" "16.5.0"
+
+"@udecode/plate-code-block@16.5.0":
+  version "16.5.0"
+  resolved "https://registry.yarnpkg.com/@udecode/plate-code-block/-/plate-code-block-16.5.0.tgz#f52a5f83f4910e749dec2a3bad877b50e5093456"
+  integrity sha512-5y4naXXAbHzorgQpXhyiuVCjfD76RWM6iEx7VaQZmkeDucPejML52apNPj9nAE0s7FLSF489E2BA5531unXK7A==
+  dependencies:
+    "@udecode/plate-core" "16.5.0"
+    prismjs "^1.25.0"
+
 "@udecode/plate-common@^7.0.2":
   version "7.0.2"
   resolved "https://registry.yarnpkg.com/@udecode/plate-common/-/plate-common-7.0.2.tgz#cd2fc3ffdc70c41a43a71356742a9cf61b7991c7"
@@ -657,16 +690,7 @@
     "@udecode/plate-core" "7.0.2"
     is-hotkey "^0.1.6"
 
-"@udecode/plate-core@7.0.2":
-  version "7.0.2"
-  resolved "https://registry.yarnpkg.com/@udecode/plate-core/-/plate-core-7.0.2.tgz#7205e65945ab43f5df9f8d328515553ddbe29484"
-  integrity sha512-YFmzVRcRWkWRbqRuD/guCHuSb/NSdUtUocSz1XL7I/oCzZgXY5ddqsj6Aciu2hiiI0s9PeeAPwmegOi1lsClRg==
-  dependencies:
-    clsx "^1.1.1"
-    lodash "^4.17.21"
-    zustand "^3.4.2"
-
-"@udecode/plate-core@^16.5.0":
+"@udecode/plate-core@16.5.0", "@udecode/plate-core@^16.5.0":
   version "16.5.0"
   resolved "https://registry.yarnpkg.com/@udecode/plate-core/-/plate-core-16.5.0.tgz#8b328bcc5eb19eb076fe9a76e75c481aee46835e"
   integrity sha512-/f/FLqBdUH11W273I2SccLBCgBt5k5PiLTMyUu3ptNnIBq0SWp+WqA5GEQzWQpR++a+NbA+J59Yi5WzCoBiEsQ==
@@ -679,6 +703,29 @@
     react-hotkeys-hook "^3.4.6"
     use-deep-compare "^1.1.0"
     zustand "^3.7.2"
+
+"@udecode/plate-core@7.0.2":
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/@udecode/plate-core/-/plate-core-7.0.2.tgz#7205e65945ab43f5df9f8d328515553ddbe29484"
+  integrity sha512-YFmzVRcRWkWRbqRuD/guCHuSb/NSdUtUocSz1XL7I/oCzZgXY5ddqsj6Aciu2hiiI0s9PeeAPwmegOi1lsClRg==
+  dependencies:
+    clsx "^1.1.1"
+    lodash "^4.17.21"
+    zustand "^3.4.2"
+
+"@udecode/plate-heading@16.5.0":
+  version "16.5.0"
+  resolved "https://registry.yarnpkg.com/@udecode/plate-heading/-/plate-heading-16.5.0.tgz#bacb7e8615c38be6d9fe096cb14ad3120f915fba"
+  integrity sha512-9sd4D7lcirbgRPlkzBshLJQuiH3iD2cgNFY5TvP7vYonnjQHl7l91gOBvonT5WPrHxJmpqi4n/wbUNb3U7N0zg==
+  dependencies:
+    "@udecode/plate-core" "16.5.0"
+
+"@udecode/plate-paragraph@16.5.0":
+  version "16.5.0"
+  resolved "https://registry.yarnpkg.com/@udecode/plate-paragraph/-/plate-paragraph-16.5.0.tgz#08d212db031bcfd63f244b32f6e80c0360244da7"
+  integrity sha512-q81pvHIf1Sdvuh9S/KENz2zB4py5D3vJdbheztwa3PpuH2+Angvw9x+wv8HWIHFZX/FRIJG3kF+76jTAjvq3Rg==
+  dependencies:
+    "@udecode/plate-core" "16.5.0"
 
 "@udecode/zustood@^1.1.1":
   version "1.1.1"
@@ -2440,6 +2487,11 @@ prisma@^4.3.1:
   integrity sha512-90xo06wtqil76Xsi3mNpc4Js3SdDRR5g4qb9h+4VWY4Y8iImJY6xc3PX+C9xxTSt1lr0Q89A0MLkJjd8ax6KiQ==
   dependencies:
     "@prisma/engines" "4.3.1"
+
+prismjs@^1.25.0:
+  version "1.29.0"
+  resolved "https://registry.yarnpkg.com/prismjs/-/prismjs-1.29.0.tgz#f113555a8fa9b57c35e637bba27509dcf802dd12"
+  integrity sha512-Kx/1w86q/epKcmte75LNrEoT+lX8pBpavuAbvJWRXar7Hz8jrtF+e3vY751p0R8H9HdArwaCTNDDzHg/ScJK1Q==
 
 prop-types@^15.8.1:
   version "15.8.1"

@@ -21,7 +21,7 @@ const Card = ({
   onStudy,
   onEdit,
 }: CardProps) => (
-  <div className='card bg-base-200'>
+  <div className='card bg-base-200/90'>
     <div className='card-body'>
       <div className='flex gap-2'>
         <h2 className='card-title flex-1'>{title}</h2>
@@ -29,18 +29,18 @@ const Card = ({
           <MdDelete className='h-6 w-6' />
         </button>
       </div>
-      <div className='stats stats-vertical shadow'>
-        <div className='stat'>
+      <div className='stats stats-horizontal shadow md:stats-vertical'>
+        <div className='stat py-3 px-5'>
           <div className='stat-desc'>Cards</div>
           <div className='stat-title opacity-100'>{amount}</div>
         </div>
-        <div className='stat'>
+        <div className='stat py-3 px-5'>
           <div className='stat-desc'>Created</div>
           <div className='stat-title opacity-100'>
             {dayjs(createdAt).format('DD/MM/YY')}
           </div>
         </div>
-        <div className='stat'>
+        <div className='stat py-3 px-5'>
           <div className='stat-desc'>Edited</div>
           <div className='stat-title opacity-100'>
             {dayjs(updatedAt).format('ddd, MMM YYYY')}
