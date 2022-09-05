@@ -667,6 +667,13 @@
     "@udecode/plate-heading" "16.5.0"
     "@udecode/plate-paragraph" "16.5.0"
 
+"@udecode/plate-basic-marks@^16.5.0":
+  version "16.5.0"
+  resolved "https://registry.yarnpkg.com/@udecode/plate-basic-marks/-/plate-basic-marks-16.5.0.tgz#2248e9b5ca077d63d91d841c3ef69da9190f3616"
+  integrity sha512-ELMk9tutsatWZSU35n+Fq6BHyGuwxeW6KdnYbMEgysoT7xqpubozetLQVcCW4IHCVeZFGJdlwtzMEfhoYxBFig==
+  dependencies:
+    "@udecode/plate-core" "16.5.0"
+
 "@udecode/plate-block-quote@16.5.0":
   version "16.5.0"
   resolved "https://registry.yarnpkg.com/@udecode/plate-block-quote/-/plate-block-quote-16.5.0.tgz#51fe2f23f002fb90d09866b22b742eb57d616799"

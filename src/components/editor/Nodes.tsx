@@ -18,31 +18,33 @@ type BlockProps<T> = {
 }
 
 export const Heading1: FC<BlockProps<HTMLHeadingElement>> = (props) => (
-  <h1 {...props.attributes} className='text-5xl'>
+  <h1 {...props.attributes} className={props.className}>
     {props.children}
   </h1>
 )
 
-export const Paragraph: FC<BlockProps<HTMLParagraphElement>> = (props) => (
-  <p {...props.attributes} className='text-lg'>
-    {props.children}
-  </p>
-)
+export const Paragraph: FC<BlockProps<HTMLParagraphElement>> = (props) => {
+  return (
+    <p {...props.attributes} className={props.className}>
+      {props.children}
+    </p>
+  )
+}
 
 export const Blockquote: FC<BlockProps<HTMLQuoteElement>> = (props) => (
-  <blockquote {...props.attributes} className='italic'>
+  <blockquote {...props.attributes} className={props.className}>
     {props.children}
   </blockquote>
 )
 
 export const CodeBlock: FC<BlockProps<HTMLDivElement>> = (props) => (
-  <div {...props.attributes} className='mockup-code my-2 before:hidden'>
+  <div {...props.attributes} className={props.className}>
     {props.children}
   </div>
 )
 
 export const CodeLine: FC<BlockProps<HTMLPreElement>> = (props) => (
-  <pre {...props.attributes}>
+  <pre {...props.attributes} className={props.className}>
     <code>{props.children}</code>
   </pre>
 )

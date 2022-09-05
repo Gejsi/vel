@@ -1,18 +1,22 @@
 import { createBasicElementsPlugin } from '@udecode/plate-basic-elements'
+import { createBasicMarksPlugin } from '@udecode/plate-basic-marks'
 import { createPlugins, Plate, type TEditableProps } from '@udecode/plate-core'
 import type { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { Blockquote, CodeBlock, CodeLine, Heading1, Paragraph } from './Nodes'
 
-const plugins = createPlugins([createBasicElementsPlugin()], {
-  components: {
-    blockquote: Blockquote,
-    p: Paragraph,
-    h1: Heading1,
-    code_block: CodeBlock,
-    code_line: CodeLine,
-  },
-})
+const plugins = createPlugins(
+  [createBasicElementsPlugin(), createBasicMarksPlugin()],
+  {
+    components: {
+      blockquote: Blockquote,
+      p: Paragraph,
+      h1: Heading1,
+      code_block: CodeBlock,
+      code_line: CodeLine,
+    },
+  }
+)
 
 const initialValue = [
   {
@@ -30,7 +34,62 @@ const initialValue = [
   {
     type: 'code_block',
     lang: 'javascript',
-    children: [{ type: 'code_line', children: [{ text: 'const a = 2' }] }],
+    children: [
+      { type: 'code_line', children: [{ text: 'const a = 2' }] },
+      { type: 'code_line', children: [{ text: 'const b = 3' }] },
+    ],
+  },
+  {
+    type: 'p',
+    children: [
+      { text: 'This text is', bold: true },
+      { text: ' bold ' },
+      { text: 'kinda.', bold: true },
+    ],
+  },
+  {
+    type: 'p',
+    children: [
+      { text: 'This text is', italic: true },
+      { text: ' italic ' },
+      { text: 'kinda.', italic: true },
+    ],
+  },
+  {
+    type: 'p',
+    children: [
+      { text: 'This text is', underline: true },
+      { text: ' underlined ' },
+      { text: 'kinda.', underline: true },
+    ],
+  },
+  {
+    type: 'p',
+    children: [
+      {
+        text: 'This text is everything',
+        underline: true,
+        bold: true,
+        italic: true,
+        strikethrough: true,
+      },
+    ],
+  },
+  {
+    type: 'p',
+    children: [
+      { text: 'This text is', strikethrough: true },
+      { text: ' striked ' },
+      { text: 'kinda.', strikethrough: true },
+    ],
+  },
+  {
+    type: 'p',
+    children: [
+      { text: 'This text is', code: true },
+      { text: ' inline code ' },
+      { text: 'kinda.', code: true },
+    ],
   },
 ]
 
@@ -41,7 +100,7 @@ const commonEditorClasses = 'min-h-[12rem] p-4 rounded-xl'
  */
 const QAttributes: TEditableProps = {
   placeholder: 'Question...',
-  className: twMerge(commonEditorClasses, 'bg-primary/20'),
+  className: twMerge(commonEditorClasses, 'bg-primary/5'),
   spellCheck: false,
 }
 
@@ -50,7 +109,7 @@ const QAttributes: TEditableProps = {
  */
 const AAttributes: TEditableProps = {
   placeholder: 'Answer...',
-  className: twMerge(commonEditorClasses, 'bg-secondary/20'),
+  className: twMerge(commonEditorClasses, 'bg-secondary/5'),
   spellCheck: false,
 }
 
