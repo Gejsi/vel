@@ -25,7 +25,7 @@ const Card = ({
     <div className='card-body'>
       <div className='flex gap-2'>
         <h2 className='card-title flex-1'>{title}</h2>
-        <button className='btn btn-ghost w-12 px-2' onClick={onDelete}>
+        <button className='btn btn-ghost btn-square' onClick={onDelete}>
           <MdDelete className='h-6 w-6' />
         </button>
       </div>
