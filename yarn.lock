@@ -681,7 +681,7 @@
   dependencies:
     "@udecode/plate-core" "16.5.0"
 
-"@udecode/plate-code-block@16.5.0":
+"@udecode/plate-code-block@16.5.0", "@udecode/plate-code-block@^16.5.0":
   version "16.5.0"
   resolved "https://registry.yarnpkg.com/@udecode/plate-code-block/-/plate-code-block-16.5.0.tgz#f52a5f83f4910e749dec2a3bad877b50e5093456"
   integrity sha512-5y4naXXAbHzorgQpXhyiuVCjfD76RWM6iEx7VaQZmkeDucPejML52apNPj9nAE0s7FLSF489E2BA5531unXK7A==
@@ -727,10 +727,25 @@
   dependencies:
     "@udecode/plate-core" "16.5.0"
 
+"@udecode/plate-list@^16.6.1":
+  version "16.6.1"
+  resolved "https://registry.yarnpkg.com/@udecode/plate-list/-/plate-list-16.6.1.tgz#756745f4db4d490ddb03a2a4a05cfb2f0ab89612"
+  integrity sha512-OHiPWSmZMzgaAfj48BM/fkVyYWT4platwUqHLmnUobRhA1+S/7T+UDDd9PWWjlw2INqcJIYGT9b2vXHTBbMHbw==
+  dependencies:
+    "@udecode/plate-core" "16.5.0"
+    "@udecode/plate-reset-node" "16.5.0"
+
 "@udecode/plate-paragraph@16.5.0":
   version "16.5.0"
   resolved "https://registry.yarnpkg.com/@udecode/plate-paragraph/-/plate-paragraph-16.5.0.tgz#08d212db031bcfd63f244b32f6e80c0360244da7"
   integrity sha512-q81pvHIf1Sdvuh9S/KENz2zB4py5D3vJdbheztwa3PpuH2+Angvw9x+wv8HWIHFZX/FRIJG3kF+76jTAjvq3Rg==
+  dependencies:
+    "@udecode/plate-core" "16.5.0"
+
+"@udecode/plate-reset-node@16.5.0":
+  version "16.5.0"
+  resolved "https://registry.yarnpkg.com/@udecode/plate-reset-node/-/plate-reset-node-16.5.0.tgz#e344fb50c9d79a2f2cc2aa89580e24c597560cf3"
+  integrity sha512-wkEC5LTV4T12mSu8ff3unHn2Us4x/do3AiJvwyze8aIF19wybaftdLUsg5BaljcjZdqhaCaDNgY+j7CEV1uJWw==
   dependencies:
     "@udecode/plate-core" "16.5.0"
 

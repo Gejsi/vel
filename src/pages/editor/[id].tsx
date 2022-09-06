@@ -2,9 +2,10 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import {
   MdFormatBold,
-  MdFormatColorText,
   MdFormatItalic,
   MdFormatListBulleted,
+  MdFormatStrikethrough,
+  MdFormatUnderlined,
   MdSave,
 } from 'react-icons/md'
 import { twMerge } from 'tailwind-merge'
@@ -51,10 +52,13 @@ const EditorPage: NextPageWithLayout = () => {
               <MdFormatItalic className='h-6 w-6' />
             </button>
             <button className={iconClass}>
+              <MdFormatStrikethrough className='h-6 w-6' />
+            </button>
+            <button className={iconClass}>
               <MdFormatBold className='h-6 w-6' />
             </button>
             <button className={iconClass + ' rounded-r-lg'}>
-              <MdFormatColorText className='h-6 w-6' />
+              <MdFormatUnderlined className='h-6 w-6' />
             </button>
           </div>
         </div>

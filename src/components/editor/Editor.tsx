@@ -1,13 +1,19 @@
+import { createAutoformatPlugin } from '@udecode/plate-autoformat'
 import { createBasicElementsPlugin } from '@udecode/plate-basic-elements'
 import { createBasicMarksPlugin } from '@udecode/plate-basic-marks'
 import { createPlugins, Plate, type TEditableProps } from '@udecode/plate-core'
 import type { FC } from 'react'
 import { MdDelete } from 'react-icons/md'
 import { twMerge } from 'tailwind-merge'
+import { autoformatOpts } from '../../utils/autoformat.editor'
 import { Blockquote, CodeBlock, CodeLine, Heading1, Paragraph } from './Nodes'
 
 const plugins = createPlugins(
-  [createBasicElementsPlugin(), createBasicMarksPlugin()],
+  [
+    createBasicElementsPlugin(),
+    createBasicMarksPlugin(),
+    createAutoformatPlugin(autoformatOpts),
+  ],
   {
     components: {
       blockquote: Blockquote,
@@ -134,7 +140,7 @@ const Editor: FC<EditorProps> = ({ id }) => {
           </button>
         </div>
       </div>
-      <div className='grid grid-cols-[repeat(auto-fit,_minmax(280px,_1fr))] rounded-xl bg-base-300'>
+      <div className='grid grid-cols-[repeat(auto-fit,_minmax(280px,_1fr))] gap-y-4 rounded-xl bg-base-300 shadow-lg'>
         <Plate id={`qe-${id}`} editableProps={QAttributes} plugins={plugins} />
         <Plate id={`ae-${id}`} editableProps={AAttributes} plugins={plugins} />
       </div>
