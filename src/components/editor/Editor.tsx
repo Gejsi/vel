@@ -1,18 +1,34 @@
 import { createAutoformatPlugin } from '@udecode/plate-autoformat'
 import { createBasicElementsPlugin } from '@udecode/plate-basic-elements'
 import { createBasicMarksPlugin } from '@udecode/plate-basic-marks'
+import {
+  createExitBreakPlugin,
+  createSoftBreakPlugin,
+} from '@udecode/plate-break'
 import { createPlugins, Plate, type TEditableProps } from '@udecode/plate-core'
+import { createResetNodePlugin } from '@udecode/plate-reset-node'
+import { createTrailingBlockPlugin } from '@udecode/plate-trailing-block'
 import type { FC } from 'react'
 import { MdDelete } from 'react-icons/md'
 import { twMerge } from 'tailwind-merge'
-import { autoformatOpts } from '../../utils/autoformat.editor'
+import {
+  autoformatOptions,
+  exitBreakOptions,
+  resetNodeOptions,
+  softBreakOptions,
+  trailingBlockOptions,
+} from '../../utils/options.editor'
 import { Blockquote, CodeBlock, CodeLine, Heading1, Paragraph } from './Nodes'
 
 const plugins = createPlugins(
   [
     createBasicElementsPlugin(),
     createBasicMarksPlugin(),
-    createAutoformatPlugin(autoformatOpts),
+    createAutoformatPlugin(autoformatOptions),
+    createResetNodePlugin(resetNodeOptions),
+    createExitBreakPlugin(exitBreakOptions),
+    createTrailingBlockPlugin(trailingBlockOptions),
+    createSoftBreakPlugin(softBreakOptions),
   ],
   {
     components: {
@@ -134,7 +150,7 @@ const Editor: FC<EditorProps> = ({ id }) => {
     <>
       <div className='mt-6 flex items-center justify-center'>
         <div className='flex items-center gap-4 rounded-t-xl bg-base-300/80 p-1'>
-          <h2 className='pl-4 uppercase italic'>Card &#x2022; {id}</h2>
+          <h2 className='pl-4 font-bold uppercase'>Card &#x2022; {id}</h2>
           <button className='btn btn-ghost btn-square'>
             <MdDelete className='h-6 w-6' />
           </button>

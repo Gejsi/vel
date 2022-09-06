@@ -148,7 +148,7 @@ export const autoformatMarks = [
   },
 ]
 
-const autoformatRules = [
+export const autoformatRules = [
   ...autoformatBlocks,
   ...autoformatMarks,
   ...autoformatSmartQuotes,
@@ -158,10 +158,3 @@ const autoformatRules = [
   ...autoformatArrow,
   ...autoformatMath,
 ]
-
-export const autoformatOpts = {
-  options: {
-    rules: autoformatRules as any,
-    enableUndoOnDelete: true,
-  },
-}

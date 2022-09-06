@@ -681,6 +681,13 @@
   dependencies:
     "@udecode/plate-core" "16.5.0"
 
+"@udecode/plate-break@^16.5.0":
+  version "16.5.0"
+  resolved "https://registry.yarnpkg.com/@udecode/plate-break/-/plate-break-16.5.0.tgz#b830dd39f90bcc071295f9eb5942ad90b6d5bb56"
+  integrity sha512-QLNrWTq2+X7HFlhKYJE3xr3dmYW4cPMOYsKFp78LBZ6azpyH7Y44FksFGWMyZ9UqxhC+oHycy4oxNZkBqIEUgg==
+  dependencies:
+    "@udecode/plate-core" "16.5.0"
+
 "@udecode/plate-code-block@16.5.0", "@udecode/plate-code-block@^16.5.0":
   version "16.5.0"
   resolved "https://registry.yarnpkg.com/@udecode/plate-code-block/-/plate-code-block-16.5.0.tgz#f52a5f83f4910e749dec2a3bad877b50e5093456"
@@ -742,10 +749,17 @@
   dependencies:
     "@udecode/plate-core" "16.5.0"
 
-"@udecode/plate-reset-node@16.5.0":
+"@udecode/plate-reset-node@16.5.0", "@udecode/plate-reset-node@^16.5.0":
   version "16.5.0"
   resolved "https://registry.yarnpkg.com/@udecode/plate-reset-node/-/plate-reset-node-16.5.0.tgz#e344fb50c9d79a2f2cc2aa89580e24c597560cf3"
   integrity sha512-wkEC5LTV4T12mSu8ff3unHn2Us4x/do3AiJvwyze8aIF19wybaftdLUsg5BaljcjZdqhaCaDNgY+j7CEV1uJWw==
+  dependencies:
+    "@udecode/plate-core" "16.5.0"
+
+"@udecode/plate-trailing-block@^16.5.0":
+  version "16.5.0"
+  resolved "https://registry.yarnpkg.com/@udecode/plate-trailing-block/-/plate-trailing-block-16.5.0.tgz#d88219be5f56eb407a125550c5c801101d64df61"
+  integrity sha512-ACpUqmJFuLUr594YydwMP3QsdbUmF9XPJjq+J5BJFjdTWFBbj+HnByy1WzkhdbYDtNZbGO08nM9E3QFNHE5v7w==
   dependencies:
     "@udecode/plate-core" "16.5.0"
 
