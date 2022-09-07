@@ -5,6 +5,7 @@ import {
   autoformatMath,
   autoformatPunctuation,
   autoformatSmartQuotes,
+  type AutoformatRule,
 } from '@udecode/plate-autoformat'
 import {
   MARK_BOLD,
@@ -13,58 +14,62 @@ import {
   MARK_STRIKETHROUGH,
   MARK_UNDERLINE,
 } from '@udecode/plate-basic-marks'
+import { ELEMENT_BLOCKQUOTE } from '@udecode/plate-block-quote'
 import {
   ELEMENT_CODE_BLOCK,
   insertEmptyCodeBlock,
 } from '@udecode/plate-code-block'
+import { ELEMENT_DEFAULT, getPluginType } from '@udecode/plate-core'
 import {
-  ELEMENT_DEFAULT,
-  getPluginType,
-  insertNodes,
-  setNodes,
-} from '@udecode/plate-core'
+  ELEMENT_H1,
+  ELEMENT_H2,
+  ELEMENT_H3,
+  ELEMENT_H4,
+  ELEMENT_H5,
+  ELEMENT_H6,
+} from '@udecode/plate-heading'
 import { preFormat } from './format.editor'
 
-const autoformatBlocks = [
+const autoformatBlocks: AutoformatRule[] = [
   {
     mode: 'block',
-    type: 'h1',
+    type: ELEMENT_H1,
     match: '# ',
     preFormat,
   },
   {
     mode: 'block',
-    type: 'h2',
+    type: ELEMENT_H2,
     match: '## ',
     preFormat,
   },
   {
     mode: 'block',
-    type: 'h3',
+    type: ELEMENT_H3,
     match: '### ',
     preFormat,
   },
   {
     mode: 'block',
-    type: 'h4',
+    type: ELEMENT_H4,
     match: '#### ',
     preFormat,
   },
   {
     mode: 'block',
-    type: 'h5',
+    type: ELEMENT_H5,
     match: '##### ',
     preFormat,
   },
   {
     mode: 'block',
-    type: 'h6',
+    type: ELEMENT_H6,
     match: '###### ',
     preFormat,
   },
   {
     mode: 'block',
-    type: 'blockquote',
+    type: ELEMENT_BLOCKQUOTE,
     match: '> ',
     preFormat,
   },
@@ -81,21 +86,9 @@ const autoformatBlocks = [
       })
     },
   },
-  {
-    mode: 'block',
-    type: 'hr',
-    match: ['---', '—-', '___ '],
-    format: (editor: any) => {
-      setNodes(editor, { type: 'hr' })
-      insertNodes(editor, {
-        type: ELEMENT_DEFAULT,
-        children: [{ text: '' }],
-      })
-    },
-  },
 ]
 
-export const autoformatMarks = [
+export const autoformatMarks: AutoformatRule[] = [
   {
     mode: 'mark',
     type: [MARK_BOLD, MARK_ITALIC],

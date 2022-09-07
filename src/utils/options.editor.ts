@@ -1,20 +1,30 @@
+import type { AutoformatPlugin } from '@udecode/plate-autoformat'
+import { ELEMENT_BLOCKQUOTE } from '@udecode/plate-block-quote'
+import type { ExitBreakPlugin, SoftBreakPlugin } from '@udecode/plate-break'
 import { ELEMENT_CODE_BLOCK } from '@udecode/plate-code-block'
-import { isBlockAboveEmpty, isSelectionAtBlockStart } from '@udecode/plate-core'
+import {
+  isBlockAboveEmpty,
+  isSelectionAtBlockStart,
+  type PlatePlugin,
+} from '@udecode/plate-core'
+import type { ResetNodePlugin } from '@udecode/plate-reset-node'
+import type { TrailingBlockPlugin } from '@udecode/plate-trailing-block'
 import { autoformatRules } from './autoformat.editor'
 
-export const autoformatOptions = {
+export const autoformatOptions: Partial<PlatePlugin<AutoformatPlugin>> = {
   options: {
-    rules: autoformatRules as any,
+    rules: autoformatRules,
     enableUndoOnDelete: true,
   },
 }
 
 const resetNodeCommonRules = {
-  types: ['blockquote'],
+  //types: [ELEMENT_BLOCKQUOTE, ELEMENT_TODO_LI],
+  types: [ELEMENT_BLOCKQUOTE],
   defaultType: 'p',
 }
 
-export const resetNodeOptions = {
+export const resetNodeOptions: Partial<PlatePlugin<ResetNodePlugin>> = {
   options: {
     rules: [
       {
@@ -31,7 +41,7 @@ export const resetNodeOptions = {
   },
 }
 
-export const exitBreakOptions = {
+export const exitBreakOptions: Partial<PlatePlugin<ExitBreakPlugin>> = {
   options: {
     rules: [
       {
@@ -53,18 +63,18 @@ export const exitBreakOptions = {
   },
 }
 
-export const trailingBlockOptions = {
+export const trailingBlockOptions: Partial<PlatePlugin<TrailingBlockPlugin>> = {
   options: { type: 'p' },
 }
 
-export const softBreakOptions = {
+export const softBreakOptions: Partial<PlatePlugin<SoftBreakPlugin>> = {
   options: {
     rules: [
       { hotkey: 'shift+enter' },
       {
         hotkey: 'enter',
         query: {
-          allow: [ELEMENT_CODE_BLOCK, 'blockquote'],
+          allow: [ELEMENT_CODE_BLOCK, ELEMENT_BLOCKQUOTE],
         },
       },
     ],

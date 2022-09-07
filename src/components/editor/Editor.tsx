@@ -1,11 +1,14 @@
 import { createAutoformatPlugin } from '@udecode/plate-autoformat'
-import { createBasicElementsPlugin } from '@udecode/plate-basic-elements'
 import { createBasicMarksPlugin } from '@udecode/plate-basic-marks'
+import { createBlockquotePlugin } from '@udecode/plate-block-quote'
 import {
   createExitBreakPlugin,
   createSoftBreakPlugin,
 } from '@udecode/plate-break'
+import { createCodeBlockPlugin } from '@udecode/plate-code-block'
 import { createPlugins, Plate, type TEditableProps } from '@udecode/plate-core'
+import { createHeadingPlugin } from '@udecode/plate-heading'
+import { createParagraphPlugin } from '@udecode/plate-paragraph'
 import { createResetNodePlugin } from '@udecode/plate-reset-node'
 import { createTrailingBlockPlugin } from '@udecode/plate-trailing-block'
 import type { FC } from 'react'
@@ -22,7 +25,10 @@ import { Blockquote, CodeBlock, CodeLine, Heading1, Paragraph } from './Nodes'
 
 const plugins = createPlugins(
   [
-    createBasicElementsPlugin(),
+    createHeadingPlugin(),
+    createParagraphPlugin(),
+    createCodeBlockPlugin(),
+    createBlockquotePlugin(),
     createBasicMarksPlugin(),
     createAutoformatPlugin(autoformatOptions),
     createResetNodePlugin(resetNodeOptions),
@@ -32,9 +38,9 @@ const plugins = createPlugins(
   ],
   {
     components: {
-      blockquote: Blockquote,
-      p: Paragraph,
       h1: Heading1,
+      p: Paragraph,
+      blockquote: Blockquote,
       code_block: CodeBlock,
       code_line: CodeLine,
     },
