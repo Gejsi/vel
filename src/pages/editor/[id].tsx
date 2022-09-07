@@ -11,7 +11,7 @@ import {
 import { twMerge } from 'tailwind-merge'
 import Editor from '../../components/editor/Editor'
 import Error from '../../components/Error'
-import ToolbarWithIcons from '../../components/ToolbarWithIcons'
+import IconsToolbar from '../../components/ToolbarWithIcons'
 import { useQuery } from '../../utils/trpc'
 import type { NextPageWithLayout } from '../_app'
 
@@ -42,7 +42,7 @@ const EditorPage: NextPageWithLayout = () => {
         <title>Vel &#x2022; {deck?.title}</title>
       </Head>
 
-      <ToolbarWithIcons>
+      <IconsToolbar>
         <div className='flex flex-1 flex-nowrap overflow-y-auto'>
           <div className='btn-group flex-nowrap rounded-lg bg-base-content/10'>
             <button className={iconClass + ' rounded-l-lg'}>
@@ -70,7 +70,7 @@ const EditorPage: NextPageWithLayout = () => {
           <MdSave className='h-6 w-6' />
           <span className='hidden md:block'>Save</span>
         </button>
-      </ToolbarWithIcons>
+      </IconsToolbar>
 
       {/* {isLoading ? <Spinner /> : <span>Editing deck #{id}</span>} */}
 

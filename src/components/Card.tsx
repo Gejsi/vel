@@ -21,7 +21,7 @@ const Card = ({
   onStudy,
   onEdit,
 }: CardProps) => (
-  <div className='card bg-base-200/90'>
+  <div className='card bg-base-200/90 shadow'>
     <div className='card-body'>
       <div className='flex gap-2'>
         <h2 className='card-title flex-1'>{title}</h2>

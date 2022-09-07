@@ -8,6 +8,7 @@ import {
 import { createCodeBlockPlugin } from '@udecode/plate-code-block'
 import { createPlugins, Plate, type TEditableProps } from '@udecode/plate-core'
 import { createHeadingPlugin } from '@udecode/plate-heading'
+import { createListPlugin } from '@udecode/plate-list'
 import { createParagraphPlugin } from '@udecode/plate-paragraph'
 import { createResetNodePlugin } from '@udecode/plate-reset-node'
 import { createTrailingBlockPlugin } from '@udecode/plate-trailing-block'
@@ -21,7 +22,16 @@ import {
   softBreakOptions,
   trailingBlockOptions,
 } from '../../utils/options.editor'
-import { Blockquote, CodeBlock, CodeLine, Heading1, Paragraph } from './Nodes'
+import {
+  Blockquote,
+  CodeBlock,
+  CodeLine,
+  Heading1,
+  ListItem,
+  OrderedList,
+  Paragraph,
+  UnorderedList,
+} from './Nodes'
 
 const plugins = createPlugins(
   [
@@ -30,6 +40,7 @@ const plugins = createPlugins(
     createCodeBlockPlugin(),
     createBlockquotePlugin(),
     createBasicMarksPlugin(),
+    createListPlugin(),
     createAutoformatPlugin(autoformatOptions),
     createResetNodePlugin(resetNodeOptions),
     createExitBreakPlugin(exitBreakOptions),
@@ -43,6 +54,9 @@ const plugins = createPlugins(
       blockquote: Blockquote,
       code_block: CodeBlock,
       code_line: CodeLine,
+      ul: UnorderedList,
+      ol: OrderedList,
+      li: ListItem,
     },
   }
 )

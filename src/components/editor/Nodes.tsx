@@ -1,4 +1,3 @@
-import {} from '@udecode/plate-common'
 import type { PlateRenderElementProps } from '@udecode/plate-core'
 import type { FC } from 'react'
 
@@ -32,4 +31,22 @@ export const CodeLine: FC<PlateRenderElementProps> = (props) => (
   <pre {...props.attributes} className={props.className}>
     <code>{props.children}</code>
   </pre>
+)
+
+export const UnorderedList: FC<PlateRenderElementProps> = (props) => (
+  <ul {...props.attributes} className={props.className}>
+    {props.children}
+  </ul>
+)
+
+export const OrderedList: FC<PlateRenderElementProps> = (props) => (
+  <ol {...props.attributes} className={props.className}>
+    {props.children}
+  </ol>
+)
+
+export const ListItem: FC<PlateRenderElementProps> = (props) => (
+  <li {...props.attributes} className={props.className}>
+    {props.children}
+  </li>
 )

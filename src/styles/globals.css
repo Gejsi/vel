@@ -45,3 +45,16 @@
 .slate-code_line {
   @apply text-sm;
 }
+
+.slate-ul,
+.slate-ol {
+  @apply pl-6;
+}
+
+.slate-ul {
+  @apply list-disc;
+}
+
+.slate-ol {
+  @apply list-decimal;
+}

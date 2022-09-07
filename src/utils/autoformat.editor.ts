@@ -28,7 +28,8 @@ import {
   ELEMENT_H5,
   ELEMENT_H6,
 } from '@udecode/plate-heading'
-import { preFormat } from './format.editor'
+import { ELEMENT_LI, ELEMENT_OL, ELEMENT_UL } from '@udecode/plate-list'
+import { formatList, preFormat } from './format.editor'
 
 const autoformatBlocks: AutoformatRule[] = [
   {
@@ -141,9 +142,27 @@ export const autoformatMarks: AutoformatRule[] = [
   },
 ]
 
+const autoformatLists: AutoformatRule[] = [
+  {
+    mode: 'block',
+    type: ELEMENT_LI,
+    match: ['* ', '- ', '+ '],
+    preFormat,
+    format: (editor) => formatList(editor, ELEMENT_UL),
+  },
+  {
+    mode: 'block',
+    type: ELEMENT_LI,
+    match: ['1. ', '1) '],
+    preFormat,
+    format: (editor) => formatList(editor, ELEMENT_OL),
+  },
+]
+
 export const autoformatRules = [
   ...autoformatBlocks,
   ...autoformatMarks,
+  ...autoformatLists,
   ...autoformatSmartQuotes,
   ...autoformatPunctuation,
   ...autoformatLegal,
