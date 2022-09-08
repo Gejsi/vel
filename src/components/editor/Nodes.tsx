@@ -22,15 +22,15 @@ export const Blockquote: FC<PlateRenderElementProps> = (props) => (
 )
 
 export const CodeBlock: FC<PlateRenderElementProps> = (props) => (
-  <div {...props.attributes} className={props.className}>
-    {props.children}
-  </div>
+  <pre {...props.attributes} className={props.className}>
+    <code className='block w-full'>{props.children}</code>
+  </pre>
 )
 
 export const CodeLine: FC<PlateRenderElementProps> = (props) => (
-  <pre {...props.attributes} className={props.className}>
-    <code>{props.children}</code>
-  </pre>
+  <div {...props.attributes} className={props.className}>
+    {props.children}
+  </div>
 )
 
 export const UnorderedList: FC<PlateRenderElementProps> = (props) => (

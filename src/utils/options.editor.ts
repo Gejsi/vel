@@ -10,7 +10,6 @@ import {
   isSelectionAtBlockStart,
   type PlatePlugin,
 } from '@udecode/plate-core'
-import { ELEMENT_PARAGRAPH } from '@udecode/plate-paragraph'
 import type { ResetNodePlugin } from '@udecode/plate-reset-node'
 import type { TrailingBlockPlugin } from '@udecode/plate-trailing-block'
 import { autoformatRules } from './autoformat.editor'
@@ -81,7 +80,7 @@ export const softBreakOptions: Partial<PlatePlugin<SoftBreakPlugin>> = {
       {
         hotkey: 'enter',
         query: {
-          allow: [ELEMENT_BLOCKQUOTE, ELEMENT_PARAGRAPH],
+          allow: ELEMENT_BLOCKQUOTE,
         },
       },
     ],

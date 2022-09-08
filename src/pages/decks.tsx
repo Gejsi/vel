@@ -29,11 +29,7 @@ const Decks: NextPageWithLayout = () => {
     'deck.create',
     {
       async onSuccess({ id }) {
-        // there is no need to `await` for the query to refetch
-        // because the user is sent to the editor, but it should
-        // still be invalidated in case the user goes back to this page
-        utils.invalidateQueries(['deck.getAll'])
-
+        await utils.invalidateQueries(['deck.getAll'])
         await router.push(`/editor/${id}`)
       },
     }
@@ -83,7 +79,7 @@ const Decks: NextPageWithLayout = () => {
         </button>
       </Toolbar>
 
-      <p className='prose'>
+      <p className='prose max-w-full'>
         Click <kbd className='kbd mx-1'>+ Create Deck</kbd> to add a new set of
         flashcards. <br />
         Edit your decks or simply start studying through your cards.
