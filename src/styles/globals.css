@@ -10,8 +10,12 @@
   @apply text-5xl;
 }
 
+.slate-p:first-of-type {
+  @apply mt-0;
+}
+
 .slate-p {
-  @apply text-lg;
+  @apply mt-4;
 }
 
 .slate-bold {
@@ -39,11 +43,15 @@
 }
 
 .slate-code_block {
-  @apply mockup-code my-4 min-w-fit before:hidden;
+  @apply mockup-code my-4 min-w-fit p-4 before:hidden;
+}
+
+.slate-code_block pre::before {
+  @apply hidden;
 }
 
 .slate-code_line {
-  @apply text-sm;
+  @apply max-w-[20ch] text-sm;
 }
 
 .slate-ul,

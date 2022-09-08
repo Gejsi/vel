@@ -21,7 +21,7 @@ const Sidenav = ({ session }: { session: Session | null }) => (
     <div className='flex w-full items-center gap-2'>
       <li className='flex-1'>
         <Link href='/me'>
-          <a className=''>
+          <a>
             <img className='w-7 rounded-full' src={session?.user?.image!} />
             <span>{session?.user?.name}</span>
           </a>

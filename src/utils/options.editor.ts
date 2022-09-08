@@ -1,12 +1,16 @@
 import type { AutoformatPlugin } from '@udecode/plate-autoformat'
 import { ELEMENT_BLOCKQUOTE } from '@udecode/plate-block-quote'
 import type { ExitBreakPlugin, SoftBreakPlugin } from '@udecode/plate-break'
-import { ELEMENT_CODE_BLOCK } from '@udecode/plate-code-block'
+import {
+  ELEMENT_CODE_BLOCK,
+  ELEMENT_CODE_LINE,
+} from '@udecode/plate-code-block'
 import {
   isBlockAboveEmpty,
   isSelectionAtBlockStart,
   type PlatePlugin,
 } from '@udecode/plate-core'
+import { ELEMENT_PARAGRAPH } from '@udecode/plate-paragraph'
 import type { ResetNodePlugin } from '@udecode/plate-reset-node'
 import type { TrailingBlockPlugin } from '@udecode/plate-trailing-block'
 import { autoformatRules } from './autoformat.editor'
@@ -70,11 +74,14 @@ export const trailingBlockOptions: Partial<PlatePlugin<TrailingBlockPlugin>> = {
 export const softBreakOptions: Partial<PlatePlugin<SoftBreakPlugin>> = {
   options: {
     rules: [
-      { hotkey: 'shift+enter' },
+      {
+        hotkey: 'shift+enter',
+        query: { exclude: [ELEMENT_CODE_BLOCK, ELEMENT_CODE_LINE] },
+      },
       {
         hotkey: 'enter',
         query: {
-          allow: [ELEMENT_CODE_BLOCK, ELEMENT_BLOCKQUOTE],
+          allow: [ELEMENT_BLOCKQUOTE, ELEMENT_PARAGRAPH],
         },
       },
     ],

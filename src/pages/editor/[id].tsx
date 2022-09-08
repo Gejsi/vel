@@ -1,9 +1,13 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { BiCodeBlock } from 'react-icons/bi'
 import {
+  MdCode,
   MdFormatBold,
   MdFormatItalic,
   MdFormatListBulleted,
+  MdFormatListNumbered,
+  MdFormatQuote,
   MdFormatStrikethrough,
   MdFormatUnderlined,
   MdSave,
@@ -11,7 +15,7 @@ import {
 import { twMerge } from 'tailwind-merge'
 import Editor from '../../components/editor/Editor'
 import Error from '../../components/Error'
-import IconsToolbar from '../../components/ToolbarWithIcons'
+import IconsToolbar from '../../components/IconsToolbar'
 import { useQuery } from '../../utils/trpc'
 import type { NextPageWithLayout } from '../_app'
 
@@ -49,16 +53,29 @@ const EditorPage: NextPageWithLayout = () => {
               <MdFormatListBulleted className='h-6 w-6' />
             </button>
             <button className={iconClass}>
+              <MdFormatListNumbered className='h-6 w-6' />
+            </button>
+            <button className={iconClass}>
+              <MdFormatQuote className='h-6 w-6' />
+            </button>
+            <button className={iconClass}>
+              <BiCodeBlock className='h-6 w-6' />
+            </button>
+            <div className='w-[0.125rem] bg-base-content/30' />
+            <button className={iconClass}>
+              <MdFormatBold className='h-6 w-6' />
+            </button>
+            <button className={iconClass}>
               <MdFormatItalic className='h-6 w-6' />
+            </button>
+            <button className={iconClass}>
+              <MdFormatUnderlined className='h-6 w-6' />
             </button>
             <button className={iconClass}>
               <MdFormatStrikethrough className='h-6 w-6' />
             </button>
-            <button className={iconClass}>
-              <MdFormatBold className='h-6 w-6' />
-            </button>
             <button className={iconClass + ' rounded-r-lg'}>
-              <MdFormatUnderlined className='h-6 w-6' />
+              <MdCode className='h-6 w-6' />
             </button>
           </div>
         </div>
