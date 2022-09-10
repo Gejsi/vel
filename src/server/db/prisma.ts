@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client'
 import { env } from '../../env/server.mjs'
 
 declare global {
+  // eslint-disable-next-line no-unused-vars
   var prisma: PrismaClient | undefined
 }
 

@@ -1,5 +1,4 @@
-import { useEventPlateId, usePlateEditorState } from '@udecode/plate-core'
-import { ELEMENT_UL } from '@udecode/plate-list'
+import { ELEMENT_OL, ELEMENT_UL } from '@udecode/plate-list'
 import clsx from 'clsx'
 import { BiCodeBlock } from 'react-icons/bi'
 import {
@@ -7,6 +6,7 @@ import {
   MdFormatBold,
   MdFormatItalic,
   MdFormatListBulleted,
+  MdFormatListNumbered,
   MdFormatQuote,
   MdFormatStrikethrough,
   MdFormatUnderlined,
@@ -14,25 +14,10 @@ import {
   MdSave,
 } from 'react-icons/md'
 import { twMerge } from 'tailwind-merge'
-import { formatList } from '../utils/format.editor'
-
-const Button = () => {
-  const id = useEventPlateId()
-  const editor = usePlateEditorState(id)
-
-  console.log(editor)
-
-  return (
-    <button
-      className='btn-icon'
-      onClick={() => editor && formatList(editor, ELEMENT_UL)}
-    >
-      <MdFormatListBulleted className='h-6 w-6' />
-    </button>
-  )
-}
+import BlockIconButton from './BlockIconButton'
 
 const IconsToolbar = () => {
+  // FIX: temp class, will be removed soon
   const iconClass = twMerge('btn-icon', clsx({ 'btn-active': false }))
 
   return (
@@ -43,19 +28,12 @@ const IconsToolbar = () => {
         </label>
         <div className='flex flex-1 flex-nowrap overflow-y-auto'>
           <div className='btn-group flex-nowrap rounded-lg bg-base-content/10'>
-            {/* <button
-              className={iconClass}
-              onClick={() => editor && formatList(editor, ELEMENT_UL)}
-            >
+            <BlockIconButton type={ELEMENT_UL}>
               <MdFormatListBulleted className='h-6 w-6' />
-            </button>
-            <button
-              className={iconClass}
-              onClick={() => editor && formatList(editor, ELEMENT_OL)}
-            >
+            </BlockIconButton>
+            <BlockIconButton type={ELEMENT_OL}>
               <MdFormatListNumbered className='h-6 w-6' />
-            </button> */}
-            <Button />
+            </BlockIconButton>
             <button className={iconClass}>
               <MdFormatQuote className='h-6 w-6' />
             </button>

@@ -1,8 +1,8 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import Editor from '../../components/editor/Editor'
+import IconsToolbar from '../../components/editor/IconsToolbar'
 import Error from '../../components/Error'
-import IconsToolbar from '../../components/IconsToolbar'
 import { useQuery } from '../../utils/trpc'
 import type { NextPageWithLayout } from '../_app'
 

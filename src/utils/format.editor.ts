@@ -1,4 +1,5 @@
 import type { AutoformatBlockRule } from '@udecode/plate-autoformat'
+import { ELEMENT_BLOCKQUOTE } from '@udecode/plate-block-quote'
 import {
   ELEMENT_CODE_BLOCK,
   ELEMENT_CODE_LINE,
@@ -35,9 +36,9 @@ export const format = (editor: PlateEditor, customFormatting: any) => {
   }
 }
 
-type TElement = typeof ELEMENT_OL | typeof ELEMENT_UL
+type TList = typeof ELEMENT_OL | typeof ELEMENT_UL
 
-export const formatList = (editor: PlateEditor, elementType: TElement) => {
+export const formatList = (editor: PlateEditor, elementType: TList) => {
   format(editor, () =>
     toggleList(editor, {
       type: elementType,
@@ -45,6 +46,14 @@ export const formatList = (editor: PlateEditor, elementType: TElement) => {
   )
 }
 
-export const formatText = (editor: PlateEditor, text: string) => {
-  format(editor, () => editor.insertText(text))
+export type TBlock =
+  | TList
+  | typeof ELEMENT_BLOCKQUOTE
+  | typeof ELEMENT_CODE_BLOCK
+
+export const formatBlock = (editor: PlateEditor, elementType: TBlock) => {
+  if (elementType === 'ol' || elementType === 'ul') {
+    formatList(editor, elementType)
+  }
+  // TODO: add other blocks formatting
 }
