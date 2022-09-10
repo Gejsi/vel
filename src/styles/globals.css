@@ -24,11 +24,19 @@
   }
 }
 
+div[data-slate-editor='true'] {
+  @apply p-4;
+  min-height: 8rem !important; /* !important overrides conflicting inline style */
+}
+
 .slate-h1 {
   @apply text-5xl;
 }
 
-/* FIX: remove margin for first paragraph */
+.slate-p:first-child {
+  @apply mt-0 mb-4;
+}
+
 .slate-p {
   @apply mt-4;
 }

@@ -65,7 +65,7 @@ const plugins = createPlugins(
  */
 const QAttributes: TEditableProps = {
   placeholder: 'Question...',
-  className: 'p-4 selection:bg-primary/40',
+  className: 'selection:bg-primary/40',
   spellCheck: false,
 }
 
@@ -74,7 +74,7 @@ const QAttributes: TEditableProps = {
  */
 const AAttributes: TEditableProps = {
   placeholder: 'Answer...',
-  className: 'p-4 selection:bg-secondary/40 bg-base-200 rounded-xl',
+  className: 'selection:bg-secondary/40 bg-base-200 rounded-xl',
   spellCheck: false,
 }
 
@@ -94,7 +94,7 @@ const Editor: FC<EditorProps> = ({ id }) => (
         </button>
       </div>
     </div>
-    <div className='grid grid-cols-[repeat(auto-fit,_minmax(280px,_1fr))] rounded-xl bg-base-300 shadow-lg'>
+    <div className='grid min-w-fit grid-cols-[repeat(auto-fit,_minmax(280px,_1fr))] rounded-xl bg-base-300 shadow-lg'>
       <Plate id={`qe-${id}`} editableProps={QAttributes} plugins={plugins} />
       <Plate id={`ae-${id}`} editableProps={AAttributes} plugins={plugins} />
     </div>
