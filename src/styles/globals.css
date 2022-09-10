@@ -2,20 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
-.btn {
-  @apply capitalize;
+@layer components {
+  .btn {
+    @apply capitalize;
+  }
+
+  .btn-icon {
+    @apply btn btn-ghost btn-square;
+  }
+
+  .btn-group > .btn-icon {
+    @apply rounded-none;
+  }
+
+  .btn-group > .btn-icon:first-of-type {
+    @apply rounded-l-lg;
+  }
+
+  .btn-group > .btn-icon:last-of-type {
+    @apply rounded-r-lg;
+  }
 }
 
 .slate-h1 {
   @apply text-5xl;
 }
 
-.slate-p:first-of-type {
-  @apply mt-0;
-}
-
 .slate-p {
-  @apply mt-4;
+  @apply mt-0;
 }
 
 .slate-bold {
@@ -56,7 +70,7 @@
 
 .slate-ul,
 .slate-ol {
-  @apply pl-6;
+  @apply pl-4;
 }
 
 .slate-ul {

@@ -28,7 +28,7 @@ const Sidenav = ({ session }: { session: Session | null }) => (
         </Link>
       </li>
       <div className='tooltip' data-tip='Logout'>
-        <button className='btn btn-ghost btn-square' onClick={() => signOut()}>
+        <button className='btn-icon' onClick={() => signOut()}>
           <MdLogout className='h-6 w-6' />
         </button>
       </div>

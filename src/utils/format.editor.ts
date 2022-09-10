@@ -9,7 +9,12 @@ import {
   isType,
   type PlateEditor,
 } from '@udecode/plate-core'
-import { toggleList, unwrapList } from '@udecode/plate-list'
+import {
+  ELEMENT_OL,
+  ELEMENT_UL,
+  toggleList,
+  unwrapList,
+} from '@udecode/plate-list'
 
 export const preFormat: AutoformatBlockRule['preFormat'] = (editor) =>
   unwrapList(editor)
@@ -18,6 +23,7 @@ export const format = (editor: PlateEditor, customFormatting: any) => {
   if (editor.selection) {
     const parentEntry = getParentNode(editor, editor.selection)
     if (!parentEntry) return
+
     const [node] = parentEntry
     if (
       isElement(node) &&
@@ -29,7 +35,9 @@ export const format = (editor: PlateEditor, customFormatting: any) => {
   }
 }
 
-export const formatList = (editor: PlateEditor, elementType: string) => {
+type TElement = typeof ELEMENT_OL | typeof ELEMENT_UL
+
+export const formatList = (editor: PlateEditor, elementType: TElement) => {
   format(editor, () =>
     toggleList(editor, {
       type: elementType,

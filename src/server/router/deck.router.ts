@@ -25,7 +25,6 @@ export const deckRouter = createProtectedRouter()
       id: z.string(),
     }),
     async resolve({ ctx, input }) {
-      console.log(input.id, typeof input.id)
       const parsedId = parseInt(input.id, 10)
 
       return await ctx.prisma.deck.findUniqueOrThrow({
