@@ -1,3 +1,5 @@
+import { ELEMENT_BLOCKQUOTE } from '@udecode/plate-block-quote'
+import { ELEMENT_CODE_BLOCK } from '@udecode/plate-code-block'
 import { ELEMENT_OL, ELEMENT_UL } from '@udecode/plate-list'
 import clsx from 'clsx'
 import { BiCodeBlock } from 'react-icons/bi'
@@ -34,12 +36,12 @@ const IconsToolbar = () => {
             <BlockIconButton type={ELEMENT_OL}>
               <MdFormatListNumbered className='h-6 w-6' />
             </BlockIconButton>
-            <button className={iconClass}>
+            <BlockIconButton type={ELEMENT_BLOCKQUOTE}>
               <MdFormatQuote className='h-6 w-6' />
-            </button>
-            <button className={iconClass}>
+            </BlockIconButton>
+            <BlockIconButton type={ELEMENT_CODE_BLOCK}>
               <BiCodeBlock className='h-6 w-6' />
-            </button>
+            </BlockIconButton>
             <div className='w-[0.125rem] bg-base-content/30' />
             <button className={iconClass}>
               <MdFormatBold className='h-6 w-6' />

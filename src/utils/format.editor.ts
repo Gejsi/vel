@@ -3,11 +3,16 @@ import { ELEMENT_BLOCKQUOTE } from '@udecode/plate-block-quote'
 import {
   ELEMENT_CODE_BLOCK,
   ELEMENT_CODE_LINE,
+  insertEmptyCodeBlock,
 } from '@udecode/plate-code-block'
 import {
+  ELEMENT_DEFAULT,
+  focusEditor,
   getParentNode,
+  getPluginType,
   isElement,
   isType,
+  toggleNodeType,
   type PlateEditor,
 } from '@udecode/plate-core'
 import {
@@ -46,14 +51,35 @@ export const formatList = (editor: PlateEditor, elementType: TList) => {
   )
 }
 
+export const formatCodeBlock = (editor: PlateEditor) => {
+  format(editor, () =>
+    insertEmptyCodeBlock(editor, {
+      defaultType: getPluginType(editor, ELEMENT_DEFAULT),
+      insertNodesOptions: { select: true },
+    })
+  )
+}
+
+const formatBlockquote = (editor: PlateEditor) => {
+  format(editor, () =>
+    toggleNodeType(editor, {
+      activeType: ELEMENT_BLOCKQUOTE,
+      inactiveType: ELEMENT_DEFAULT,
+    })
+  )
+}
+
 export type TBlock =
   | TList
   | typeof ELEMENT_BLOCKQUOTE
   | typeof ELEMENT_CODE_BLOCK
 
 export const formatBlock = (editor: PlateEditor, elementType: TBlock) => {
-  if (elementType === 'ol' || elementType === 'ul') {
+  if (elementType === ELEMENT_OL || elementType === ELEMENT_UL)
     formatList(editor, elementType)
-  }
-  // TODO: add other blocks formatting
+  else if (elementType === ELEMENT_CODE_BLOCK) formatCodeBlock(editor)
+  else if (elementType === ELEMENT_BLOCKQUOTE) formatBlockquote(editor)
+
+  // Re-focus the editor after inserting the block
+  focusEditor(editor)
 }

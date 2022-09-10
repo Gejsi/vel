@@ -28,8 +28,9 @@
   @apply text-5xl;
 }
 
+/* FIX: remove margin for first paragraph */
 .slate-p {
-  @apply mt-0;
+  @apply mt-4;
 }
 
 .slate-bold {

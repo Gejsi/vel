@@ -15,11 +15,7 @@ import {
   MARK_UNDERLINE,
 } from '@udecode/plate-basic-marks'
 import { ELEMENT_BLOCKQUOTE } from '@udecode/plate-block-quote'
-import {
-  ELEMENT_CODE_BLOCK,
-  insertEmptyCodeBlock,
-} from '@udecode/plate-code-block'
-import { ELEMENT_DEFAULT, getPluginType } from '@udecode/plate-core'
+import { ELEMENT_CODE_BLOCK } from '@udecode/plate-code-block'
 import {
   ELEMENT_H1,
   ELEMENT_H2,
@@ -29,7 +25,7 @@ import {
   ELEMENT_H6,
 } from '@udecode/plate-heading'
 import { ELEMENT_LI, ELEMENT_OL, ELEMENT_UL } from '@udecode/plate-list'
-import { formatList, preFormat } from './format.editor'
+import { formatCodeBlock, formatList, preFormat } from './format.editor'
 
 const autoformatBlocks: AutoformatRule[] = [
   {
@@ -80,12 +76,7 @@ const autoformatBlocks: AutoformatRule[] = [
     match: '```',
     triggerAtBlockStart: false,
     preFormat,
-    format: (editor: any) => {
-      insertEmptyCodeBlock(editor, {
-        defaultType: getPluginType(editor, ELEMENT_DEFAULT),
-        insertNodesOptions: { select: true },
-      })
-    },
+    format: (editor) => formatCodeBlock(editor),
   },
 ]
 
