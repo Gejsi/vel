@@ -113,7 +113,7 @@ const Decks: NextPageWithLayout = () => {
       >
         <Portal>
           <div className='modal modal-open modal-bottom animate-fadeIn md:modal-middle'>
-            <Content className='modal-box z-[101]'>
+            <Content className='modal-box z-[101] animate-fadeUp'>
               <Title className='text-2xl'>Delete this deck</Title>
               <Description>
                 The deck cannot be restored after the removal.
