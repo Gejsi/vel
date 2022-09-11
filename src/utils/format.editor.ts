@@ -1,4 +1,11 @@
 import type { AutoformatBlockRule } from '@udecode/plate-autoformat'
+import {
+  MARK_BOLD,
+  MARK_CODE,
+  MARK_ITALIC,
+  MARK_STRIKETHROUGH,
+  MARK_UNDERLINE,
+} from '@udecode/plate-basic-marks'
 import { ELEMENT_BLOCKQUOTE } from '@udecode/plate-block-quote'
 import {
   ELEMENT_CODE_BLOCK,
@@ -12,6 +19,7 @@ import {
   getPluginType,
   isElement,
   isType,
+  toggleMark,
   toggleNodeType,
   type PlateEditor,
 } from '@udecode/plate-core'
@@ -74,12 +82,24 @@ export type TBlock =
   | typeof ELEMENT_BLOCKQUOTE
   | typeof ELEMENT_CODE_BLOCK
 
-export const formatBlock = (editor: PlateEditor, elementType: TBlock) => {
-  if (elementType === ELEMENT_OL || elementType === ELEMENT_UL)
-    formatList(editor, elementType)
-  else if (elementType === ELEMENT_CODE_BLOCK) formatCodeBlock(editor)
-  else if (elementType === ELEMENT_BLOCKQUOTE) formatBlockquote(editor)
+export const formatBlock = (editor: PlateEditor, blockType: TBlock) => {
+  if (blockType === ELEMENT_OL || blockType === ELEMENT_UL)
+    formatList(editor, blockType)
+  else if (blockType === ELEMENT_CODE_BLOCK) formatCodeBlock(editor)
+  else if (blockType === ELEMENT_BLOCKQUOTE) formatBlockquote(editor)
 
   // Re-focus the editor after inserting the block
+  focusEditor(editor)
+}
+
+export type TMark =
+  | typeof MARK_ITALIC
+  | typeof MARK_BOLD
+  | typeof MARK_UNDERLINE
+  | typeof MARK_STRIKETHROUGH
+  | typeof MARK_CODE
+
+export const formatMark = (editor: PlateEditor, markType: TMark) => {
+  toggleMark(editor, { key: markType })
   focusEditor(editor)
 }

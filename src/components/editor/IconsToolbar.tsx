@@ -1,3 +1,10 @@
+import {
+  MARK_BOLD,
+  MARK_CODE,
+  MARK_ITALIC,
+  MARK_STRIKETHROUGH,
+  MARK_UNDERLINE,
+} from '@udecode/plate-basic-marks'
 import { ELEMENT_BLOCKQUOTE } from '@udecode/plate-block-quote'
 import { ELEMENT_CODE_BLOCK } from '@udecode/plate-code-block'
 import { ELEMENT_OL, ELEMENT_UL } from '@udecode/plate-list'
@@ -17,6 +24,7 @@ import {
 } from 'react-icons/md'
 import { twMerge } from 'tailwind-merge'
 import BlockIconButton from './BlockIconButton'
+import MarkIconButton from './MarkIconButton'
 
 const IconsToolbar = () => {
   // FIX: temp class, will be removed soon
@@ -43,21 +51,21 @@ const IconsToolbar = () => {
               <BiCodeBlock className='h-6 w-6' />
             </BlockIconButton>
             <div className='w-[0.125rem] bg-base-content/30' />
-            <button className={iconClass}>
+            <MarkIconButton type={MARK_BOLD}>
               <MdFormatBold className='h-6 w-6' />
-            </button>
-            <button className={iconClass}>
+            </MarkIconButton>
+            <MarkIconButton type={MARK_ITALIC}>
               <MdFormatItalic className='h-6 w-6' />
-            </button>
-            <button className={iconClass}>
+            </MarkIconButton>
+            <MarkIconButton type={MARK_UNDERLINE}>
               <MdFormatUnderlined className='h-6 w-6' />
-            </button>
-            <button className={iconClass}>
+            </MarkIconButton>
+            <MarkIconButton type={MARK_STRIKETHROUGH}>
               <MdFormatStrikethrough className='h-6 w-6' />
-            </button>
-            <button className={iconClass}>
+            </MarkIconButton>
+            <MarkIconButton type={MARK_CODE}>
               <MdCode className='h-6 w-6' />
-            </button>
+            </MarkIconButton>
           </div>
         </div>
 
