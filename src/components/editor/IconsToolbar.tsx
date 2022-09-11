@@ -25,7 +25,7 @@ import BlockIconButton from './BlockIconButton'
 import MarkIconButton from './MarkIconButton'
 
 const IconsToolbar = () => (
-  <nav className='border-b-solid sticky top-0 z-10 mb-4 border-b-2 border-b-base-content/10 bg-base-100 pt-4'>
+  <nav className='sticky top-0 z-10 -mx-8 mb-4 bg-base-100 px-8 pt-4'>
     <div className='mb-6 flex items-center gap-4'>
       <label tabIndex={0} htmlFor='sidebar' className='btn-icon lg:hidden'>
         <MdMenu className='h-6 w-6' />
@@ -74,6 +74,7 @@ const IconsToolbar = () => (
         <span className='hidden md:block'>Save</span>
       </button>
     </div>
+    <div className='divider m-0 h-fit' />
   </nav>
 )
 
