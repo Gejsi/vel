@@ -10,7 +10,15 @@ import { twMerge } from 'tailwind-merge'
 import { formatBlock, TBlock } from '../../utils/format.editor'
 
 const BlockIconButton = withPlateEventProvider(
-  ({ type, children }: { type: TBlock; children: ReactNode }) => {
+  ({
+    type,
+    title,
+    children,
+  }: {
+    type: TBlock
+    title: string
+    children: ReactNode
+  }) => {
     const id = useEventPlateId()
     const editor = usePlateEditorState(id)
 
@@ -18,10 +26,7 @@ const BlockIconButton = withPlateEventProvider(
       'btn-icon',
       clsx({
         'btn-active':
-          !!editor?.selection &&
-          someNode(editor, {
-            match: { type },
-          }),
+          !!editor?.selection && someNode(editor, { match: { type } }),
       })
     )
 
@@ -29,6 +34,7 @@ const BlockIconButton = withPlateEventProvider(
       <button
         className={iconClass}
         onClick={() => editor && formatBlock(editor, type)}
+        title={title}
       >
         {children}
       </button>

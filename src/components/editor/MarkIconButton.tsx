@@ -10,7 +10,15 @@ import { twMerge } from 'tailwind-merge'
 import { formatMark, TMark } from '../../utils/format.editor'
 
 const MarkIconButton = withPlateEventProvider(
-  ({ type, children }: { type: TMark; children: ReactNode }) => {
+  ({
+    type,
+    title,
+    children,
+  }: {
+    type: TMark
+    title: string
+    children: ReactNode
+  }) => {
     const id = useEventPlateId()
     const editor = usePlateEditorState(id)
 
@@ -25,6 +33,7 @@ const MarkIconButton = withPlateEventProvider(
       <button
         className={iconClass}
         onClick={() => editor && formatMark(editor, type)}
+        title={title}
       >
         {children}
       </button>
