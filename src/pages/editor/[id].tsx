@@ -39,6 +39,9 @@ const EditorPage: NextPageWithLayout = () => {
 
       <Editor id={1} />
       <Editor id={2} />
+      <Editor id={3} />
+      <Editor id={4} />
+      <Editor id={5} />
     </>
   )
 }

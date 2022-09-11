@@ -16,7 +16,6 @@ import {
   ELEMENT_DEFAULT,
   focusEditor,
   getParentNode,
-  getPluginType,
   isElement,
   isType,
   toggleMark,
@@ -62,7 +61,7 @@ export const formatList = (editor: PlateEditor, elementType: TList) => {
 export const formatCodeBlock = (editor: PlateEditor) => {
   format(editor, () =>
     insertEmptyCodeBlock(editor, {
-      defaultType: getPluginType(editor, ELEMENT_DEFAULT),
+      defaultType: ELEMENT_DEFAULT,
       insertNodesOptions: { select: true },
     })
   )

@@ -6,6 +6,7 @@ import {
   ELEMENT_CODE_LINE,
 } from '@udecode/plate-code-block'
 import {
+  ELEMENT_DEFAULT,
   isBlockAboveEmpty,
   isSelectionAtBlockStart,
   type PlatePlugin,
@@ -21,22 +22,18 @@ export const autoformatOptions: Partial<PlatePlugin<AutoformatPlugin>> = {
   },
 }
 
-const resetNodeCommonRules = {
-  //types: [ELEMENT_BLOCKQUOTE, ELEMENT_TODO_LI],
-  types: [ELEMENT_BLOCKQUOTE],
-  defaultType: 'p',
-}
-
 export const resetNodeOptions: Partial<PlatePlugin<ResetNodePlugin>> = {
   options: {
     rules: [
       {
-        ...resetNodeCommonRules,
+        types: [ELEMENT_BLOCKQUOTE],
+        defaultType: ELEMENT_DEFAULT,
         hotkey: 'Enter',
         predicate: isBlockAboveEmpty,
       },
       {
-        ...resetNodeCommonRules,
+        types: [ELEMENT_BLOCKQUOTE],
+        defaultType: ELEMENT_DEFAULT,
         hotkey: 'Backspace',
         predicate: isSelectionAtBlockStart,
       },
