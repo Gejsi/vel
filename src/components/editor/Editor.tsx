@@ -1,9 +1,9 @@
 import { createAutoformatPlugin } from '@udecode/plate-autoformat'
-import { createBasicMarksPlugin } from '@udecode/plate-basic-marks'
+import { createBasicMarksPlugin, MARK_BOLD, MARK_CODE, MARK_ITALIC, MARK_STRIKETHROUGH, MARK_UNDERLINE } from '@udecode/plate-basic-marks'
 import { createBlockquotePlugin } from '@udecode/plate-block-quote'
 import {
   createExitBreakPlugin,
-  createSoftBreakPlugin,
+  createSoftBreakPlugin
 } from '@udecode/plate-break'
 import { createCodeBlockPlugin } from '@udecode/plate-code-block'
 import { createPlugins, Plate, type TEditableProps } from '@udecode/plate-core'
@@ -19,17 +19,22 @@ import {
   exitBreakOptions,
   resetNodeOptions,
   softBreakOptions,
-  trailingBlockOptions,
+  trailingBlockOptions
 } from '../../utils/options.editor'
 import {
   Blockquote,
+  BoldItem,
   CodeBlock,
   CodeLine,
   Heading1,
+  InlineCodeItem,
+  ItalicItem,
   ListItem,
   OrderedList,
   Paragraph,
-  UnorderedList,
+  StrikethroughItem,
+  UnderlineItem,
+  UnorderedList
 } from './Nodes'
 
 const plugins = createPlugins(
@@ -56,6 +61,11 @@ const plugins = createPlugins(
       ul: UnorderedList,
       ol: OrderedList,
       li: ListItem,
+      [MARK_BOLD]: BoldItem,
+      [MARK_ITALIC]: ItalicItem,
+      [MARK_UNDERLINE]: UnderlineItem,
+      [MARK_STRIKETHROUGH]: StrikethroughItem,
+      [MARK_CODE]: InlineCodeItem,
     },
   }
 )

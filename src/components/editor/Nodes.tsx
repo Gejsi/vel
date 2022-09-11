@@ -50,3 +50,33 @@ export const ListItem: FC<PlateRenderElementProps> = (props) => (
     {props.children}
   </li>
 )
+
+export const BoldItem: FC<PlateRenderElementProps> = (props) => (
+  <strong {...props.attributes} className={props.className}>
+    {props.children}
+  </strong>
+)
+
+export const ItalicItem: FC<PlateRenderElementProps> = (props) => (
+  <em {...props.attributes} className={props.className}>
+    {props.children}
+  </em>
+)
+
+export const UnderlineItem: FC<PlateRenderElementProps> = (props) => (
+  <u {...props.attributes} className={props.className}>
+    {props.children}
+  </u>
+)
+
+export const StrikethroughItem: FC<PlateRenderElementProps> = (props) => (
+  <del {...props.attributes} className={props.className}>
+    {props.children}
+  </del>
+)
+
+export const InlineCodeItem: FC<PlateRenderElementProps> = (props) => (
+  <code {...props.attributes} className={props.className}>
+    {props.children}
+  </code>
+)

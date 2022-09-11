@@ -24,6 +24,7 @@
   }
 }
 
+/* ------------BLOCKS------------ */
 div[data-slate-editor='true'] {
   @apply p-4;
   min-height: 8rem !important; /* !important overrides conflicting inline style */
@@ -39,26 +40,6 @@ div[data-slate-editor='true'] {
 
 .slate-p {
   @apply mt-4;
-}
-
-.slate-bold {
-  @apply font-medium;
-}
-
-.slate-italic {
-  @apply italic;
-}
-
-.slate-underline {
-  @apply underline;
-}
-
-.slate-strikethrough {
-  @apply line-through;
-}
-
-.slate-code {
-  @apply rounded bg-base-content/10 p-1 font-mono text-sm text-red-400;
 }
 
 .slate-blockquote {
@@ -88,4 +69,13 @@ div[data-slate-editor='true'] {
 
 .slate-ol {
   @apply list-decimal;
+}
+
+/* ------------MARKS------------ */
+.slate-bold {
+  @apply font-medium;
+}
+
+.slate-code {
+  @apply rounded bg-base-content/10 p-1 font-mono text-sm text-red-400;
 }
