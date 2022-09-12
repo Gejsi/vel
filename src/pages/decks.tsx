@@ -88,7 +88,7 @@ const Decks: NextPageWithLayout = () => {
       {queryLoading ? (
         <Spinner />
       ) : (
-        <section className='grid grid-cols-[repeat(auto-fill,_minmax(280px,_1fr))] gap-4 py-4'>
+        <section className='grid grid-cols-[repeat(auto-fill,_minmax(18rem,_1fr))] gap-4 py-4'>
           {decks?.map((deck) => (
             <Card
               key={deck.id}

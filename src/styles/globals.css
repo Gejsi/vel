@@ -63,6 +63,11 @@ div[data-slate-editor='true'] {
   @apply mt-4;
 }
 
+.slate-p::before {
+  content: 'Type something...';
+  @apply pointer-events-none absolute opacity-30;
+}
+
 .slate-blockquote {
   @apply my-4 border-l-4 border-l-base-content bg-base-content/10 py-2 pl-4 font-medium italic;
 }

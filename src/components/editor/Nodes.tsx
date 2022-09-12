@@ -1,5 +1,8 @@
 import type { PlateRenderElementProps } from '@udecode/plate-core'
+import clsx from 'clsx'
 import type { FC } from 'react'
+import { twMerge } from 'tailwind-merge'
+import usePlaceholder from '../../hooks/use-placeholder'
 
 export const Heading1: FC<PlateRenderElementProps> = (props) => (
   <h1 {...props.attributes} className={props.className}>
@@ -8,8 +11,19 @@ export const Heading1: FC<PlateRenderElementProps> = (props) => (
 )
 
 export const Paragraph: FC<PlateRenderElementProps> = (props) => {
+  const isPlaceholderVisible = usePlaceholder({
+    element: props.element,
+    hideOnBlur: false,
+  })
+
   return (
-    <p {...props.attributes} className={props.className}>
+    <p
+      {...props.attributes}
+      className={twMerge(
+        props.className,
+        clsx({ 'before:content-none': !isPlaceholderVisible })
+      )}
+    >
       {props.children}
     </p>
   )
