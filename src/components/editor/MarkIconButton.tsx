@@ -4,7 +4,7 @@ import {
   usePlateEditorState,
   withPlateEventProvider,
 } from '@udecode/plate-core'
-import clsx from 'clsx'
+import { clsx } from 'clsx'
 import type { ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { formatMark, TMark } from '../../utils/format.editor'

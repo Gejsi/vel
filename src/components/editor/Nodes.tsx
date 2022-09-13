@@ -1,5 +1,5 @@
 import type { PlateRenderElementProps } from '@udecode/plate-core'
-import clsx from 'clsx'
+import { clsx } from 'clsx'
 import type { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
 import usePlaceholder from '../../hooks/use-placeholder'

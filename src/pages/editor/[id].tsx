@@ -1,8 +1,11 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { MdAdd } from 'react-icons/md'
 import Editor from '../../components/editor/Editor'
 import IconsToolbar from '../../components/editor/IconsToolbar'
+import EmptyFigure from '../../components/EmptyFigure'
 import Error from '../../components/Error'
+import Spinner from '../../components/Spinner'
 import { useQuery } from '../../utils/trpc'
 import type { NextPageWithLayout } from '../_app'
 
@@ -33,18 +36,33 @@ const EditorPage: NextPageWithLayout = () => {
 
       <IconsToolbar />
 
-      {/* {isLoading ? <Spinner /> : <span>Editing deck #{id}</span>} */}
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <>
+          <h1 className='mb-4 text-5xl font-bold'>{deck?.title}</h1>
 
-      <h1 className='mb-4 text-5xl font-bold'>{deck?.title}</h1>
+          {deck?.cards.map((card, i) => (
+            <Editor key={i} id={i + 1} />
+          ))}
 
-      <Editor id={1} />
-      <Editor id={2} />
-      <Editor id={3} />
-      <Editor id={4} />
-      <Editor id={5} />
-      <Editor id={6} />
-      <Editor id={7} />
-      <Editor id={8} />
+          {deck?.cards.length === 0 && (
+            <>
+              <EmptyFigure
+                secondary
+                caption='This deck is currently empty. Create some flashcards!'
+              />
+
+              <div className='flex justify-center'>
+                <button className='btn w-full tracking-wide md:w-3/6'>
+                  <MdAdd className='mr-2 h-6 w-6' />
+                  Add Flashcard
+                </button>
+              </div>
+            </>
+          )}
+        </>
+      )}
     </>
   )
 }

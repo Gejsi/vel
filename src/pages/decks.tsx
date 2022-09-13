@@ -13,6 +13,7 @@ import { useMemo, useState } from 'react'
 import { MdPostAdd } from 'react-icons/md'
 import { twMerge } from 'tailwind-merge'
 import Card from '../components/Card'
+import EmptyFigure from '../components/EmptyFigure'
 import Spinner from '../components/Spinner'
 import Toolbar from '../components/Toolbar'
 import { useContext, useMutation, useQuery } from '../utils/trpc'
@@ -87,6 +88,8 @@ const Decks: NextPageWithLayout = () => {
 
       {queryLoading ? (
         <Spinner />
+      ) : decks?.length === 0 ? (
+        <EmptyFigure caption='This place is a desert. Create a deck!' />
       ) : (
         <section className='grid grid-cols-[repeat(auto-fill,_minmax(18rem,_1fr))] gap-4 py-4'>
           {decks?.map((deck) => (
