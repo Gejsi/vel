@@ -36,33 +36,35 @@ const EditorPage: NextPageWithLayout = () => {
 
       <IconsToolbar />
 
-      {isLoading ? (
-        <Spinner />
-      ) : (
-        <>
-          <h1 className='mb-4 text-5xl font-bold'>{deck?.title}</h1>
+      <div className='px-4 lg:px-8'>
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          <>
+            <h1 className='mb-4 text-5xl font-bold'>{deck?.title}</h1>
 
-          {deck?.cards.map((card, i) => (
-            <Editor key={i} id={i + 1} />
-          ))}
+            {deck?.cards.map((card, i) => (
+              <Editor key={i} id={i + 1} />
+            ))}
 
-          {deck?.cards.length === 0 && (
-            <>
-              <EmptyFigure
-                secondary
-                caption='This deck is currently empty. Create some flashcards!'
-              />
+            {deck?.cards.length === 0 && (
+              <>
+                <EmptyFigure
+                  secondary
+                  caption='This deck is empty. Create some flashcards!'
+                />
 
-              <div className='flex justify-center'>
-                <button className='btn w-full tracking-wide md:w-3/6'>
-                  <MdAdd className='mr-2 h-6 w-6' />
-                  Add Flashcard
-                </button>
-              </div>
-            </>
-          )}
-        </>
-      )}
+                <div className='flex justify-center'>
+                  <button className='btn w-full tracking-wide md:w-3/6'>
+                    <MdAdd className='mr-2 h-6 w-6' />
+                    Add Flashcard
+                  </button>
+                </div>
+              </>
+            )}
+          </>
+        )}
+      </div>
     </>
   )
 }

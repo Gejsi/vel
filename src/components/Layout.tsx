@@ -6,10 +6,9 @@ const Layout = ({ children }: { children: ReactNode }) => {
   const { data: session } = useSession({ required: true })
 
   return (
-    <div className='drawer drawer-mobile min-h-screen'>
+    <div className='drawer-mobile drawer min-h-screen'>
       <input id='sidebar' type='checkbox' className='drawer-toggle' />
-      {/* pt-0 added because Toolbar has pt-4 */}
-      <main className='drawer-content px-4 pb-8 lg:px-10'>{children}</main>
+      <main className='drawer-content pb-8'>{children}</main>
       <Sidebar session={session} />
     </div>
   )

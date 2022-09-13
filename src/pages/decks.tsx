@@ -80,32 +80,34 @@ const Decks: NextPageWithLayout = () => {
         </button>
       </Toolbar>
 
-      <p className='prose max-w-full'>
-        Click <kbd className='kbd mx-1'>+ Create Deck</kbd> to add a new set of
-        flashcards. <br />
-        Edit your decks or simply start studying through your cards.
-      </p>
+      <div className='px-4 lg:px-8'>
+        <p className='prose max-w-full'>
+          Click <kbd className='kbd mx-1'>+ Create Deck</kbd> to add a new set
+          of flashcards. <br />
+          Edit your decks or simply start studying through your cards.
+        </p>
 
-      {queryLoading ? (
-        <Spinner />
-      ) : decks?.length === 0 ? (
-        <EmptyFigure caption='This place is a desert. Create a deck!' />
-      ) : (
-        <section className='grid grid-cols-[repeat(auto-fill,_minmax(18rem,_1fr))] gap-4 py-4'>
-          {decks?.map((deck) => (
-            <Card
-              key={deck.id}
-              title={deck.title}
-              amount={deck.cards.length}
-              createdAt={deck.createdAt}
-              updatedAt={deck.updatedAt}
-              onDelete={() => setDeckId((prev) => (prev = deck.id))}
-              onStudy={() => console.log('study')}
-              onEdit={() => router.push(`/editor/${deck.id}`)}
-            />
-          ))}
-        </section>
-      )}
+        {queryLoading ? (
+          <Spinner />
+        ) : decks?.length === 0 ? (
+          <EmptyFigure caption='This place is a desert. Create a deck!' />
+        ) : (
+          <section className='grid grid-cols-[repeat(auto-fill,_minmax(18rem,_1fr))] gap-4 py-4'>
+            {decks?.map((deck) => (
+              <Card
+                key={deck.id}
+                title={deck.title}
+                amount={deck.cards.length}
+                createdAt={deck.createdAt}
+                updatedAt={deck.updatedAt}
+                onDelete={() => setDeckId((prev) => (prev = deck.id))}
+                onStudy={() => console.log('study')}
+                onEdit={() => router.push(`/editor/${deck.id}`)}
+              />
+            ))}
+          </section>
+        )}
+      </div>
 
       {/* Modal for deleting a deck, it will probably be refactored into a component in the future */}
       <Root
