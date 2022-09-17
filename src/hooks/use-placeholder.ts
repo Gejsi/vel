@@ -24,7 +24,7 @@ const usePlaceholder = ({
     () =>
       isEmptyBlock &&
       (!hideOnBlur || (isCollapsed(editor.selection) && focused && selected)),
-    [isEmptyBlock, focused, selected]
+    [isEmptyBlock, focused, selected, editor.selection, hideOnBlur]
   )
 }
 

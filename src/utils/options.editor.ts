@@ -11,6 +11,8 @@ import {
   isSelectionAtBlockStart,
   type PlatePlugin,
 } from '@udecode/plate-core'
+import { KEYS_HEADING } from '@udecode/plate-heading'
+import { ELEMENT_PARAGRAPH } from '@udecode/plate-paragraph'
 import type { ResetNodePlugin } from '@udecode/plate-reset-node'
 import type { TrailingBlockPlugin } from '@udecode/plate-trailing-block'
 import { autoformatRules } from './autoformat.editor'
@@ -56,7 +58,7 @@ export const exitBreakOptions: Partial<PlatePlugin<ExitBreakPlugin>> = {
         query: {
           start: true,
           end: true,
-          allow: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
+          allow: KEYS_HEADING,
         },
       },
     ],
@@ -64,7 +66,7 @@ export const exitBreakOptions: Partial<PlatePlugin<ExitBreakPlugin>> = {
 }
 
 export const trailingBlockOptions: Partial<PlatePlugin<TrailingBlockPlugin>> = {
-  options: { type: 'p' },
+  options: { type: ELEMENT_PARAGRAPH },
 }
 
 export const softBreakOptions: Partial<PlatePlugin<SoftBreakPlugin>> = {

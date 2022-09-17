@@ -1,9 +1,8 @@
+import type { Value } from '@udecode/plate-core'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { MdAdd } from 'react-icons/md'
 import Editor from '../../components/editor/Editor'
 import IconsToolbar from '../../components/editor/IconsToolbar'
-import EmptyFigure from '../../components/EmptyFigure'
 import Error from '../../components/Error'
 import Spinner from '../../components/Spinner'
 import { useQuery } from '../../utils/trpc'
@@ -14,19 +13,23 @@ const EditorPage: NextPageWithLayout = () => {
   const {
     data: deck,
     isLoading,
-    error,
+    error: queryError,
   } = useQuery(['deck.getById', { id: id as string }], {
     retry: false,
     refetchOnWindowFocus: false,
   })
 
-  if (error)
+  if (queryError)
     return (
       <Error
         title="This deck doesn't exist"
-        statusCode={error.data?.httpStatus}
+        statusCode={queryError.data?.httpStatus}
       />
     )
+
+  const handleChange = (question: Value, answer: Value) => {
+    console.log(question, answer)
+  }
 
   return (
     <>
@@ -43,11 +46,11 @@ const EditorPage: NextPageWithLayout = () => {
           <>
             <h1 className='mb-4 text-5xl font-bold'>{deck?.title}</h1>
 
-            {deck?.cards.map((card, i) => (
+            {/* {deck?.cards.map((card, i) => (
               <Editor key={i} id={i + 1} />
-            ))}
+            ))} */}
 
-            {deck?.cards.length === 0 && (
+            {/* {deck?.cards.length === 0 && (
               <>
                 <EmptyFigure
                   secondary
@@ -55,13 +58,19 @@ const EditorPage: NextPageWithLayout = () => {
                 />
 
                 <div className='flex justify-center'>
-                  <button className='btn w-full tracking-wide md:w-3/6'>
+                  <button
+                    className='btn w-full tracking-wide md:w-3/6'
+                    onClick={() => addCard}
+                  >
                     <MdAdd className='mr-2 h-6 w-6' />
                     Add Flashcard
                   </button>
                 </div>
               </>
-            )}
+            )} */}
+
+            <Editor id={1} onChange={handleChange} />
+            <Editor id={2} />
           </>
         )}
       </div>

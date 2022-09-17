@@ -13,13 +13,18 @@ import {
   createSoftBreakPlugin,
 } from '@udecode/plate-break'
 import { createCodeBlockPlugin } from '@udecode/plate-code-block'
-import { createPlugins, Plate, type TEditableProps } from '@udecode/plate-core'
+import {
+  createPlugins,
+  Plate,
+  type TEditableProps,
+  type Value,
+} from '@udecode/plate-core'
 import { createHeadingPlugin } from '@udecode/plate-heading'
 import { createListPlugin } from '@udecode/plate-list'
 import { createParagraphPlugin } from '@udecode/plate-paragraph'
 import { createResetNodePlugin } from '@udecode/plate-reset-node'
 import { createTrailingBlockPlugin } from '@udecode/plate-trailing-block'
-import type { FC } from 'react'
+import { useCallback, useState, type FC } from 'react'
 import { MdDelete } from 'react-icons/md'
 import {
   autoformatOptions,
@@ -88,26 +93,68 @@ const AAttributes: TEditableProps = {
 }
 
 type EditorProps = {
-  // this id isn't the flashcard database id, but rather a simple
-  // autoincremented client-side id (i.d. `map`'s second argument)
+  /**
+   *  NOT the flashcard database id, but rather a simple
+   *  autoincremented client-side index (i.d. `map`'s second argument)
+   */
   id: number
+  onChange?: ((questionValue: Value, answerValue: Value) => void) | null
 }
 
-const Editor: FC<EditorProps> = ({ id }) => (
-  <>
-    <div className='mt-6 flex items-center justify-center'>
-      <div className='flex items-center gap-4 rounded-t-xl bg-base-300/80 p-1'>
-        <h2 className='pl-4 font-bold uppercase'>Card &#x2022; {id}</h2>
-        <button className='btn-icon'>
-          <MdDelete className='h-6 w-6' />
-        </button>
+const Editor: FC<EditorProps> = ({ id, onChange }) => {
+  const [question, setQuestion] = useState<Value>([
+    { type: 'p', children: [{ text: '' }] },
+  ])
+  const [answer, setAnswer] = useState<Value>([
+    { type: 'p', children: [{ text: '' }] },
+  ])
+
+  const handleQuestion = useCallback(
+    (value: Value) => {
+      if (value !== question) {
+        onChange?.(value, answer)
+        setQuestion(value)
+      }
+    },
+    [question, answer, onChange]
+  )
+
+  const handleAnswer = useCallback(
+    (value: Value) => {
+      if (value !== answer) {
+        onChange?.(question, value)
+        setAnswer(value)
+      }
+    },
+    [question, answer, onChange]
+  )
+
+  return (
+    <>
+      <div className='mt-6 flex items-center justify-center'>
+        <div className='flex items-center gap-4 rounded-t-xl bg-base-300/80 p-1'>
+          <h2 className='pl-4 font-bold uppercase'>Card &#x2022; {id}</h2>
+          <button className='btn-icon'>
+            <MdDelete className='h-6 w-6' />
+          </button>
+        </div>
       </div>
-    </div>
-    <div className='grid min-w-fit grid-cols-[repeat(auto-fit,_minmax(18rem,_1fr))] rounded-xl bg-base-300 shadow-lg'>
-      <Plate id={`qe-${id}`} editableProps={QAttributes} plugins={plugins} />
-      <Plate id={`ae-${id}`} editableProps={AAttributes} plugins={plugins} />
-    </div>
-  </>
-)
+      <div className='grid min-w-fit grid-cols-[repeat(auto-fit,_minmax(18rem,_1fr))] rounded-xl bg-base-300 shadow-lg'>
+        <Plate
+          id={`qe-${id}`}
+          editableProps={QAttributes}
+          plugins={plugins}
+          onChange={handleQuestion}
+        />
+        <Plate
+          id={`ae-${id}`}
+          editableProps={AAttributes}
+          plugins={plugins}
+          onChange={handleAnswer}
+        />
+      </div>
+    </>
+  )
+}
 
 export default Editor

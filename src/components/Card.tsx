@@ -29,7 +29,7 @@ const Card = ({
           <MdDelete className='h-6 w-6' />
         </button>
       </div>
-      <div className='stats stats-horizontal shadow md:stats-vertical'>
+      <div className='stats my-4 shadow'>
         <div className='stat py-3 px-5'>
           <div className='stat-desc'>Cards</div>
           <div className='stat-title opacity-100'>{amount}</div>
@@ -48,7 +48,7 @@ const Card = ({
         </div>
       </div>
 
-      <div className='card-actions mt-2 justify-center'>
+      <div className='card-actions justify-center'>
         <div className='btn-group' role='group'>
           <button className='btn' onClick={onStudy}>
             <MdDeviceHub className='mr-1 h-6 w-6' />
