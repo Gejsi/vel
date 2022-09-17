@@ -15,6 +15,7 @@
       "error",
       { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }
     ],
-    "no-empty": "warn"
+    "no-empty": "warn",
+    "@typescript-eslint/no-explicit-any": "off"
   }
 }

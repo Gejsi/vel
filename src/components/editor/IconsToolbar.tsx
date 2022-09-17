@@ -8,6 +8,7 @@ import {
 import { ELEMENT_BLOCKQUOTE } from '@udecode/plate-block-quote'
 import { ELEMENT_CODE_BLOCK } from '@udecode/plate-code-block'
 import { ELEMENT_OL, ELEMENT_UL } from '@udecode/plate-list'
+import type { MouseEventHandler } from 'react'
 import { BiCodeBlock } from 'react-icons/bi'
 import {
   MdCode,
@@ -24,7 +25,11 @@ import {
 import BlockIconButton from './BlockIconButton'
 import MarkIconButton from './MarkIconButton'
 
-const IconsToolbar = () => (
+const IconsToolbar = ({
+  onSave,
+}: {
+  onSave?: MouseEventHandler<HTMLButtonElement>
+}) => (
   <nav className='sticky top-0 z-10 mb-4 bg-base-100 px-4 pt-4 lg:px-8'>
     <div className='mb-6 flex items-center gap-4'>
       <label tabIndex={0} htmlFor='sidebar' className='btn-icon lg:hidden'>
@@ -69,7 +74,7 @@ const IconsToolbar = () => (
         </div>
       </div>
 
-      <button className='btn btn-primary gap-2'>
+      <button className='btn btn-primary gap-2' onClick={onSave}>
         <MdSave className='h-6 w-6' />
         <span className='hidden md:block'>Save</span>
       </button>

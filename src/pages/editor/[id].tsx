@@ -5,6 +5,7 @@ import Editor from '../../components/editor/Editor'
 import IconsToolbar from '../../components/editor/IconsToolbar'
 import Error from '../../components/Error'
 import Spinner from '../../components/Spinner'
+import useDebouncedCallback from '../../hooks/use-debounced-callback'
 import { useQuery } from '../../utils/trpc'
 import type { NextPageWithLayout } from '../_app'
 
@@ -19,6 +20,13 @@ const EditorPage: NextPageWithLayout = () => {
     refetchOnWindowFocus: false,
   })
 
+  const handleChange = useDebouncedCallback(
+    (question: Value, answer: Value, editorIndex: number) => {
+      console.log(question, answer, editorIndex)
+    },
+    1000
+  )
+
   if (queryError)
     return (
       <Error
@@ -26,10 +34,6 @@ const EditorPage: NextPageWithLayout = () => {
         statusCode={queryError.data?.httpStatus}
       />
     )
-
-  const handleChange = (question: Value, answer: Value) => {
-    console.log(question, answer)
-  }
 
   return (
     <>
@@ -70,7 +74,7 @@ const EditorPage: NextPageWithLayout = () => {
             )} */}
 
             <Editor id={1} onChange={handleChange} />
-            <Editor id={2} />
+            <Editor id={2} onChange={handleChange} />
           </>
         )}
       </div>

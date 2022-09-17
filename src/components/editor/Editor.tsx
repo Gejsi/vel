@@ -24,7 +24,7 @@ import { createListPlugin } from '@udecode/plate-list'
 import { createParagraphPlugin } from '@udecode/plate-paragraph'
 import { createResetNodePlugin } from '@udecode/plate-reset-node'
 import { createTrailingBlockPlugin } from '@udecode/plate-trailing-block'
-import { useCallback, useState, type FC } from 'react'
+import { useCallback, useState } from 'react'
 import { MdDelete } from 'react-icons/md'
 import {
   autoformatOptions,
@@ -98,10 +98,12 @@ type EditorProps = {
    *  autoincremented client-side index (i.d. `map`'s second argument)
    */
   id: number
-  onChange?: ((questionValue: Value, answerValue: Value) => void) | null
+  onChange?:
+    | ((questionValue: Value, answerValue: Value, id: number) => void)
+    | null
 }
 
-const Editor: FC<EditorProps> = ({ id, onChange }) => {
+const Editor = ({ id, onChange }: EditorProps) => {
   const [question, setQuestion] = useState<Value>([
     { type: 'p', children: [{ text: '' }] },
   ])
@@ -112,21 +114,21 @@ const Editor: FC<EditorProps> = ({ id, onChange }) => {
   const handleQuestion = useCallback(
     (value: Value) => {
       if (value !== question) {
-        onChange?.(value, answer)
+        onChange?.(value, answer, id)
         setQuestion(value)
       }
     },
-    [question, answer, onChange]
+    [question, answer, onChange, id]
   )
 
   const handleAnswer = useCallback(
     (value: Value) => {
       if (value !== answer) {
-        onChange?.(question, value)
+        onChange?.(question, value, id)
         setAnswer(value)
       }
     },
-    [question, answer, onChange]
+    [question, answer, onChange, id]
   )
 
   return (
