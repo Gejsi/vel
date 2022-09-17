@@ -24,7 +24,7 @@ const Navbar = () => {
             <div className='dropdown-end dropdown'>
               <label tabIndex={0} className='avatar btn btn-ghost btn-circle'>
                 <div className='w-10 rounded-full'>
-                  <img src={session.user?.image!} />
+                  <img src={session.user?.image || undefined} alt='Avatar' />
                 </div>
               </label>
               <ul className='dropdown-content menu rounded-box menu-compact mt-2 space-y-2 border-2 border-solid border-primary p-2'>

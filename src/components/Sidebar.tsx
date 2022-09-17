@@ -22,7 +22,11 @@ const Sidenav = ({ session }: { session: Session | null }) => (
       <li className='flex-1'>
         <Link href='/me'>
           <a>
-            <img className='w-7 rounded-full' src={session?.user?.image!} />
+            <img
+              className='w-7 rounded-full'
+              src={session?.user?.image || undefined}
+              alt='Avatar'
+            />
             <p className='max-w-[10ch] truncate'>{session?.user?.name}</p>
           </a>
         </Link>

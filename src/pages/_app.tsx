@@ -24,6 +24,7 @@ export type NextPageWithLayout = NextPage & {
 
 type PageProps = {
   session?: Maybe<Session>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [x: string]: any
 }
 

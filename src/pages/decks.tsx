@@ -36,31 +36,30 @@ const Decks: NextPageWithLayout = () => {
     }
   )
 
-  const { mutate: deleteDeck, isLoading: isDeleting } = useMutation(
-    'deck.delete',
-    {
-      async onMutate(deletedDeck) {
-        // cancel any outgoing refetches (so they don't overwrite the optimistic update)
-        await utils.cancelQuery(['deck.getAll'])
-        // save the previous value
-        const prevData = utils.getQueryData(['deck.getAll'])
-        // optimistically remove a deck by filtering old decks
-        utils.setQueryData(['deck.getAll'], (oldDecks) =>
-          oldDecks!.filter((deck) => deck.id !== deletedDeck.id)
-        )
-        // return a context object with the snapshotted value `prevData`
-        return { prevData }
-      },
-      // if the mutation fails, use the context to roll back
-      onError(err, deletedDeck, context) {
-        utils.setQueryData(['deck.getAll'], context?.prevData!)
-      },
-      // refetch after error or success
-      onSettled() {
-        utils.invalidateQueries(['deck.getAll'])
-      },
-    }
-  )
+  const { mutate: deleteDeck } = useMutation('deck.delete', {
+    async onMutate(deletedDeck) {
+      // cancel any outgoing refetches (so they don't overwrite the optimistic update)
+      await utils.cancelQuery(['deck.getAll'])
+      // save the previous value
+      const prevData = utils.getQueryData(['deck.getAll'])
+      // optimistically remove a deck by filtering old decks
+      utils.setQueryData(['deck.getAll'], (oldDecks) =>
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        oldDecks!.filter((deck) => deck.id !== deletedDeck.id)
+      )
+      // return a context object with the snapshotted value `prevData`
+      return { prevData }
+    },
+    // if the mutation fails, use the context to roll back
+    onError(err, deletedDeck, context) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      context && utils.setQueryData(['deck.getAll'], context.prevData!)
+    },
+    // refetch after error or success
+    onSettled() {
+      utils.invalidateQueries(['deck.getAll'])
+    },
+  })
 
   const btnClass = useMemo(
     () => twMerge('btn btn-primary gap-2', clsx({ loading: isCreating })),
@@ -100,7 +99,9 @@ const Decks: NextPageWithLayout = () => {
                 amount={deck.cards.length}
                 createdAt={deck.createdAt}
                 updatedAt={deck.updatedAt}
-                onDelete={() => setDeckId((prev) => (prev = deck.id))}
+                onDelete={() =>
+                  setDeckId((prev) => (prev !== deck.id ? deck.id : prev))
+                }
                 onStudy={() => console.log('study')}
                 onEdit={() => router.push(`/editor/${deck.id}`)}
               />

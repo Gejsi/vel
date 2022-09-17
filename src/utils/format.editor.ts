@@ -32,7 +32,7 @@ import {
 export const preFormat: AutoformatBlockRule['preFormat'] = (editor) =>
   unwrapList(editor)
 
-export const format = (editor: PlateEditor, customFormatting: any) => {
+export const format = (editor: PlateEditor, customFormatting: () => void) => {
   if (editor.selection) {
     const parentEntry = getParentNode(editor, editor.selection)
     if (!parentEntry) return
