@@ -47,6 +47,7 @@ const Decks: NextPageWithLayout = () => {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         oldDecks!.filter((deck) => deck.id !== deletedDeck.id)
       )
+
       // return a context object with the snapshotted value `prevData`
       return { prevData }
     },
@@ -113,9 +114,7 @@ const Decks: NextPageWithLayout = () => {
       {/* Modal for deleting a deck, it will probably be refactored into a component in the future */}
       <Root
         open={deckId >= 0 ? true : false}
-        onOpenChange={() =>
-          setDeckId((prev) => (prev >= 0 ? (prev = -1) : prev))
-        }
+        onOpenChange={() => setDeckId((prev) => (prev >= 0 ? -1 : prev))}
       >
         <Portal>
           <div className='modal modal-open modal-bottom animate-fadeIn md:modal-middle'>

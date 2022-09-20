@@ -134,10 +134,12 @@ const Editor = ({ id, onChange }: EditorProps) => {
   return (
     <>
       <div className='mt-6 flex items-center justify-center'>
-        <div className='flex items-center gap-4 rounded-t-xl bg-base-300/80 p-1'>
-          <h2 className='pl-4 font-bold uppercase'>Card &#x2022; {id}</h2>
+        <div className='flex items-center gap-4 rounded-t-xl bg-base-300/80 px-2 py-1'>
+          <h2 className='pl-4 text-sm font-bold uppercase'>
+            Card &#x2022; {id}
+          </h2>
           <button className='btn-icon'>
-            <MdDelete className='h-6 w-6' />
+            <MdDelete className='h-5 w-5' />
           </button>
         </div>
       </div>
