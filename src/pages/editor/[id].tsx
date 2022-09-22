@@ -6,7 +6,8 @@ import IconsToolbar from '../../components/editor/IconsToolbar'
 import Error from '../../components/Error'
 import Spinner from '../../components/Spinner'
 import useDebouncedCallback from '../../hooks/use-debounced-callback'
-import { useQuery } from '../../utils/trpc'
+import type { JsonValue } from '../../types/json'
+import { useMutation, useQuery } from '../../utils/trpc'
 import type { NextPageWithLayout } from '../_app'
 
 const EditorPage: NextPageWithLayout = () => {
@@ -20,11 +21,25 @@ const EditorPage: NextPageWithLayout = () => {
     refetchOnWindowFocus: false,
   })
 
-  const handleChange = useDebouncedCallback(
-    (question: Value, answer: Value, editorIndex: number) => {
-      console.log(question, answer, editorIndex)
+  const { mutate: saveCard, isLoading: isSaving } = useMutation(['card.save'], {
+    onSuccess() {
+      console.log('successfully saved to db')
     },
-    1000
+    onError() {
+      console.log('error while saving to db')
+    },
+  })
+
+  const handleChange = useDebouncedCallback(
+    (question: Value, answer: Value, cardId: number) => {
+      saveCard({
+        question: question as JsonValue,
+        answer: answer as JsonValue,
+        cardId,
+        deckId: parseInt(id as string, 10),
+      })
+    },
+    600
   )
 
   if (queryError)
@@ -41,7 +56,9 @@ const EditorPage: NextPageWithLayout = () => {
         <title>Vel &#x2022; {deck?.title}</title>
       </Head>
 
-      <IconsToolbar />
+      <IconsToolbar>
+        <button className='btn loading btn-ghost p-0'>Saving</button>
+      </IconsToolbar>
 
       <div className='px-4 lg:px-8'>
         {isLoading ? (
@@ -73,8 +90,8 @@ const EditorPage: NextPageWithLayout = () => {
               </>
             )} */}
 
-            <Editor id={1} onChange={handleChange} />
-            <Editor id={2} onChange={handleChange} />
+            <Editor count={1} onChange={handleChange} id={40} />
+            <Editor count={2} onChange={handleChange} id={50} />
           </>
         )}
       </div>

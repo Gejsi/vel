@@ -94,16 +94,22 @@ const AAttributes: TEditableProps = {
 
 type EditorProps = {
   /**
-   *  NOT the flashcard database id, but rather a simple
-   *  autoincremented client-side index (i.d. `map`'s second argument)
+   * Flashcard database id
    */
   id: number
+  /**
+   *  Autoincremented client-side index (i.d. `map`'s second argument)
+   */
+  count: number
+  /**
+   * Event handler that returns changes from both editors
+   */
   onChange?:
     | ((questionValue: Value, answerValue: Value, id: number) => void)
     | null
 }
 
-const Editor = ({ id, onChange }: EditorProps) => {
+const Editor = ({ id, count, onChange }: EditorProps) => {
   const [question, setQuestion] = useState<Value>([
     { type: 'p', children: [{ text: '' }] },
   ])
@@ -136,7 +142,7 @@ const Editor = ({ id, onChange }: EditorProps) => {
       <div className='mt-6 flex items-center justify-center'>
         <div className='flex items-center gap-4 rounded-t-xl bg-base-300/80 px-2 py-1'>
           <h2 className='pl-4 text-sm font-bold uppercase'>
-            Card &#x2022; {id}
+            Card &#x2022; {count}
           </h2>
           <button className='btn-icon'>
             <MdDelete className='h-5 w-5' />
@@ -145,16 +151,18 @@ const Editor = ({ id, onChange }: EditorProps) => {
       </div>
       <div className='grid min-w-fit grid-cols-[repeat(auto-fit,_minmax(18rem,_1fr))] rounded-xl bg-base-300 shadow-lg'>
         <Plate
-          id={`qe-${id}`}
+          id={`qe-${count}`}
           editableProps={QAttributes}
           plugins={plugins}
           onChange={handleQuestion}
+          initialValue={question}
         />
         <Plate
-          id={`ae-${id}`}
+          id={`ae-${count}`}
           editableProps={AAttributes}
           plugins={plugins}
           onChange={handleAnswer}
+          initialValue={answer}
         />
       </div>
     </>

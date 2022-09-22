@@ -66,11 +66,11 @@ model Deck {
 }
 
 model Card {
-  id       Int    @id @default(autoincrement())
-  question String
-  answer   String
+  id       Int  @id @default(autoincrement())
+  question Json
+  answer   Json
   deckId   Int
-  deck     Deck   @relation(fields: [deckId], references: [id], onDelete: Cascade)
+  deck     Deck @relation(fields: [deckId], references: [id], onDelete: Cascade)
 
   // https://www.prisma.io/docs/guides/database/using-prisma-with-planetscale#how-to-create-indexes-on-foreign-keys
   @@index([deckId])
