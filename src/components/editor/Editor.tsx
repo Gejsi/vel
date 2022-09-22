@@ -107,15 +107,19 @@ type EditorProps = {
   onChange?:
     | ((questionValue: Value, answerValue: Value, id: number) => void)
     | null
+  initialQuestion: Value
+  initialAnswer: Value
 }
 
-const Editor = ({ id, count, onChange }: EditorProps) => {
-  const [question, setQuestion] = useState<Value>([
-    { type: 'p', children: [{ text: '' }] },
-  ])
-  const [answer, setAnswer] = useState<Value>([
-    { type: 'p', children: [{ text: '' }] },
-  ])
+const Editor = ({
+  id,
+  count,
+  onChange,
+  initialQuestion,
+  initialAnswer,
+}: EditorProps) => {
+  const [question, setQuestion] = useState<Value>(initialQuestion)
+  const [answer, setAnswer] = useState<Value>(initialAnswer)
 
   const handleQuestion = useCallback(
     (value: Value) => {

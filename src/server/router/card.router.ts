@@ -11,33 +11,40 @@ const jsonSchema: z.ZodType<JsonValue> = z.lazy(() =>
 
 type PrismaJson = Prisma.NullTypes.JsonNull | Prisma.InputJsonValue
 
-export const cardRouter = createProtectedRouter().mutation('save', {
-  input: z.object({
-    question: jsonSchema,
-    answer: jsonSchema,
-    deckId: z.number(),
-    cardId: z.number(),
-  }),
-  async resolve({ ctx, input }) {
-    const card = await ctx.prisma.card.upsert({
-      where: {
-        id: input.cardId,
-      },
-      create: {
-        question: input.question as PrismaJson,
-        answer: input.answer as PrismaJson,
-        deckId: input.deckId,
-        id: input.cardId,
-      },
-      update: {
-        question: input.question as PrismaJson,
-        answer: input.answer as PrismaJson,
-        id: input.cardId,
-      },
-    })
+export const cardRouter = createProtectedRouter()
+  .mutation('save', {
+    input: z.object({
+      question: jsonSchema,
+      answer: jsonSchema,
+      deckId: z.number(),
+      cardId: z.number(),
+    }),
+    async resolve({ ctx, input }) {
+      return await ctx.prisma.card.update({
+        where: {
+          id: input.cardId,
+        },
+        data: {
+          question: input.question as PrismaJson,
+          answer: input.answer as PrismaJson,
+          id: input.cardId,
+        },
+      })
+    },
+  })
+  .mutation('create', {
+    input: z.object({
+      deckId: z.number(),
+    }),
+    async resolve({ ctx, input }) {
+      const initialValue = [{ type: 'p', children: [{ text: '' }] }]
 
-    console.log(card)
-
-    return card
-  },
-})
+      return await ctx.prisma.card.create({
+        data: {
+          question: initialValue,
+          answer: initialValue,
+          deckId: input.deckId,
+        },
+      })
+    },
+  })

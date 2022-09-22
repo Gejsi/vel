@@ -59,11 +59,11 @@ const IconsToolbar = ({ children }: { children?: ReactNode }) => (
           </MarkIconButton>
           <MarkIconButton
             type={MARK_STRIKETHROUGH}
-            title='Underline (ctrl+shift+x)'
+            title='Strikethrough (ctrl+shift+x)'
           >
             <MdFormatStrikethrough className='h-6 w-6' />
           </MarkIconButton>
-          <MarkIconButton type={MARK_CODE} title='Underline (ctrl+e)'>
+          <MarkIconButton type={MARK_CODE} title='Inline code (ctrl+e)'>
             <MdCode className='h-6 w-6' />
           </MarkIconButton>
         </div>

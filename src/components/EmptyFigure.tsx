@@ -5,7 +5,7 @@ const EmptyFigure = ({
   caption: string
   secondary?: boolean
 }) => (
-  <figure className='my-10 flex flex-col items-center'>
+  <figure className='mt-10 flex flex-col items-center'>
     <div className='mb-4 flex h-2/6 max-h-80 w-2/6 min-w-fit flex-col items-center'>
       {secondary ? (
         <svg
