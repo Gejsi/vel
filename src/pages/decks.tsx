@@ -24,7 +24,9 @@ const Decks: NextPageWithLayout = () => {
   const router = useRouter()
   const utils = useContext()
 
-  const { data: decks, isLoading: queryLoading } = useQuery(['deck.getAll'])
+  const { data: decks, isLoading: queryLoading } = useQuery(['deck.getAll'], {
+    refetchOnMount: 'always',
+  })
 
   const { mutate: createDeck, isLoading: isCreating } = useMutation(
     'deck.create',

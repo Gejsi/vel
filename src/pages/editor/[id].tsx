@@ -23,10 +23,14 @@ const EditorPage: NextPageWithLayout = () => {
   } = useQuery(['deck.getById', { id: id as string }], {
     retry: false,
     refetchOnWindowFocus: false,
-    staleTime: 0,
   })
 
-  const { mutate: saveCard, isLoading: isSaving } = useMutation(['card.save'])
+  const { mutate: saveCard } = useMutation(['card.save'], {
+    onSuccess() {
+      utils.invalidateQueries(['deck.getById'])
+    },
+  })
+
   const { mutate: createCard } = useMutation(['card.create'], {
     onSuccess() {
       utils.invalidateQueries(['deck.getById'])
@@ -42,7 +46,7 @@ const EditorPage: NextPageWithLayout = () => {
         deckId: parseInt(id as string, 10),
       })
     },
-    1000
+    600
   )
 
   if (queryError)
@@ -60,9 +64,13 @@ const EditorPage: NextPageWithLayout = () => {
       </Head>
 
       <IconsToolbar>
-        {isSaving && (
-          <button className='btn loading btn-ghost p-0'>Saving</button>
-        )}
+        <button
+          className='btn btn-primary tracking-wide'
+          onClick={() => createCard({ deckId: parseInt(id as string, 10) })}
+        >
+          <MdAdd className='h-6 w-6' />
+          <span className='ml-2 hidden md:block'>Add Flashcard</span>
+        </button>
       </IconsToolbar>
 
       <div className='px-4 lg:px-8'>
@@ -89,18 +97,6 @@ const EditorPage: NextPageWithLayout = () => {
                 />
               ))
             )}
-
-            <div className='mt-10 flex justify-center'>
-              <button
-                className='btn btn-primary w-full tracking-wide md:w-3/6'
-                onClick={() =>
-                  createCard({ deckId: parseInt(id as string, 10) })
-                }
-              >
-                <MdAdd className='mr-2 h-6 w-6' />
-                Add Flashcard
-              </button>
-            </div>
           </>
         )}
       </div>
