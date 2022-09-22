@@ -21,14 +21,7 @@ const EditorPage: NextPageWithLayout = () => {
     refetchOnWindowFocus: false,
   })
 
-  const { mutate: saveCard, isLoading: isSaving } = useMutation(['card.save'], {
-    onSuccess() {
-      console.log('successfully saved to db')
-    },
-    onError() {
-      console.log('error while saving to db')
-    },
-  })
+  const { mutate: saveCard, isLoading: isSaving } = useMutation(['card.save'])
 
   const handleChange = useDebouncedCallback(
     (question: Value, answer: Value, cardId: number) => {
@@ -39,7 +32,7 @@ const EditorPage: NextPageWithLayout = () => {
         deckId: parseInt(id as string, 10),
       })
     },
-    600
+    1000
   )
 
   if (queryError)
@@ -57,7 +50,11 @@ const EditorPage: NextPageWithLayout = () => {
       </Head>
 
       <IconsToolbar>
-        <button className='btn loading btn-ghost p-0'>Saving</button>
+        {isSaving && (
+          <button className='btn loading btn-ghost p-0 opacity-80'>
+            Saving
+          </button>
+        )}
       </IconsToolbar>
 
       <div className='px-4 lg:px-8'>
