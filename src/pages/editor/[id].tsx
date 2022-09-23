@@ -1,6 +1,7 @@
 import type { Value } from '@udecode/plate-core'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { toast } from 'react-hot-toast'
 import { MdAdd } from 'react-icons/md'
 import Editor from '../../components/editor/Editor'
 import IconsToolbar from '../../components/editor/IconsToolbar'
@@ -25,9 +26,15 @@ const EditorPage: NextPageWithLayout = () => {
     refetchOnWindowFocus: false,
   })
 
-  const { mutate: saveCard } = useMutation(['card.save'], {
+  const { mutate: saveCard, isLoading: isSaving } = useMutation(['card.save'], {
+    onMutate() {
+      toast.loading('Saving...', { id: 'save-toast' })
+    },
     onSuccess() {
       utils.invalidateQueries(['deck.getById'])
+      toast.success('Saved', {
+        id: 'save-toast',
+      })
     },
   })
 

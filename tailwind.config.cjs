@@ -14,10 +14,15 @@ module.exports = {
           '0%': { transform: 'translate3d(0, 100%, 0)' },
           '100%': { transform: 'translate3d(0, 0, 0)' },
         },
+        slideDown: {
+          '0%': { transform: 'translate3d(0, 0, 0)' },
+          '100%': { transform: 'translate3d(0, 200%, 0)' },
+        },
       },
       animation: {
         fadeIn: 'fadeIn 200ms ease-out forwards',
-        slideUp: 'slideUp 150ms ease forwards',
+        slideUp: 'slideUp 350ms cubic-bezier(.21,1.02,.73,1) forwards',
+        slideDown: 'slideDown 400ms cubic-bezier(.06,.71,.55,1) forwards',
       },
       fontFamily: {
         sans: ['Rubik', ...defaultTheme.fontFamily.sans],
