@@ -11,11 +11,11 @@ const Layout = ({ children }: { children: ReactNode }) => {
       <input id='sidebar' type='checkbox' className='drawer-toggle' />
       <main className='drawer-content pb-8'>{children}</main>
       <Sidebar session={session} />
-      <Toaster position='bottom-right' toastOptions={{}}>
+      <Toaster position='bottom-right'>
         {(t) => (
           <div className='toast'>
             <div
-              className={`alert glass ${
+              className={`glassy alert ${
                 t.visible ? 'animate-slideUp' : 'animate-slideDown'
               }`}
             >

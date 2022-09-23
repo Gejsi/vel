@@ -43,9 +43,11 @@
   .btn-group > .btn-icon:last-of-type {
     @apply rounded-r-lg;
   }
+}
 
-  .glass {
-    @apply bg-base-content/10 backdrop-blur-sm;
+@layer utilities {
+  .glassy {
+    @apply select-none border-[1px] border-base-content/40 bg-base-content/5 backdrop-blur-sm transition-colors hover:bg-base-content/10;
   }
 }
 
