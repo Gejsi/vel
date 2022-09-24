@@ -1,8 +1,11 @@
 import type { Value } from '@udecode/plate-core'
+import { clsx } from 'clsx'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { useMemo } from 'react'
 import { toast } from 'react-hot-toast'
 import { MdAdd } from 'react-icons/md'
+import { twMerge } from 'tailwind-merge'
 import Editor from '../../components/editor/Editor'
 import IconsToolbar from '../../components/editor/IconsToolbar'
 import EmptyFigure from '../../components/EmptyFigure'
@@ -28,21 +31,26 @@ const EditorPage: NextPageWithLayout = () => {
 
   const { mutate: saveCard, isLoading: isSaving } = useMutation(['card.save'], {
     onMutate() {
-      toast.loading('Saving...', { id: 'save-toast' })
+      toast.loading('Saving...', { id: 'autosave-toast' })
+    },
+    onError() {
+      utils.invalidateQueries(['deck.getById'])
+      toast.error('Cannot save', { id: 'autosave-toast' })
     },
     onSuccess() {
       utils.invalidateQueries(['deck.getById'])
-      toast.success('Saved', {
-        id: 'save-toast',
-      })
+      toast.success('Saved', { id: 'autosave-toast' })
     },
   })
 
-  const { mutate: createCard } = useMutation(['card.create'], {
-    onSuccess() {
-      utils.invalidateQueries(['deck.getById'])
-    },
-  })
+  const { mutate: createCard, isLoading: isCreating } = useMutation(
+    ['card.create'],
+    {
+      onSuccess() {
+        utils.invalidateQueries('deck.getById')
+      },
+    }
+  )
 
   const handleChange = useDebouncedCallback(
     (question: Value, answer: Value, cardId: number) => {
@@ -54,6 +62,18 @@ const EditorPage: NextPageWithLayout = () => {
       })
     },
     600
+  )
+
+  const btnClass = useMemo(
+    () =>
+      twMerge(
+        'btn btn-primary gap-2',
+        clsx({
+          loading: isCreating,
+          'motion-safe:animate-wiggle': deck?.cards.length === 0,
+        })
+      ),
+    [isCreating, deck?.cards.length]
   )
 
   if (queryError)
@@ -72,11 +92,11 @@ const EditorPage: NextPageWithLayout = () => {
 
       <IconsToolbar>
         <button
-          className='btn btn-primary tracking-wide'
+          className={btnClass}
           onClick={() => createCard({ deckId: parseInt(id as string, 10) })}
         >
-          <MdAdd className='h-6 w-6' />
-          <span className='ml-2 hidden md:block'>Add Flashcard</span>
+          {!isCreating && <MdAdd className='h-6 w-6' />}
+          <span className='hidden md:block'>Add Flashcard</span>
         </button>
       </IconsToolbar>
 
@@ -97,8 +117,9 @@ const EditorPage: NextPageWithLayout = () => {
                 <Editor
                   key={card.id}
                   count={i + 1}
-                  onChange={handleChange}
-                  id={card.id}
+                  onChange={(question, answer) =>
+                    handleChange(question, answer, card.id)
+                  }
                   initialQuestion={card.question as Value}
                   initialAnswer={card.answer as Value}
                 />

@@ -85,6 +85,7 @@ const plugins = createPlugins(
 const QAttributes: TEditableProps = {
   className: 'selection:bg-primary/40',
   spellCheck: false,
+  autoFocus: true,
 }
 
 const AAttributes: TEditableProps = {
@@ -94,25 +95,18 @@ const AAttributes: TEditableProps = {
 
 type EditorProps = {
   /**
-   * Flashcard database id
-   */
-  id: number
-  /**
    *  Autoincremented client-side index (i.d. `map`'s second argument)
    */
   count: number
   /**
    * Event handler that returns changes from both editors
    */
-  onChange?:
-    | ((questionValue: Value, answerValue: Value, id: number) => void)
-    | null
+  onChange?: ((questionValue: Value, answerValue: Value) => void) | null
   initialQuestion: Value
   initialAnswer: Value
 }
 
 const Editor = ({
-  id,
   count,
   onChange,
   initialQuestion,
@@ -124,25 +118,25 @@ const Editor = ({
   const handleQuestion = useCallback(
     (value: Value) => {
       if (value !== question) {
-        onChange?.(value, answer, id)
+        onChange?.(value, answer)
         setQuestion(value)
       }
     },
-    [question, answer, onChange, id]
+    [question, answer, onChange]
   )
 
   const handleAnswer = useCallback(
     (value: Value) => {
       if (value !== answer) {
-        onChange?.(question, value, id)
+        onChange?.(question, value)
         setAnswer(value)
       }
     },
-    [question, answer, onChange, id]
+    [question, answer, onChange]
   )
 
   return (
-    <>
+    <div className='animate-[fadeIn_400ms_ease-out_forwards]'>
       <div className='mt-6 flex items-center justify-center'>
         <div className='flex items-center gap-4 rounded-t-xl bg-base-300/80 px-2 py-1'>
           <h2 className='pl-4 text-sm font-bold uppercase'>
@@ -169,7 +163,7 @@ const Editor = ({
           initialValue={answer}
         />
       </div>
-    </>
+    </div>
   )
 }
 

@@ -55,8 +55,8 @@ const Decks: NextPageWithLayout = () => {
     },
     // if the mutation fails, use the context to roll back
     onError(err, deletedDeck, context) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      context && utils.setQueryData(['deck.getAll'], context.prevData!)
+      if (context?.prevData)
+        utils.setQueryData(['deck.getAll'], context.prevData)
     },
     // refetch after error or success
     onSettled() {
@@ -65,8 +65,15 @@ const Decks: NextPageWithLayout = () => {
   })
 
   const btnClass = useMemo(
-    () => twMerge('btn btn-primary gap-2', clsx({ loading: isCreating })),
-    [isCreating]
+    () =>
+      twMerge(
+        'btn btn-primary gap-2',
+        clsx({
+          loading: isCreating,
+          'motion-safe:animate-wiggle': decks?.length === 0,
+        })
+      ),
+    [isCreating, decks?.length]
   )
 
   return (
