@@ -21,30 +21,35 @@ const Card = ({
   onStudy,
   onEdit,
 }: CardProps) => (
-  <div className='card bg-base-200'>
+  <div className='card bg-base-200/90 shadow'>
     <div className='card-body'>
       <div className='flex gap-2'>
         <h2 className='card-title flex-1'>{title}</h2>
-        <button className='btn btn-ghost w-12 px-2' onClick={onDelete}>
+        <button className='btn-icon' onClick={onDelete}>
           <MdDelete className='h-6 w-6' />
         </button>
       </div>
-      <div className='my-4 flex flex-wrap items-start justify-start gap-x-8 gap-y-2 overflow-y-auto rounded-2xl bg-base-100 p-4'>
-        <div>
-          <h3 className='text-sm opacity-70'>Cards</h3>
-          <p>{amount}</p>
+      <div className='stats my-4 shadow'>
+        <div className='stat py-3 px-5'>
+          <div className='stat-desc'>Cards</div>
+          <div className='stat-title opacity-100'>{amount}</div>
         </div>
-        <div>
-          <h3 className='text-sm opacity-70'>Created</h3>
-          <p>{dayjs(createdAt).format('DD/MM/YY')}</p>
+        <div className='stat py-3 px-5'>
+          <div className='stat-desc'>Created</div>
+          <div className='stat-title opacity-100'>
+            {dayjs(createdAt).format('DD/MM/YY')}
+          </div>
         </div>
-        <div>
-          <h3 className='text-sm opacity-70'>Edited</h3>
-          <p>{dayjs(updatedAt).format('ddd, MMM YYYY')}</p>
+        <div className='stat py-3 px-5'>
+          <div className='stat-desc'>Edited</div>
+          <div className='stat-title opacity-100'>
+            {dayjs(updatedAt).format('dddd, MMM')} &#x2022;{' '}
+            {dayjs(updatedAt).format('hh:mm a')}
+          </div>
         </div>
       </div>
 
-      <div className='card-actions mt-2 justify-center'>
+      <div className='card-actions justify-center'>
         <div className='btn-group' role='group'>
           <button className='btn' onClick={onStudy}>
             <MdDeviceHub className='mr-1 h-6 w-6' />

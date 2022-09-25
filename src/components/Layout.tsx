@@ -1,5 +1,6 @@
 import { useSession } from 'next-auth/react'
 import { ReactNode } from 'react'
+import { resolveValue, Toaster, ToastIcon } from 'react-hot-toast'
 import Sidebar from './Sidebar'
 
 const Layout = ({ children }: { children: ReactNode }) => {
@@ -8,9 +9,22 @@ const Layout = ({ children }: { children: ReactNode }) => {
   return (
     <div className='drawer-mobile drawer min-h-screen'>
       <input id='sidebar' type='checkbox' className='drawer-toggle' />
-      {/* pt-0 added because Toolbar has pt-4 */}
-      <main className='drawer-content px-4 py-4 pt-0 lg:px-10'>{children}</main>
+      <main className='drawer-content pb-8'>{children}</main>
       <Sidebar session={session} />
+      <Toaster position='bottom-right'>
+        {(t) => (
+          <div className='toast'>
+            <div
+              className={`glassy alert ${
+                t.visible ? 'animate-slideUp' : 'animate-slideDown'
+              }`}
+            >
+              <ToastIcon toast={t} />
+              <p>{resolveValue(t.message, t)}</p>
+            </div>
+          </div>
+        )}
+      </Toaster>
     </div>
   )
 }

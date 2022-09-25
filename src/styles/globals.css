@@ -2,6 +2,116 @@
 @tailwind components;
 @tailwind utilities;
 
-.btn {
-  @apply capitalize;
+@layer base {
+  /* Firefox scrollbar:
+    --n  = bg-neutral
+    --b1 = bg-base-100
+  */
+  * {
+    @apply [scrollbar-color:hsl(var(--n))_hsl(var(--b1))];
+  }
+
+  html {
+    @apply motion-safe:scroll-smooth;
+  }
+
+  /* Other browsers scrollbar */
+  ::-webkit-scrollbar {
+    @apply h-2 w-2;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-neutral;
+  }
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.2);
+  }
+}
+
+@layer components {
+  .btn {
+    @apply capitalize;
+  }
+
+  .btn-icon {
+    @apply btn btn-ghost btn-square;
+  }
+
+  .btn-group > .btn-icon {
+    @apply rounded-none;
+  }
+
+  .btn-group > .btn-icon:first-of-type {
+    @apply rounded-l-lg;
+  }
+
+  .btn-group > .btn-icon:last-of-type {
+    @apply rounded-r-lg;
+  }
+}
+
+@layer utilities {
+  .glassy {
+    @apply select-none border-[1px] border-base-content/40 bg-base-content/5 backdrop-blur-sm transition-colors hover:bg-base-content/10;
+  }
+}
+
+/* ------------BLOCKS------------ */
+div[data-slate-editor='true'] {
+  @apply p-4;
+  min-height: 8rem !important; /* !important overrides conflicting inline style */
+}
+
+.slate-h1 {
+  @apply text-5xl;
+}
+
+.slate-p:first-child {
+  @apply mt-0 mb-4;
+}
+
+.slate-p {
+  @apply mt-4;
+}
+
+.slate-p::before {
+  content: 'Type something...';
+  @apply pointer-events-none absolute opacity-30;
+}
+
+.slate-blockquote {
+  @apply my-4 border-l-4 border-l-base-content bg-base-content/10 py-2 pl-4 font-medium italic;
+}
+
+.slate-code_block {
+  @apply mockup-code my-4 min-w-fit p-4 before:hidden;
+}
+
+.slate-code_block pre::before {
+  @apply hidden;
+}
+
+.slate-code_line {
+  @apply max-w-[20ch] text-sm;
+}
+
+.slate-ul,
+.slate-ol {
+  @apply pl-4;
+}
+
+.slate-ul {
+  @apply list-disc;
+}
+
+.slate-ol {
+  @apply list-decimal;
+}
+
+/* ------------MARKS------------ */
+.slate-bold {
+  @apply font-medium;
+}
+
+.slate-code {
+  @apply rounded bg-base-content/10 p-1 font-mono text-sm text-red-400;
 }

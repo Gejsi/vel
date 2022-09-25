@@ -8,7 +8,6 @@ import { Session } from 'next-auth'
 import { SessionProvider } from 'next-auth/react'
 import type { AppProps as NextAppProps } from 'next/app'
 import type { AppType } from 'next/dist/shared/lib/utils'
-import Head from 'next/head'
 import type { NextPage } from 'next/types'
 import type { ReactElement, ReactNode } from 'react'
 import { ReactQueryDevtools } from 'react-query/devtools'
@@ -44,29 +43,13 @@ const AppHandler = (({
   const getLayout = Component.getLayout ?? ((page) => <Layout>{page}</Layout>)
 
   return (
-    <>
-      <Head>
-        <link rel='icon' href='/favicon.ico' />
-        <link rel='preconnect' href='https://fonts.googleapis.com' />
-        <link
-          rel='preconnect'
-          href='https://fonts.gstatic.com'
-          crossOrigin=''
-        />
-        <link
-          href='https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap'
-          rel='stylesheet'
-        />
-      </Head>
+    <SessionProvider session={session}>
+      {getLayout(<Component {...pageProps} />)}
 
-      <SessionProvider session={session}>
-        {getLayout(<Component {...pageProps} />)}
-
-        {env.NEXT_PUBLIC_NODE_ENV !== 'production' && (
-          <ReactQueryDevtools initialIsOpen={false} />
-        )}
-      </SessionProvider>
-    </>
+      {env.NEXT_PUBLIC_NODE_ENV !== 'production' && (
+        <ReactQueryDevtools initialIsOpen={false} />
+      )}
+    </SessionProvider>
   )
 }) as AppType
 
@@ -106,7 +89,7 @@ export default withTRPC<AppRouter>({
           // when condition is true, use normal requests
           true: httpLink({ url }),
           // ...otherwise use batching
-          false: httpBatchLink({ url, maxBatchSize: 10 }),
+          false: httpBatchLink({ url }),
         }),
       ],
       url,

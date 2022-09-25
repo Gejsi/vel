@@ -21,14 +21,18 @@ const Sidenav = ({ session }: { session: Session | null }) => (
     <div className='flex w-full items-center gap-2'>
       <li className='flex-1'>
         <Link href='/me'>
-          <a className=''>
-            <img className='w-7 rounded-full' src={session?.user?.image!} />
-            <span>{session?.user?.name}</span>
+          <a>
+            <img
+              className='w-7 rounded-full'
+              src={session?.user?.image || undefined}
+              alt='Avatar'
+            />
+            <p className='max-w-[10ch] truncate'>{session?.user?.name}</p>
           </a>
         </Link>
       </li>
       <div className='tooltip' data-tip='Logout'>
-        <button className='btn btn-ghost btn-square' onClick={() => signOut()}>
+        <button className='btn-icon' onClick={() => signOut()}>
           <MdLogout className='h-6 w-6' />
         </button>
       </div>
