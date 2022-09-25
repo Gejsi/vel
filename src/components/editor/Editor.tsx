@@ -85,11 +85,13 @@ const plugins = createPlugins(
 const questionEditorProps: TEditableProps = {
   className: 'selection:bg-primary/40',
   spellCheck: false,
+  autoFocus: true,
 }
 
 const answerEditorProps: TEditableProps = {
-  className: 'selection:bg-secondary/40 bg-base-200 rounded-xl',
+  className: 'selection:bg-secondary/40 bg-base-200 rounded-xl order-1',
   spellCheck: false,
+  autoFocus: true,
 }
 
 type EditorProps = {
@@ -161,18 +163,18 @@ const Editor = ({
       </div>
       <div className='grid min-w-fit grid-cols-[repeat(auto-fit,_minmax(18rem,_1fr))] rounded-xl bg-base-300 shadow-lg'>
         <Plate
-          id={`qe-${count}`}
-          editableProps={questionEditorProps}
-          plugins={plugins}
-          onChange={handleQuestion}
-          initialValue={question}
-        />
-        <Plate
           id={`ae-${count}`}
           editableProps={answerEditorProps}
           plugins={plugins}
           onChange={handleAnswer}
           initialValue={answer}
+        />
+        <Plate
+          id={`qe-${count}`}
+          editableProps={questionEditorProps}
+          plugins={plugins}
+          onChange={handleQuestion}
+          initialValue={question}
         />
       </div>
     </div>

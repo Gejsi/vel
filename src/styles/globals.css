@@ -11,6 +11,10 @@
     @apply [scrollbar-color:hsl(var(--n))_hsl(var(--b1))];
   }
 
+  html {
+    @apply motion-safe:scroll-smooth;
+  }
+
   /* Other browsers scrollbar */
   ::-webkit-scrollbar {
     @apply h-2 w-2;

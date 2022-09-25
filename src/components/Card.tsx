@@ -43,8 +43,8 @@ const Card = ({
         <div className='stat py-3 px-5'>
           <div className='stat-desc'>Edited</div>
           <div className='stat-title opacity-100'>
-            {dayjs(updatedAt).format('ddd, MMM YYYY')} &#x2022;{' '}
-            {dayjs(updatedAt).format('hh:mm')}
+            {dayjs(updatedAt).format('dddd, MMM')} &#x2022;{' '}
+            {dayjs(updatedAt).format('hh:mm a')}
           </div>
         </div>
       </div>
