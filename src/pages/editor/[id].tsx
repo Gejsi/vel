@@ -29,7 +29,7 @@ const EditorPage: NextPageWithLayout = () => {
     refetchOnWindowFocus: false,
   })
 
-  const { mutate: saveCard, isLoading: isSaving } = useMutation(['card.save'], {
+  const { mutate: saveCard } = useMutation(['card.save'], {
     onMutate() {
       toast.loading('Saving...', { id: 'autosave-toast' })
     },
@@ -46,11 +46,26 @@ const EditorPage: NextPageWithLayout = () => {
   const { mutate: createCard, isLoading: isCreating } = useMutation(
     ['card.create'],
     {
+      onError() {
+        toast.error('Cannot create a card')
+      },
       onSuccess() {
-        utils.invalidateQueries('deck.getById')
+        utils.invalidateQueries(['deck.getById'])
       },
     }
   )
+
+  const { mutate: deleteCard } = useMutation(['card.delete'], {
+    // onMutate() {
+    //   toast.loading('Deleting card', { id: 'delete-toast' })
+    // },
+    // onError() {
+    //   toast.error('Cannot delete card', { id: 'delete-toast' })
+    // },
+    async onSuccess() {
+      utils.queryClient.resetQueries('deck.getById')
+    },
+  })
 
   const handleChange = useDebouncedCallback(
     (question: Value, answer: Value, cardId: number) => {
@@ -117,11 +132,12 @@ const EditorPage: NextPageWithLayout = () => {
                 <Editor
                   key={card.id}
                   count={i + 1}
+                  initialQuestion={card.question as Value}
+                  initialAnswer={card.answer as Value}
                   onChange={(question, answer) =>
                     handleChange(question, answer, card.id)
                   }
-                  initialQuestion={card.question as Value}
-                  initialAnswer={card.answer as Value}
+                  onDelete={() => deleteCard({ cardId: card.id })}
                 />
               ))
             )}

@@ -24,7 +24,7 @@ import { createListPlugin } from '@udecode/plate-list'
 import { createParagraphPlugin } from '@udecode/plate-paragraph'
 import { createResetNodePlugin } from '@udecode/plate-reset-node'
 import { createTrailingBlockPlugin } from '@udecode/plate-trailing-block'
-import { useCallback, useState } from 'react'
+import { useCallback, useState, type MouseEventHandler } from 'react'
 import { MdDelete } from 'react-icons/md'
 import {
   autoformatOptions,
@@ -82,13 +82,12 @@ const plugins = createPlugins(
   }
 )
 
-const QAttributes: TEditableProps = {
+const questionEditorProps: TEditableProps = {
   className: 'selection:bg-primary/40',
   spellCheck: false,
-  autoFocus: true,
 }
 
-const AAttributes: TEditableProps = {
+const answerEditorProps: TEditableProps = {
   className: 'selection:bg-secondary/40 bg-base-200 rounded-xl',
   spellCheck: false,
 }
@@ -99,18 +98,29 @@ type EditorProps = {
    */
   count: number
   /**
+   * Initial value set for the question editor
+   */
+  initialQuestion: Value
+  /**
+   * Initial value set for the answer editor
+   */
+  initialAnswer: Value
+  /**
    * Event handler that returns changes from both editors
    */
   onChange?: ((questionValue: Value, answerValue: Value) => void) | null
-  initialQuestion: Value
-  initialAnswer: Value
+  /**
+   * Event that occurs when the `trash` icon is clicked
+   */
+  onDelete: MouseEventHandler<HTMLButtonElement>
 }
 
 const Editor = ({
   count,
-  onChange,
   initialQuestion,
   initialAnswer,
+  onChange,
+  onDelete,
 }: EditorProps) => {
   const [question, setQuestion] = useState<Value>(initialQuestion)
   const [answer, setAnswer] = useState<Value>(initialAnswer)
@@ -142,22 +152,24 @@ const Editor = ({
           <h2 className='pl-4 text-sm font-bold uppercase'>
             Card &#x2022; {count}
           </h2>
-          <button className='btn-icon'>
-            <MdDelete className='h-5 w-5' />
-          </button>
+          <div className='tooltip' data-tip='Delete card'>
+            <button className='btn-icon' onClick={onDelete}>
+              <MdDelete className='h-5 w-5' />
+            </button>
+          </div>
         </div>
       </div>
       <div className='grid min-w-fit grid-cols-[repeat(auto-fit,_minmax(18rem,_1fr))] rounded-xl bg-base-300 shadow-lg'>
         <Plate
           id={`qe-${count}`}
-          editableProps={QAttributes}
+          editableProps={questionEditorProps}
           plugins={plugins}
           onChange={handleQuestion}
           initialValue={question}
         />
         <Plate
           id={`ae-${count}`}
-          editableProps={AAttributes}
+          editableProps={answerEditorProps}
           plugins={plugins}
           onChange={handleAnswer}
           initialValue={answer}

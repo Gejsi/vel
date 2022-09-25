@@ -48,3 +48,13 @@ export const cardRouter = createProtectedRouter()
       })
     },
   })
+  .mutation('delete', {
+    input: z.object({
+      cardId: z.number(),
+    }),
+    async resolve({ ctx, input }) {
+      return await ctx.prisma.card.delete({
+        where: { id: input.cardId },
+      })
+    },
+  })
