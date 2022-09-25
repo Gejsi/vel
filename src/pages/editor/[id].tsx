@@ -34,11 +34,11 @@ const EditorPage: NextPageWithLayout = () => {
       toast.loading('Saving...', { id: 'autosave-toast' })
     },
     onError() {
-      utils.invalidateQueries(['deck.getById'])
+      utils.invalidateQueries(['deck.getById', { id: id as string }])
       toast.error('Cannot save', { id: 'autosave-toast' })
     },
     onSuccess() {
-      utils.invalidateQueries(['deck.getById'])
+      utils.invalidateQueries(['deck.getById', { id: id as string }])
       toast.success('Saved', { id: 'autosave-toast' })
     },
   })
@@ -50,20 +50,38 @@ const EditorPage: NextPageWithLayout = () => {
         toast.error('Cannot create a card')
       },
       onSuccess() {
-        utils.invalidateQueries(['deck.getById'])
+        utils.invalidateQueries(['deck.getById', { id: id as string }])
       },
     }
   )
 
   const { mutate: deleteCard } = useMutation(['card.delete'], {
-    // onMutate() {
-    //   toast.loading('Deleting card', { id: 'delete-toast' })
-    // },
-    // onError() {
-    //   toast.error('Cannot delete card', { id: 'delete-toast' })
-    // },
-    async onSuccess() {
-      utils.queryClient.resetQueries('deck.getById')
+    async onMutate(inputCard) {
+      await utils.cancelQuery(['deck.getById', { id: id as string }])
+      const prevData = utils.getQueryData([
+        'deck.getById',
+        { id: id as string },
+      ])
+
+      if (prevData)
+        utils.setQueryData(['deck.getById', { id: id as string }], () => ({
+          ...prevData,
+          cards: [
+            ...prevData.cards.filter((card) => card.id !== inputCard.cardId),
+          ],
+        }))
+
+      return { prevData }
+    },
+    onError(err, inputCard, context) {
+      if (context?.prevData)
+        utils.setQueryData(
+          ['deck.getById', { id: id as string }],
+          context.prevData
+        )
+    },
+    onSettled() {
+      utils.invalidateQueries(['deck.getById', { id: id as string }])
     },
   })
 
