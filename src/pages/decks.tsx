@@ -112,7 +112,7 @@ const Decks: NextPageWithLayout = () => {
                 onDelete={() =>
                   setDeckId((prev) => (prev !== deck.id ? deck.id : prev))
                 }
-                onStudy={() => console.log('study')}
+                onStudy={() => router.push(`/edit/${deck.id}`)}
                 onEdit={() => router.push(`/editor/${deck.id}`)}
               />
             ))}

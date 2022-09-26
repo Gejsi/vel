@@ -1,5 +1,30 @@
+import type { EditorOptions, JSONContent } from '@tiptap/react'
+import { useCallback, useRef, type MouseEventHandler } from 'react'
 import { MdDelete } from 'react-icons/md'
 import Editor from './Editor'
+
+type EditorProps = {
+  /**
+   *  Autoincremented client-side index (i.d. `map`'s second argument)
+   */
+  count: number
+  /**
+   * Initial value set for the question editor
+   */
+  initialQuestion?: JSONContent[]
+  /**
+   * Initial value set for the answer editor
+   */
+  initialAnswer?: JSONContent[]
+  /**
+   * Event handler that returns changes from both editors
+   */
+  onChange: (questionValue?: JSONContent[], answerValue?: JSONContent[]) => void
+  /**
+   * Event that occurs when the `trash` icon is clicked
+   */
+  onDelete: MouseEventHandler<HTMLButtonElement>
+}
 
 const TwinEditor = ({
   count,
@@ -7,7 +32,28 @@ const TwinEditor = ({
   initialAnswer,
   onChange,
   onDelete,
-}: any) => {
+}: EditorProps) => {
+  const questionRef = useRef<JSONContent[] | undefined>(initialQuestion)
+  const answerRef = useRef<JSONContent[] | undefined>(initialAnswer)
+
+  const handleQuestion: EditorOptions['onUpdate'] = useCallback(
+    (value) => {
+      const content = value.editor.getJSON().content
+      questionRef.current = content
+      onChange(questionRef.current, answerRef.current)
+    },
+    [onChange]
+  )
+
+  const handleAnswer: EditorOptions['onUpdate'] = useCallback(
+    (value) => {
+      const content = value.editor.getJSON().content
+      answerRef.current = content
+      onChange(questionRef.current, answerRef.current)
+    },
+    [onChange]
+  )
+
   return (
     <div>
       <div className='mt-6 flex items-center justify-center'>
@@ -23,8 +69,16 @@ const TwinEditor = ({
         </div>
       </div>
       <div className='grid min-w-fit grid-cols-[repeat(auto-fit,_minmax(18rem,_1fr))] rounded-xl bg-base-300 shadow-lg'>
-        <Editor className='selection:bg-primary/40' />
-        <Editor className='rounded-xl bg-base-200 selection:bg-secondary/40' />
+        <Editor
+          className='selection:bg-primary/40'
+          onUpdate={handleQuestion}
+          initalContent={initialQuestion}
+        />
+        <Editor
+          className='rounded-xl bg-base-200 selection:bg-secondary/40'
+          onUpdate={handleAnswer}
+          initalContent={initialAnswer}
+        />
       </div>
     </div>
   )
