@@ -1,7 +1,7 @@
 import type { EditorOptions, JSONContent } from '@tiptap/react'
 import { useCallback, useRef, type MouseEventHandler } from 'react'
 import { MdDelete } from 'react-icons/md'
-import Editor from './Editor'
+import SmallEditor from './SmallEditor'
 
 type EditorProps = {
   /**
@@ -69,12 +69,12 @@ const TwinEditor = ({
         </div>
       </div>
       <div className='grid min-w-fit grid-cols-[repeat(auto-fit,_minmax(18rem,_1fr))] rounded-xl bg-base-300 shadow-lg'>
-        <Editor
+        <SmallEditor
           className='selection:bg-primary/40'
           onUpdate={handleQuestion}
           initalContent={initialQuestion}
         />
-        <Editor
+        <SmallEditor
           className='rounded-xl bg-base-200 selection:bg-secondary/40'
           onUpdate={handleAnswer}
           initalContent={initialAnswer}

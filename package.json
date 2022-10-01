@@ -36,6 +36,7 @@
     "@udecode/plate-trailing-block": "^16.5.0",
     "daisyui": "^2.22.0",
     "dayjs": "^1.11.5",
+    "jotai": "^1.8.4",
     "next": "12.2.3",
     "next-auth": "^4.10.3",
     "react": "18.2.0",

@@ -1,7 +1,9 @@
 import type { JSONContent } from '@tiptap/react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { MdAdd } from 'react-icons/md'
 import Error from '../../components/Error'
+import IconsToolbar from '../../components/new-editor/IconsToolbar'
 import TwinEditor from '../../components/new-editor/TwinEditor'
 import useDebouncedCallback from '../../hooks/use-debounced-callback'
 import { useQuery } from '../../utils/trpc'
@@ -42,6 +44,13 @@ const EditorPage: NextPageWithLayout = () => {
       <Head>
         <title>Vel &#x2022; {deck?.title}</title>
       </Head>
+
+      <IconsToolbar>
+        <button className='btn btn-primary gap-2'>
+          <MdAdd className='h-6 w-6' />
+          <span className='hidden md:block'>Add Flashcard</span>
+        </button>
+      </IconsToolbar>
 
       <div className='px-4 lg:px-8'>
         <h1 className='mb-4 text-5xl font-bold'>{deck?.title}</h1>
