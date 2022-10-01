@@ -9,6 +9,7 @@ import {
   MdFormatListNumbered,
   MdFormatQuote,
   MdFormatStrikethrough,
+  MdFormatUnderlined,
   MdMenu,
   MdRedo,
   MdUndo,
@@ -74,6 +75,13 @@ const IconsToolbar = ({ children }: { children?: ReactNode }) => {
               title='Italic (ctrl+i)'
             >
               <MdFormatItalic className='h-6 w-6' />
+            </IconButton>
+            <IconButton
+              name='underline'
+              onClick={() => editor?.chain().focus().toggleUnderline().run()}
+              title='Underline (ctrl+u)'
+            >
+              <MdFormatUnderlined className='h-6 w-6' />
             </IconButton>
             <IconButton
               name='strike'

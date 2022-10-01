@@ -1,3 +1,4 @@
+import { Underline } from '@tiptap/extension-underline'
 import {
   EditorContent,
   useEditor,
@@ -27,7 +28,12 @@ const SmallEditor = ({
 
   const editor = useEditor(
     {
-      extensions: [StarterKit],
+      extensions: [
+        StarterKit.configure({
+          heading: false,
+        }),
+        Underline,
+      ],
       editorProps: {
         attributes: {
           class:
