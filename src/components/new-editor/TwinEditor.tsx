@@ -36,19 +36,16 @@ const TwinEditor = ({
   const questionRef = useRef<JSONContent[] | undefined>(initialQuestion)
   const answerRef = useRef<JSONContent[] | undefined>(initialAnswer)
 
-  const handleQuestion: EditorOptions['onUpdate'] = useCallback(
-    (value) => {
-      const content = value.editor.getJSON().content
-      questionRef.current = content
-      onChange(questionRef.current, answerRef.current)
-    },
-    [onChange]
-  )
+  const handleUpdate: (
+    editorProps: Parameters<EditorOptions['onUpdate']>[0],
+    updatingQuestionEditor: boolean
+  ) => void = useCallback(
+    (editorProps, updatingQuestionEditor) => {
+      const content = editorProps.editor.getJSON().content
 
-  const handleAnswer: EditorOptions['onUpdate'] = useCallback(
-    (value) => {
-      const content = value.editor.getJSON().content
-      answerRef.current = content
+      if (updatingQuestionEditor) questionRef.current = content
+      else answerRef.current = content
+
       onChange(questionRef.current, answerRef.current)
     },
     [onChange]
@@ -72,14 +69,14 @@ const TwinEditor = ({
         <SmallEditor
           className='selection:bg-primary/40'
           placeholder='Write a question...'
-          onUpdate={handleQuestion}
-          initalContent={initialQuestion}
+          onUpdate={(editorProps) => handleUpdate(editorProps, true)}
+          initialContent={initialQuestion}
         />
         <SmallEditor
           className='rounded-xl bg-base-200 selection:bg-secondary/40'
           placeholder='Write an answer...'
-          onUpdate={handleAnswer}
-          initalContent={initialAnswer}
+          onUpdate={(editorProps) => handleUpdate(editorProps, false)}
+          initialContent={initialAnswer}
         />
       </div>
     </div>

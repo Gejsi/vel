@@ -1,22 +1,57 @@
 import type { JSONContent } from '@tiptap/react'
+import { clsx } from 'clsx'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { useMemo } from 'react'
+import { toast } from 'react-hot-toast'
 import { MdAdd } from 'react-icons/md'
+import { twMerge } from 'tailwind-merge'
+import EmptyFigure from '../../components/EmptyFigure'
 import Error from '../../components/Error'
 import IconsToolbar from '../../components/new-editor/IconsToolbar'
 import TwinEditor from '../../components/new-editor/TwinEditor'
+import Spinner from '../../components/Spinner'
 import useDebouncedCallback from '../../hooks/use-debounced-callback'
-import { useQuery } from '../../utils/trpc'
+import type { JsonValue } from '../../types/json'
+import { useContext, useMutation, useQuery } from '../../utils/trpc'
 import type { NextPageWithLayout } from '../_app'
 
 const EditorPage: NextPageWithLayout = () => {
-  const { id } = useRouter().query
+  const id = useRouter().query.id as string
+  const utils = useContext()
 
-  const { data: deck, error: queryError } = useQuery(
-    ['deck.getById', { id: id as string }],
+  const {
+    data: deck,
+    isLoading,
+    error: queryError,
+  } = useQuery(['deck.getById', { id }], {
+    retry: false,
+    refetchOnWindowFocus: false,
+  })
+
+  const { mutate: saveCard } = useMutation(['card.save'], {
+    onMutate() {
+      toast.loading('Saving...', { id: 'autosave-toast' })
+    },
+    onError() {
+      utils.invalidateQueries(['deck.getById', { id }])
+      toast.error('Unable to save', { id: 'autosave-toast' })
+    },
+    onSuccess() {
+      utils.invalidateQueries(['deck.getById', { id }])
+      toast.success('Saved', { id: 'autosave-toast' })
+    },
+  })
+
+  const { mutate: createCard, isLoading: isCreating } = useMutation(
+    ['card.create'],
     {
-      retry: false,
-      refetchOnWindowFocus: false,
+      onError() {
+        toast.error('Unable to create a new card')
+      },
+      onSuccess() {
+        utils.invalidateQueries(['deck.getById', { id }])
+      },
     }
   )
 
@@ -26,9 +61,26 @@ const EditorPage: NextPageWithLayout = () => {
       answer: JSONContent[] | undefined,
       cardId: number
     ) => {
-      console.log(question, answer, cardId)
+      saveCard({
+        question: question as JsonValue,
+        answer: answer as JsonValue,
+        cardId,
+        deckId: parseInt(id, 10),
+      })
     },
     600
+  )
+
+  const btnClass = useMemo(
+    () =>
+      twMerge(
+        'btn btn-primary gap-2',
+        clsx({
+          loading: isCreating,
+          'motion-safe:animate-wiggle': deck?.cards.length === 0,
+        })
+      ),
+    [isCreating, deck?.cards.length]
   )
 
   if (queryError)
@@ -46,29 +98,43 @@ const EditorPage: NextPageWithLayout = () => {
       </Head>
 
       <IconsToolbar>
-        <button className='btn btn-primary gap-2'>
-          <MdAdd className='h-6 w-6' />
+        <button
+          className={btnClass}
+          onClick={() => createCard({ deckId: parseInt(id, 10) })}
+        >
+          {!isCreating && <MdAdd className='h-6 w-6' />}
           <span className='hidden md:block'>Add Flashcard</span>
         </button>
       </IconsToolbar>
 
       <div className='px-4 lg:px-8'>
-        <h1 className='mb-4 text-5xl font-bold'>{deck?.title}</h1>
-        <TwinEditor
-          count={1}
-          initialQuestion={undefined}
-          initialAnswer={undefined}
-          onChange={(question, answer) => handleChange(question, answer, 10)}
-          onDelete={() => console.log('delete')}
-        />
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          <>
+            <h1 className='mb-4 text-5xl font-bold'>{deck?.title}</h1>
 
-        <TwinEditor
-          count={2}
-          initialQuestion={undefined}
-          initialAnswer={undefined}
-          onChange={(question, answer) => handleChange(question, answer, 30)}
-          onDelete={() => console.log('delete')}
-        />
+            {deck?.cards.length === 0 ? (
+              <EmptyFigure
+                secondary
+                caption='This deck is empty. Create some flashcards!'
+              />
+            ) : (
+              deck?.cards.map((card, i) => (
+                <TwinEditor
+                  key={card.id}
+                  count={i + 1}
+                  initialQuestion={card.question as JSONContent[]}
+                  initialAnswer={card.answer as JSONContent[]}
+                  onChange={(question, answer) =>
+                    handleChange(question, answer, card.id)
+                  }
+                  onDelete={() => console.log('deleting')}
+                />
+              ))
+            )}
+          </>
+        )}
       </div>
     </>
   )

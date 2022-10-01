@@ -37,7 +37,7 @@ export const cardRouter = createProtectedRouter()
       deckId: z.number(),
     }),
     async resolve({ ctx, input }) {
-      const initialValue = [{ type: 'p', children: [{ text: '' }] }]
+      const initialValue = [{ type: 'paragraph' }]
 
       return await ctx.prisma.card.create({
         data: {

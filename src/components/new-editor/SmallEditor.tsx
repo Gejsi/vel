@@ -8,6 +8,8 @@ import {
 } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { atom, useAtom } from 'jotai'
+
+// fixes conflicting `Editor` type from `@tiptap/react` and `@tiptap/core`
 import type { Editor } from '../../../node_modules/@tiptap/core/dist/packages/core/src/Editor'
 
 export const editorAtom = atom<Editor | null>(null)
@@ -19,12 +21,12 @@ const SmallEditor = ({
   className,
   placeholder,
   onUpdate,
-  initalContent,
+  initialContent,
 }: {
   className: string
   placeholder: string
   onUpdate: EditorOptions['onUpdate']
-  initalContent?: JSONContent[]
+  initialContent?: JSONContent[]
 }) => {
   const [, setEditor] = useAtom(editorAtom)
   const [, forceUpdate] = useAtom(toolbarForcedAtom)
@@ -57,13 +59,16 @@ const SmallEditor = ({
         },
       },
       onUpdate,
-      content: initalContent,
       onTransaction(props) {
         setEditor(props.editor)
         forceUpdate((prev) => prev + 1)
       },
+      content: {
+        type: 'doc',
+        content: initialContent,
+      },
     },
-    [className, onUpdate, initalContent]
+    [className, onUpdate, initialContent]
   )
 
   return <EditorContent editor={editor} />
