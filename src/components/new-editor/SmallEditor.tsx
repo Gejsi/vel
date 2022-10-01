@@ -40,6 +40,9 @@ const SmallEditor = ({
                 'rounded-xl text-info bg-base-content/10 px-[1ch] py-[0.5ch]',
             },
           },
+          horizontalRule: false,
+          gapcursor: false,
+          dropcursor: false,
         }),
         Underline,
         Placeholder.configure({
