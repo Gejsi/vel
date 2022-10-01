@@ -35,16 +35,9 @@ const SmallEditor = ({
             className,
         },
       },
-      onUpdate(props) {
-        onUpdate(props)
-        forceUpdate((prev) => prev + 1)
-      },
+      onUpdate,
       content: initalContent,
-      onFocus(props) {
-        setEditor(props.editor)
-        forceUpdate((prev) => prev + 1)
-      },
-      onSelectionUpdate(props) {
+      onTransaction(props) {
         setEditor(props.editor)
         forceUpdate((prev) => prev + 1)
       },

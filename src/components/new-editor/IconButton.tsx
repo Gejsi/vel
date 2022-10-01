@@ -10,7 +10,7 @@ const IconButton = ({ name, ...rest }: { name: string; [x: string]: any }) => {
 
   return (
     <button
-      disabled={!editor || !editor.isFocused}
+      disabled={!editor}
       className={twMerge(
         'btn-icon',
         clsx({

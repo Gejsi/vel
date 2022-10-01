@@ -18,7 +18,6 @@ const UndoRedoButton = ({
     <button
       disabled={
         !editor ||
-        !editor.isFocused ||
         (icon === 'undo'
           ? !editor?.can().chain().focus().undo().run()
           : !editor?.can().chain().focus().redo().run())
