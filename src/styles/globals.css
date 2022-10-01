@@ -53,6 +53,11 @@
   .glassy {
     @apply select-none border-[1px] border-base-content/40 bg-base-content/5 backdrop-blur-sm transition-colors hover:bg-base-content/10;
   }
+
+  .ProseMirror.prose p::before {
+    content: attr(data-placeholder);
+    @apply pointer-events-none absolute opacity-40;
+  }
 }
 
 /* ------------BLOCKS------------ */

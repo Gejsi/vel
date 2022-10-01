@@ -71,11 +71,13 @@ const TwinEditor = ({
       <div className='grid min-w-fit grid-cols-[repeat(auto-fit,_minmax(18rem,_1fr))] rounded-xl bg-base-300 shadow-lg'>
         <SmallEditor
           className='selection:bg-primary/40'
+          placeholder='Write a question...'
           onUpdate={handleQuestion}
           initalContent={initialQuestion}
         />
         <SmallEditor
           className='rounded-xl bg-base-200 selection:bg-secondary/40'
+          placeholder='Write an answer...'
           onUpdate={handleAnswer}
           initalContent={initialAnswer}
         />

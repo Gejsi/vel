@@ -1,3 +1,4 @@
+import { Placeholder } from '@tiptap/extension-placeholder'
 import { Underline } from '@tiptap/extension-underline'
 import {
   EditorContent,
@@ -16,10 +17,12 @@ export const toolbarForcedAtom = atom(0)
 
 const SmallEditor = ({
   className,
+  placeholder,
   onUpdate,
   initalContent,
 }: {
   className: string
+  placeholder: string
   onUpdate: EditorOptions['onUpdate']
   initalContent?: JSONContent[]
 }) => {
@@ -33,6 +36,9 @@ const SmallEditor = ({
           heading: false,
         }),
         Underline,
+        Placeholder.configure({
+          placeholder,
+        }),
       ],
       editorProps: {
         attributes: {
