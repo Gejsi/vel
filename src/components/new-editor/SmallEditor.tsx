@@ -34,6 +34,12 @@ const SmallEditor = ({
       extensions: [
         StarterKit.configure({
           heading: false,
+          code: {
+            HTMLAttributes: {
+              class:
+                'rounded-xl text-info bg-base-content/10 px-[1ch] py-[0.5ch]',
+            },
+          },
         }),
         Underline,
         Placeholder.configure({
