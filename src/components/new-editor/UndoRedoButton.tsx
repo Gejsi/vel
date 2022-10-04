@@ -3,11 +3,9 @@ import { editorAtom, toolbarForcedAtom } from './SmallEditor'
 
 const UndoRedoButton = ({
   name,
-  icon,
   ...rest
 }: {
-  name?: string
-  icon?: 'undo' | 'redo'
+  name?: 'undo' | 'redo'
   [x: string]: any
 }) => {
   // forcefully re-render button to get the latest editor ref
@@ -18,7 +16,7 @@ const UndoRedoButton = ({
     <button
       disabled={
         !editor ||
-        (icon === 'undo'
+        (name === 'undo'
           ? !editor?.can().chain().focus().undo().run()
           : !editor?.can().chain().focus().redo().run())
       }

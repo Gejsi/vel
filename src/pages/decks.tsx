@@ -64,7 +64,7 @@ const Decks: NextPageWithLayout = () => {
     },
   })
 
-  const btnClass = useMemo(
+  const ctaClassName = useMemo(
     () =>
       twMerge(
         'btn btn-primary gap-2',
@@ -83,7 +83,7 @@ const Decks: NextPageWithLayout = () => {
       </Head>
 
       <Toolbar title='Decks'>
-        <button className={btnClass} onClick={() => createDeck()}>
+        <button className={ctaClassName} onClick={() => createDeck()}>
           {!isCreating && <MdPostAdd className='h-6 w-6' />}
           <span className='hidden md:block'>Create deck</span>
         </button>

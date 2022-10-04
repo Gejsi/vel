@@ -102,14 +102,14 @@ const IconsToolbar = ({ children }: { children?: ReactNode }) => {
             <div className='w-[0.125rem] bg-base-content/30' />
 
             <UndoRedoButton
-              icon='undo'
+              name='undo'
               onClick={() => editor?.chain().focus().undo().run()}
               title='Undo (ctrl+z)'
             >
               <MdUndo className='h-6 w-6' />
             </UndoRedoButton>
             <UndoRedoButton
-              icon='redo'
+              name='redo'
               onClick={() => editor?.chain().focus().redo().run()}
               title='Redo (ctrl+shift+z)'
             >

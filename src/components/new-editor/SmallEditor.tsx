@@ -1,33 +1,31 @@
 import { Placeholder } from '@tiptap/extension-placeholder'
 import { Underline } from '@tiptap/extension-underline'
-import {
-  EditorContent,
-  useEditor,
-  type EditorOptions,
-  type JSONContent,
-} from '@tiptap/react'
+import { EditorContent, useEditor, type JSONContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { atom, useAtom } from 'jotai'
 
 // fixes conflicting `Editor` type from `@tiptap/react` and `@tiptap/core`
 import type { Editor } from '../../../node_modules/@tiptap/core/dist/packages/core/src/Editor'
+import { answerAtom, questionAtom } from './TwinEditor'
 
 export const editorAtom = atom<Editor | null>(null)
-
-// This atom is used to re-render forcefully icon buttons in the toolbar.
+// This atom is used to re-render forcefully icon buttons in the toolbar
 export const toolbarForcedAtom = atom(0)
 
 const SmallEditor = ({
   className,
   placeholder,
-  onUpdate,
-  initialContent,
+  isQuestionEditor,
+  onChange,
 }: {
   className: string
   placeholder: string
-  onUpdate: EditorOptions['onUpdate']
-  initialContent?: JSONContent[]
+  isQuestionEditor: boolean
+  onChange: (questionValue?: JSONContent[], answerValue?: JSONContent[]) => void
 }) => {
+  const [question, setQuestion] = useAtom(questionAtom)
+  const [answer, setAnswer] = useAtom(answerAtom)
+
   const [, setEditor] = useAtom(editorAtom)
   const [, forceUpdate] = useAtom(toolbarForcedAtom)
 
@@ -56,19 +54,29 @@ const SmallEditor = ({
           class:
             'prose p-4 max-w-none overflow-y-auto min-h-[6rem] h-full outline-none ' +
             className,
+          spellcheck: 'false',
         },
       },
-      onUpdate,
-      onTransaction(props) {
-        setEditor(props.editor)
+      onUpdate(editorProps) {
+        const { content } = editorProps.editor.getJSON()
+        if (isQuestionEditor) {
+          onChange(content, answer)
+          setQuestion(content)
+        } else {
+          onChange(question, content)
+          setAnswer(content)
+        }
+      },
+      onTransaction(editorProps) {
+        setEditor(editorProps.editor)
         forceUpdate((prev) => prev + 1)
       },
       content: {
         type: 'doc',
-        content: initialContent,
+        content: isQuestionEditor ? question : answer,
       },
     },
-    [className, onUpdate, initialContent]
+    []
   )
 
   return <EditorContent editor={editor} />

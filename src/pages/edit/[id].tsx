@@ -71,7 +71,7 @@ const EditorPage: NextPageWithLayout = () => {
     600
   )
 
-  const btnClass = useMemo(
+  const ctaClassName = useMemo(
     () =>
       twMerge(
         'btn btn-primary gap-2',
@@ -99,7 +99,7 @@ const EditorPage: NextPageWithLayout = () => {
 
       <IconsToolbar>
         <button
-          className={btnClass}
+          className={ctaClassName}
           onClick={() => createCard({ deckId: parseInt(id, 10) })}
         >
           {!isCreating && <MdAdd className='h-6 w-6' />}

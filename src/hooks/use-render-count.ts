@@ -1,13 +1,13 @@
 import { useEffect, useRef } from 'react'
 
 const useRenderCount = () => {
-  const commitCountRef = useRef(0)
+  const countRef = useRef(0)
 
   useEffect(() => {
-    commitCountRef.current++
+    countRef.current++
   })
 
-  return commitCountRef.current
+  return countRef.current
 }
 
 export default useRenderCount
