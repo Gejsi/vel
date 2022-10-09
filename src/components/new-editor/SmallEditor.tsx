@@ -1,4 +1,6 @@
+import CharacterCount from '@tiptap/extension-character-count'
 import { Placeholder } from '@tiptap/extension-placeholder'
+import Typography from '@tiptap/extension-typography'
 import { Underline } from '@tiptap/extension-underline'
 import {
   EditorContent,
@@ -44,11 +46,15 @@ const SmallEditor = ({
       Placeholder.configure({
         placeholder,
       }),
+      CharacterCount.configure({
+        limit: 600,
+      }),
+      Typography,
     ],
     editorProps: {
       attributes: {
         class:
-          'prose p-4 max-w-none overflow-y-auto min-h-[6rem] h-full outline-none ' +
+          'prose p-4 max-w-none overflow-y-auto min-h-[6rem] max-h-72 h-full outline-none ' +
           className,
         spellcheck: 'false',
       },
