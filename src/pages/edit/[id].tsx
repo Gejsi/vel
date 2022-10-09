@@ -54,6 +54,33 @@ const EditorPage: NextPageWithLayout = () => {
     }
   )
 
+  const { mutate: deleteCard } = useMutation(['card.delete'], {
+    async onMutate(inputCard) {
+      toast.loading('Deleting card...', { id: 'delete-toast' })
+      await utils.cancelQuery(['deck.getById', { id }])
+      const prevData = utils.getQueryData(['deck.getById', { id }])
+
+      if (prevData)
+        utils.setQueryData(['deck.getById', { id }], () => ({
+          ...prevData,
+          cards: [
+            ...prevData.cards.filter((card) => card.id !== inputCard.cardId),
+          ],
+        }))
+
+      return { prevData }
+    },
+    onError(err, inputCard, context) {
+      toast.error('Unable to delete card', { id: 'delete-toast' })
+      if (context?.prevData)
+        utils.setQueryData(['deck.getById', { id }], context.prevData)
+    },
+    onSettled() {
+      toast.success('Deleted card', { id: 'delete-toast' })
+      utils.invalidateQueries(['deck.getById', { id }])
+    },
+  })
+
   const handleChange = useDebouncedCallback(
     (
       question: JSONContent[] | undefined,
@@ -128,7 +155,7 @@ const EditorPage: NextPageWithLayout = () => {
                   onChange={(question, answer) =>
                     handleChange(question, answer, card.id)
                   }
-                  onDelete={() => console.log('deleting')}
+                  onDelete={() => deleteCard({ cardId: card.id })}
                 />
               ))
             )}
