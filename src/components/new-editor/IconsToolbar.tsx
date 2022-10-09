@@ -1,5 +1,6 @@
-import { useAtom } from 'jotai'
-import type { ReactNode } from 'react'
+import { clsx } from 'clsx'
+import { useAtomValue } from 'jotai'
+import { ReactNode } from 'react'
 import { BiCodeBlock } from 'react-icons/bi'
 import {
   MdCode,
@@ -14,12 +15,12 @@ import {
   MdRedo,
   MdUndo,
 } from 'react-icons/md'
-import IconButton from './IconButton'
-import { editorAtom } from './SmallEditor'
-import UndoRedoButton from './UndoRedoButton'
+import { twMerge } from 'tailwind-merge'
+import { editorAtom, toolbarForcedAtom } from './TwinEditor'
 
 const IconsToolbar = ({ children }: { children?: ReactNode }) => {
-  const [editor] = useAtom(editorAtom)
+  useAtomValue(toolbarForcedAtom)
+  const editor = useAtomValue(editorAtom)
 
   return (
     <nav className='sticky top-0 z-10 mb-4 bg-base-100 px-4 pt-4 lg:px-8'>
@@ -30,91 +31,147 @@ const IconsToolbar = ({ children }: { children?: ReactNode }) => {
 
         <div className='flex flex-1 flex-nowrap overflow-y-auto'>
           <div className='btn-group flex-nowrap rounded-lg bg-base-content/10'>
-            <IconButton
-              name='bulletList'
+            <button
+              disabled={!editor}
+              className={twMerge(
+                'btn-icon',
+                clsx({
+                  'btn-active': editor?.isActive('bulletList'),
+                })
+              )}
               onClick={() => editor?.chain().focus().toggleBulletList().run()}
               title='Bulleted List'
             >
               <MdFormatListBulleted className='h-6 w-6' />
-            </IconButton>
-            <IconButton
-              name='orderedList'
+            </button>
+            <button
+              disabled={!editor}
+              className={twMerge(
+                'btn-icon',
+                clsx({
+                  'btn-active': editor?.isActive('orderedList'),
+                })
+              )}
               onClick={() => editor?.chain().focus().toggleOrderedList().run()}
               title='Numbered List'
             >
               <MdFormatListNumbered className='h-6 w-6' />
-            </IconButton>
-            <IconButton
-              name='blockquote'
+            </button>
+            <button
+              disabled={!editor}
+              className={twMerge(
+                'btn-icon',
+                clsx({
+                  'btn-active': editor?.isActive('blockquote'),
+                })
+              )}
               onClick={() => editor?.chain().focus().toggleBlockquote().run()}
               title='Blockquote (ctrl+shift+.)'
             >
               <MdFormatQuote className='h-6 w-6' />
-            </IconButton>
-            <IconButton
-              name='codeBlock'
+            </button>
+            <button
+              disabled={!editor}
+              className={twMerge(
+                'btn-icon',
+                clsx({
+                  'btn-active': editor?.isActive('codeBlock'),
+                })
+              )}
               onClick={() => editor?.chain().focus().toggleCodeBlock().run()}
               title='Code Block'
             >
               <BiCodeBlock className='h-6 w-6' />
-            </IconButton>
+            </button>
 
             {/* Vertical divider */}
             <div className='w-[0.125rem] bg-base-content/30' />
 
-            <IconButton
-              name='bold'
+            <button
+              disabled={!editor}
+              className={twMerge(
+                'btn-icon',
+                clsx({
+                  'btn-active': editor?.isActive('bold'),
+                })
+              )}
               onClick={() => editor?.chain().focus().toggleBold().run()}
               title='Bold (ctrl+b)'
             >
               <MdFormatBold className='h-6 w-6' />
-            </IconButton>
-            <IconButton
-              name='italic'
+            </button>
+            <button
+              disabled={!editor}
+              className={twMerge(
+                'btn-icon',
+                clsx({
+                  'btn-active': editor?.isActive('italic'),
+                })
+              )}
               onClick={() => editor?.chain().focus().toggleItalic().run()}
               title='Italic (ctrl+i)'
             >
               <MdFormatItalic className='h-6 w-6' />
-            </IconButton>
-            <IconButton
-              name='underline'
+            </button>
+            <button
+              disabled={!editor}
+              className={twMerge(
+                'btn-icon',
+                clsx({
+                  'btn-active': editor?.isActive('underline'),
+                })
+              )}
               onClick={() => editor?.chain().focus().toggleUnderline().run()}
               title='Underline (ctrl+u)'
             >
               <MdFormatUnderlined className='h-6 w-6' />
-            </IconButton>
-            <IconButton
-              name='strike'
+            </button>
+            <button
+              disabled={!editor}
+              className={twMerge(
+                'btn-icon',
+                clsx({
+                  'btn-active': editor?.isActive('strike'),
+                })
+              )}
               onClick={() => editor?.chain().focus().toggleStrike().run()}
               title='Strikethrough (ctrl+shift+x)'
             >
               <MdFormatStrikethrough className='h-6 w-6' />
-            </IconButton>
-            <IconButton
-              name='code'
+            </button>
+            <button
+              disabled={!editor}
+              className={twMerge(
+                'btn-icon',
+                clsx({
+                  'btn-active': editor?.isActive('code'),
+                })
+              )}
               onClick={() => editor?.chain().focus().toggleCode().run()}
               title='Inline code (ctrl+e)'
             >
               <MdCode className='h-6 w-6' />
-            </IconButton>
+            </button>
 
             {/* Vertical divider */}
             <div className='w-[0.125rem] bg-base-content/30' />
 
-            <UndoRedoButton
-              name='undo'
+            <button
+              disabled={!editor || !editor?.can().chain().focus().undo().run()}
+              className='btn-icon'
               onClick={() => editor?.chain().focus().undo().run()}
               title='Undo (ctrl+z)'
             >
               <MdUndo className='h-6 w-6' />
-            </UndoRedoButton>
-            <UndoRedoButton
-              name='redo'
+            </button>
+            <button
+              disabled={!editor || !editor?.can().chain().focus().redo().run()}
+              className='btn-icon'
               onClick={() => editor?.chain().focus().redo().run()}
               title='Redo (ctrl+shift+z)'
             >
               <MdRedo className='h-6 w-6' />
-            </UndoRedoButton>
+            </button>
           </div>
         </div>
 

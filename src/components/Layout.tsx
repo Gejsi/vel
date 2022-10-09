@@ -9,7 +9,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
   return (
     <div className='drawer-mobile drawer min-h-screen'>
       <input id='sidebar' type='checkbox' className='drawer-toggle' />
-      <main className='drawer-content pb-8'>{children}</main>
+      <main className='drawer-content pb-14'>{children}</main>
       <Sidebar session={session} />
       <Toaster position='bottom-right'>
         {(t) => (

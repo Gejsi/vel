@@ -26,7 +26,6 @@ const EditorPage: NextPageWithLayout = () => {
     error: queryError,
   } = useQuery(['deck.getById', { id }], {
     retry: false,
-    refetchOnWindowFocus: false,
   })
 
   const { mutate: saveCard } = useMutation(['card.save'], {
