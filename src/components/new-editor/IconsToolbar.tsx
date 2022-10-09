@@ -11,11 +11,11 @@ import {
   MdFormatQuote,
   MdFormatStrikethrough,
   MdFormatUnderlined,
-  MdMenu,
   MdRedo,
   MdUndo,
 } from 'react-icons/md'
 import { twMerge } from 'tailwind-merge'
+import MenuButton from '../MenuButton'
 import { editorAtom, toolbarForcedAtom } from './TwinEditor'
 
 const IconsToolbar = ({ children }: { children?: ReactNode }) => {
@@ -25,9 +25,7 @@ const IconsToolbar = ({ children }: { children?: ReactNode }) => {
   return (
     <nav className='sticky top-0 z-10 mb-4 bg-base-100 px-4 pt-4 lg:px-8'>
       <div className='mb-6 flex items-center gap-4'>
-        <label tabIndex={0} htmlFor='sidebar' className='btn-icon lg:hidden'>
-          <MdMenu className='h-6 w-6' />
-        </label>
+        <MenuButton />
 
         <div className='flex flex-1 flex-nowrap overflow-y-auto'>
           <div className='btn-group flex-nowrap rounded-lg bg-base-content/10'>

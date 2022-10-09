@@ -1,14 +1,21 @@
+import { useAtom } from 'jotai'
 import { useSession } from 'next-auth/react'
 import { ReactNode } from 'react'
 import { resolveValue, Toaster, ToastIcon } from 'react-hot-toast'
-import Sidebar from './Sidebar'
+import Sidebar, { sidebarAtom } from './Sidebar'
 
 const Layout = ({ children }: { children: ReactNode }) => {
   const { data: session } = useSession({ required: true })
+  const [sidebarState] = useAtom(sidebarAtom)
 
   return (
     <div className='drawer-mobile drawer min-h-screen'>
-      <input id='sidebar' type='checkbox' className='drawer-toggle' />
+      <input
+        id='sidebar'
+        type='checkbox'
+        className='drawer-toggle'
+        checked={sidebarState}
+      />
       <main className='drawer-content pb-14'>{children}</main>
       <Sidebar session={session} />
       <Toaster position='bottom-right'>
