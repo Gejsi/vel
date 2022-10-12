@@ -9,12 +9,13 @@ const Layout = ({ children }: { children: ReactNode }) => {
   const [sidebarState] = useAtom(sidebarAtom)
 
   return (
-    <div className='drawer-mobile drawer min-h-screen'>
+    <div className='drawer drawer-mobile min-h-screen'>
       <input
         id='sidebar'
         type='checkbox'
         className='drawer-toggle'
         checked={sidebarState}
+        readOnly
       />
       <main className='drawer-content pb-14'>{children}</main>
       <Sidebar session={session} />

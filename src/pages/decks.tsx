@@ -4,7 +4,7 @@ import {
   Description,
   Portal,
   Root,
-  Title,
+  Title
 } from '@radix-ui/react-dialog'
 import { clsx } from 'clsx'
 import Head from 'next/head'
@@ -112,8 +112,8 @@ const Decks: NextPageWithLayout = () => {
                 onDelete={() =>
                   setDeckId((prev) => (prev !== deck.id ? deck.id : prev))
                 }
-                onStudy={() => router.push(`/edit/${deck.id}`)}
-                onEdit={() => router.push(`/editor/${deck.id}`)}
+                onStudy={() => console.log('study')}
+                onEdit={() => router.push(`/edit/${deck.id}`)}
               />
             ))}
           </section>
