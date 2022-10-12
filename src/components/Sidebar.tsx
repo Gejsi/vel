@@ -1,6 +1,9 @@
+import { atom, useAtom } from 'jotai'
 import { Session } from 'next-auth'
 import { signOut } from 'next-auth/react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 import { BiCommand } from 'react-icons/bi'
 import {
   MdDashboard,
@@ -40,48 +43,64 @@ const Sidenav = ({ session }: { session: Session | null }) => (
   </nav>
 )
 
-const Sidebar = ({ session }: { session: Session | null }) => (
-  <aside className='drawer-side'>
-    <label htmlFor='sidebar' className='drawer-overlay' />
-    <ul className='menu w-64 space-y-2 overflow-y-auto bg-base-200 p-4'>
-      <Sidenav session={session} />
-      <button className='btn gap-2'>
-        <MdKeyboard className='h-6 w-6' />
-        Open Commands
-      </button>
-      <div className='divider' />
-      <li>
-        <Link href='/decks'>
-          <a>
-            <MdDashboard className='h-6 w-6' />
-            Decks
-          </a>
-        </Link>
-      </li>
-      <li>
-        <Link href='/question'>
-          <a>
-            <MdToday className='h-6 w-6' />
-            Today's question
-          </a>
-        </Link>
-      </li>
-      <li>
-        <Link href='/settings'>
-          <a>
-            <MdSettings className='h-6 w-6' />
-            Settings
-          </a>
-        </Link>
-      </li>
-      <li>
-        <button>
-          <BiCommand className='h-5 w-5' />
-          Shortcuts
+export const sidebarAtom = atom(false)
+
+const Sidebar = ({ session }: { session: Session | null }) => {
+  const router = useRouter()
+  const [, setSidebar] = useAtom(sidebarAtom)
+
+  // close sidebar when route changes
+  useEffect(() => {
+    setSidebar(false)
+  }, [router.asPath])
+
+  return (
+    <aside className='drawer-side'>
+      <label
+        htmlFor='sidebar'
+        className='drawer-overlay'
+        onClick={() => setSidebar(false)}
+      />
+      <ul className='menu w-64 space-y-2 overflow-y-auto bg-base-200 p-4'>
+        <Sidenav session={session} />
+        <button className='btn gap-2'>
+          <MdKeyboard className='h-6 w-6' />
+          Open Commands
         </button>
-      </li>
-    </ul>
-  </aside>
-)
+        <div className='divider' />
+        <li>
+          <Link href='/decks'>
+            <a>
+              <MdDashboard className='h-6 w-6' />
+              Decks
+            </a>
+          </Link>
+        </li>
+        <li>
+          <Link href='/question'>
+            <a>
+              <MdToday className='h-6 w-6' />
+              Today's question
+            </a>
+          </Link>
+        </li>
+        <li>
+          <Link href='/settings'>
+            <a>
+              <MdSettings className='h-6 w-6' />
+              Settings
+            </a>
+          </Link>
+        </li>
+        <li>
+          <button>
+            <BiCommand className='h-5 w-5' />
+            Shortcuts
+          </button>
+        </li>
+      </ul>
+    </aside>
+  )
+}
 
 export default Sidebar

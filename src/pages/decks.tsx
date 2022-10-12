@@ -4,7 +4,7 @@ import {
   Description,
   Portal,
   Root,
-  Title,
+  Title
 } from '@radix-ui/react-dialog'
 import { clsx } from 'clsx'
 import Head from 'next/head'
@@ -64,7 +64,7 @@ const Decks: NextPageWithLayout = () => {
     },
   })
 
-  const btnClass = useMemo(
+  const ctaClassName = useMemo(
     () =>
       twMerge(
         'btn btn-primary gap-2',
@@ -83,7 +83,7 @@ const Decks: NextPageWithLayout = () => {
       </Head>
 
       <Toolbar title='Decks'>
-        <button className={btnClass} onClick={() => createDeck()}>
+        <button className={ctaClassName} onClick={() => createDeck()}>
           {!isCreating && <MdPostAdd className='h-6 w-6' />}
           <span className='hidden md:block'>Create deck</span>
         </button>
@@ -113,7 +113,7 @@ const Decks: NextPageWithLayout = () => {
                   setDeckId((prev) => (prev !== deck.id ? deck.id : prev))
                 }
                 onStudy={() => console.log('study')}
-                onEdit={() => router.push(`/editor/${deck.id}`)}
+                onEdit={() => router.push(`/edit/${deck.id}`)}
               />
             ))}
           </section>

@@ -1,4 +1,4 @@
-import type { Value } from '@udecode/plate-core'
+import type { JSONContent } from '@tiptap/react'
 import { clsx } from 'clsx'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -6,8 +6,8 @@ import { useMemo } from 'react'
 import { toast } from 'react-hot-toast'
 import { MdAdd } from 'react-icons/md'
 import { twMerge } from 'tailwind-merge'
-import Editor from '../../components/editor/Editor'
 import IconsToolbar from '../../components/editor/IconsToolbar'
+import TwinEditor from '../../components/editor/TwinEditor'
 import EmptyFigure from '../../components/EmptyFigure'
 import Error from '../../components/Error'
 import Spinner from '../../components/Spinner'
@@ -17,16 +17,15 @@ import { useContext, useMutation, useQuery } from '../../utils/trpc'
 import type { NextPageWithLayout } from '../_app'
 
 const EditorPage: NextPageWithLayout = () => {
-  const { id } = useRouter().query
+  const id = useRouter().query.id as string
   const utils = useContext()
 
   const {
     data: deck,
     isLoading,
     error: queryError,
-  } = useQuery(['deck.getById', { id: id as string }], {
+  } = useQuery(['deck.getById', { id }], {
     retry: false,
-    refetchOnWindowFocus: false,
   })
 
   const { mutate: saveCard } = useMutation(['card.save'], {
@@ -34,11 +33,11 @@ const EditorPage: NextPageWithLayout = () => {
       toast.loading('Saving...', { id: 'autosave-toast' })
     },
     onError() {
-      utils.invalidateQueries(['deck.getById', { id: id as string }])
-      toast.error('Cannot save', { id: 'autosave-toast' })
+      utils.invalidateQueries(['deck.getById', { id }])
+      toast.error('Unable to save', { id: 'autosave-toast' })
     },
     onSuccess() {
-      utils.invalidateQueries(['deck.getById', { id: id as string }])
+      utils.invalidateQueries(['deck.getById', { id }])
       toast.success('Saved', { id: 'autosave-toast' })
     },
   })
@@ -47,24 +46,22 @@ const EditorPage: NextPageWithLayout = () => {
     ['card.create'],
     {
       onError() {
-        toast.error('Cannot create a card')
+        toast.error('Unable to create a new card')
       },
       onSuccess() {
-        utils.invalidateQueries(['deck.getById', { id: id as string }])
+        utils.invalidateQueries(['deck.getById', { id }])
       },
     }
   )
 
   const { mutate: deleteCard } = useMutation(['card.delete'], {
     async onMutate(inputCard) {
-      await utils.cancelQuery(['deck.getById', { id: id as string }])
-      const prevData = utils.getQueryData([
-        'deck.getById',
-        { id: id as string },
-      ])
+      toast.loading('Deleting card...', { id: 'delete-toast' })
+      await utils.cancelQuery(['deck.getById', { id }])
+      const prevData = utils.getQueryData(['deck.getById', { id }])
 
       if (prevData)
-        utils.setQueryData(['deck.getById', { id: id as string }], () => ({
+        utils.setQueryData(['deck.getById', { id }], () => ({
           ...prevData,
           cards: [
             ...prevData.cards.filter((card) => card.id !== inputCard.cardId),
@@ -74,30 +71,33 @@ const EditorPage: NextPageWithLayout = () => {
       return { prevData }
     },
     onError(err, inputCard, context) {
+      toast.error('Unable to delete card', { id: 'delete-toast' })
       if (context?.prevData)
-        utils.setQueryData(
-          ['deck.getById', { id: id as string }],
-          context.prevData
-        )
+        utils.setQueryData(['deck.getById', { id }], context.prevData)
     },
     onSettled() {
-      utils.invalidateQueries(['deck.getById', { id: id as string }])
+      toast.success('Deleted card', { id: 'delete-toast' })
+      utils.invalidateQueries(['deck.getById', { id }])
     },
   })
 
   const handleChange = useDebouncedCallback(
-    (question: Value, answer: Value, cardId: number) => {
+    (
+      question: JSONContent[] | undefined,
+      answer: JSONContent[] | undefined,
+      cardId: number
+    ) => {
       saveCard({
         question: question as JsonValue,
         answer: answer as JsonValue,
         cardId,
-        deckId: parseInt(id as string, 10),
+        deckId: parseInt(id, 10),
       })
     },
     600
   )
 
-  const btnClass = useMemo(
+  const ctaClassName = useMemo(
     () =>
       twMerge(
         'btn btn-primary gap-2',
@@ -125,8 +125,8 @@ const EditorPage: NextPageWithLayout = () => {
 
       <IconsToolbar>
         <button
-          className={btnClass}
-          onClick={() => createCard({ deckId: parseInt(id as string, 10) })}
+          className={ctaClassName}
+          onClick={() => createCard({ deckId: parseInt(id, 10) })}
         >
           {!isCreating && <MdAdd className='h-6 w-6' />}
           <span className='hidden md:block'>Add Flashcard</span>
@@ -147,11 +147,11 @@ const EditorPage: NextPageWithLayout = () => {
               />
             ) : (
               deck?.cards.map((card, i) => (
-                <Editor
+                <TwinEditor
                   key={card.id}
                   count={i + 1}
-                  initialQuestion={card.question as Value}
-                  initialAnswer={card.answer as Value}
+                  initialQuestion={card.question as JSONContent[]}
+                  initialAnswer={card.answer as JSONContent[]}
                   onChange={(question, answer) =>
                     handleChange(question, answer, card.id)
                   }
