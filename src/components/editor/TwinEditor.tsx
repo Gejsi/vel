@@ -1,18 +1,7 @@
-import type { Editor } from '@tiptap/core'
 import type { EditorOptions, JSONContent } from '@tiptap/react'
-import { Atom, atom, Provider as AtomProvider, useAtom } from 'jotai'
-import { MouseEventHandler, useCallback } from 'react'
+import { MouseEventHandler, useCallback, useRef } from 'react'
 import { MdDelete } from 'react-icons/md'
 import SmallEditor from './SmallEditor'
-
-export const editorAtom = atom<Editor | null>(null)
-// This atom is used to re-render forcefully icon buttons in the toolbar
-export const toolbarForcedAtom = atom(0)
-
-export const questionAtom = atom<JSONContent[] | undefined>(undefined)
-export const answerAtom = atom<JSONContent[] | undefined>(undefined)
-
-type InitialValues<T> = Iterable<readonly [Atom<T>, T]>
 
 type EditorProps = {
   /**
@@ -44,15 +33,22 @@ const TwinEditor = ({
   onChange,
   onDelete,
 }: EditorProps) => {
-  const [, setEditor] = useAtom(editorAtom)
-  const [, forceUpdate] = useAtom(toolbarForcedAtom)
+  const questionRef = useRef<JSONContent[] | undefined>(initialQuestion)
+  const answerRef = useRef<JSONContent[] | undefined>(initialAnswer)
 
-  const handleTransaction = useCallback<EditorOptions['onTransaction']>(
-    (editorProps) => {
-      setEditor(editorProps.editor)
-      forceUpdate((prev) => prev + 1)
+  const handleUpdate: (
+    editorProps: Parameters<EditorOptions['onUpdate']>[0],
+    updatingQuestionEditor: boolean
+  ) => void = useCallback(
+    (editorProps, updatingQuestionEditor) => {
+      const content = editorProps.editor.getJSON().content
+
+      if (updatingQuestionEditor) questionRef.current = content
+      else answerRef.current = content
+
+      onChange(questionRef.current, answerRef.current)
     },
-    [setEditor, forceUpdate]
+    [onChange]
   )
 
   return (
@@ -70,29 +66,18 @@ const TwinEditor = ({
         </div>
       </div>
       <div className='grid min-w-fit grid-cols-[repeat(auto-fit,_minmax(18rem,_1fr))] rounded-xl bg-base-300 shadow-lg'>
-        <AtomProvider
-          initialValues={
-            [
-              [questionAtom, initialQuestion],
-              [answerAtom, initialAnswer],
-            ] as InitialValues<typeof initialQuestion>
-          }
-        >
-          <SmallEditor
-            className='selection:bg-primary/40'
-            placeholder='Write a question...'
-            isQuestionEditor={true}
-            onChange={onChange}
-            onTransaction={handleTransaction}
-          />
-          <SmallEditor
-            className='rounded-xl bg-base-200 selection:bg-secondary/40'
-            placeholder='Write an answer...'
-            isQuestionEditor={false}
-            onChange={onChange}
-            onTransaction={handleTransaction}
-          />
-        </AtomProvider>
+        <SmallEditor
+          className='selection:bg-primary/40'
+          placeholder='Write a question...'
+          initialContent={questionRef.current}
+          onUpdate={(editorProps) => handleUpdate(editorProps, true)}
+        />
+        <SmallEditor
+          className='rounded-xl bg-base-200 selection:bg-secondary/40'
+          placeholder='Write an answer...'
+          initialContent={answerRef.current}
+          onUpdate={(editorProps) => handleUpdate(editorProps, false)}
+        />
       </div>
     </div>
   )

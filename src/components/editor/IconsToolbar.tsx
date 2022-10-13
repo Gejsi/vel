@@ -16,7 +16,7 @@ import {
 } from 'react-icons/md'
 import { twMerge } from 'tailwind-merge'
 import MenuButton from '../MenuButton'
-import { editorAtom, toolbarForcedAtom } from './TwinEditor'
+import { editorAtom, toolbarForcedAtom } from './SmallEditor'
 
 const IconsToolbar = ({ children }: { children?: ReactNode }) => {
   useAtomValue(toolbarForcedAtom)

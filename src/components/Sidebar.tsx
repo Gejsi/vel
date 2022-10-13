@@ -47,19 +47,19 @@ export const sidebarAtom = atom(false)
 
 const Sidebar = ({ session }: { session: Session | null }) => {
   const router = useRouter()
-  const [, setSidebar] = useAtom(sidebarAtom)
+  const [, setSidebarOpen] = useAtom(sidebarAtom)
 
   // close sidebar when route changes
   useEffect(() => {
-    setSidebar(false)
-  }, [router.asPath])
+    setSidebarOpen(false)
+  }, [router.asPath, setSidebarOpen])
 
   return (
     <aside className='drawer-side'>
       <label
         htmlFor='sidebar'
         className='drawer-overlay'
-        onClick={() => setSidebar(false)}
+        onClick={() => setSidebarOpen(false)}
       />
       <ul className='menu w-64 space-y-2 overflow-y-auto bg-base-200 p-4'>
         <Sidenav session={session} />
