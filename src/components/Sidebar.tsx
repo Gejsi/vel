@@ -20,7 +20,9 @@ const Sidenav = ({ session }: { session: Session | null }) => (
         <h1 className='text-5xl font-bold'>Vel</h1>
       </a>
     </Link>
+
     <div className='divider mb-0' />
+
     <div className='flex w-full items-center gap-2'>
       <li className='flex-1'>
         <Link href='/me'>
@@ -67,7 +69,13 @@ const Sidebar = ({ session }: { session: Session | null }) => {
           <MdKeyboard className='h-6 w-6' />
           Open Commands
         </button>
+
         <div className='divider' />
+
+        <li className='menu-title'>
+          <span className='uppercase'>Sections</span>
+        </li>
+
         <li>
           <Link href='/decks'>
             <a>
@@ -97,6 +105,12 @@ const Sidebar = ({ session }: { session: Session | null }) => {
             <BiCommand className='h-5 w-5' />
             Shortcuts
           </button>
+        </li>
+
+        <div className='divider' />
+
+        <li className='menu-title'>
+          <span className='uppercase'>Folders</span>
         </li>
       </ul>
     </aside>

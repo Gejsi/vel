@@ -4,7 +4,7 @@ import {
   Description,
   Portal,
   Root,
-  Title
+  Title,
 } from '@radix-ui/react-dialog'
 import { clsx } from 'clsx'
 import Head from 'next/head'
@@ -33,7 +33,7 @@ const Decks: NextPageWithLayout = () => {
     {
       async onSuccess({ id }) {
         await utils.invalidateQueries(['deck.getAll'])
-        await router.push(`/editor/${id}`)
+        await router.push(`/edit/${id}`)
       },
     }
   )
