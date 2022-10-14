@@ -17,7 +17,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
         checked={sidebarState}
         readOnly
       />
-      <main className='drawer-content pb-14'>{children}</main>
+      <main className='drawer-content pb-8'>{children}</main>
       <Sidebar session={session} />
       <Toaster position='bottom-right'>
         {(t) => (

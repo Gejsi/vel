@@ -2,7 +2,7 @@ import type { JSONContent } from '@tiptap/react'
 import { clsx } from 'clsx'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useMemo } from 'react'
+import { useMemo, useRef } from 'react'
 import { toast } from 'react-hot-toast'
 import { MdAdd } from 'react-icons/md'
 import { twMerge } from 'tailwind-merge'
@@ -19,6 +19,7 @@ import type { NextPageWithLayout } from '../_app'
 const EditorPage: NextPageWithLayout = () => {
   const id = useRouter().query.id as string
   const utils = useContext()
+  const scrollRef = useRef<HTMLDivElement>(null)
 
   const {
     data: deck,
@@ -48,8 +49,9 @@ const EditorPage: NextPageWithLayout = () => {
       onError() {
         toast.error('Unable to create a new card')
       },
-      onSuccess() {
-        utils.invalidateQueries(['deck.getById', { id }])
+      async onSuccess() {
+        await utils.invalidateQueries(['deck.getById', { id }])
+        scrollRef.current?.scrollIntoView({ behavior: 'smooth' })
       },
     }
   )
@@ -138,7 +140,7 @@ const EditorPage: NextPageWithLayout = () => {
           <Spinner />
         ) : (
           <>
-            <h1 className='mb-4 text-5xl font-bold'>{deck?.title}</h1>
+            <h1 className='my-8 text-5xl font-bold'>{deck?.title}</h1>
 
             {deck?.cards.length === 0 ? (
               <EmptyFigure
@@ -163,6 +165,8 @@ const EditorPage: NextPageWithLayout = () => {
             )}
           </>
         )}
+
+        <div className='pointer-events-none pt-72 md:pt-48' ref={scrollRef} />
       </div>
     </>
   )
