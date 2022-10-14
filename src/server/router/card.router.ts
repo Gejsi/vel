@@ -1,4 +1,5 @@
 import type { Prisma } from '@prisma/client'
+import dayjs from 'dayjs'
 import { z } from 'zod'
 import type { JsonValue } from '../../types/json'
 import { createProtectedRouter } from './context'
@@ -20,14 +21,22 @@ export const cardRouter = createProtectedRouter()
       cardId: z.number(),
     }),
     async resolve({ ctx, input }) {
-      return await ctx.prisma.card.update({
-        where: {
-          id: input.cardId,
-        },
+      return await ctx.prisma.deck.update({
+        where: { id: input.deckId },
         data: {
-          question: input.question as PrismaJson,
-          answer: input.answer as PrismaJson,
-          id: input.cardId,
+          updatedAt: dayjs().toDate(),
+          cards: {
+            update: {
+              where: {
+                id: input.cardId,
+              },
+              data: {
+                question: input.question as PrismaJson,
+                answer: input.answer as PrismaJson,
+                id: input.cardId,
+              },
+            },
+          },
         },
       })
     },
@@ -39,22 +48,36 @@ export const cardRouter = createProtectedRouter()
     async resolve({ ctx, input }) {
       const initialValue = [{ type: 'paragraph' }]
 
-      return await ctx.prisma.card.create({
+      return await ctx.prisma.deck.update({
+        where: { id: input.deckId },
         data: {
-          question: initialValue,
-          answer: initialValue,
-          deckId: input.deckId,
+          updatedAt: dayjs().toDate(),
+          cards: {
+            create: {
+              question: initialValue,
+              answer: initialValue,
+            },
+          },
         },
       })
     },
   })
   .mutation('delete', {
     input: z.object({
+      deckId: z.number(),
       cardId: z.number(),
     }),
     async resolve({ ctx, input }) {
-      return await ctx.prisma.card.delete({
-        where: { id: input.cardId },
+      return await ctx.prisma.deck.update({
+        where: { id: input.deckId },
+        data: {
+          updatedAt: dayjs().toDate(),
+          cards: {
+            delete: {
+              id: input.cardId,
+            },
+          },
+        },
       })
     },
   })

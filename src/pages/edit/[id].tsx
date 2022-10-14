@@ -155,7 +155,9 @@ const EditorPage: NextPageWithLayout = () => {
                   onChange={(question, answer) =>
                     handleChange(question, answer, card.id)
                   }
-                  onDelete={() => deleteCard({ cardId: card.id })}
+                  onDelete={() =>
+                    deleteCard({ cardId: card.id, deckId: parseInt(id, 10) })
+                  }
                 />
               ))
             )}
