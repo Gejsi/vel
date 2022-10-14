@@ -50,8 +50,13 @@
 }
 
 @layer utilities {
-  .glassy {
-    @apply select-none border-[1px] border-base-content/40 bg-base-content/5 backdrop-blur-sm transition-colors hover:bg-base-content/10;
+  /* some of these "!important"s may be unnecessary */
+  .notification {
+    @apply !select-none !gap-2 !border-[1px] !border-base-content/40 !bg-base-content/5 !p-4 !text-current !backdrop-blur-sm !transition-colors hover:!bg-base-content/10;
+  }
+
+  .notification div {
+    @apply !m-0;
   }
 
   .ProseMirror.prose p.is-empty::before {

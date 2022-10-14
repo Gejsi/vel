@@ -1,7 +1,7 @@
 import { useAtom } from 'jotai'
 import { useSession } from 'next-auth/react'
 import { ReactNode } from 'react'
-import { resolveValue, Toaster, ToastIcon } from 'react-hot-toast'
+import { Toaster } from 'react-hot-toast'
 import Sidebar, { sidebarAtom } from './Sidebar'
 
 const Layout = ({ children }: { children: ReactNode }) => {
@@ -9,7 +9,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
   const [sidebarState] = useAtom(sidebarAtom)
 
   return (
-    <div className='drawer drawer-mobile min-h-screen'>
+    <div className='drawer-mobile drawer min-h-screen'>
       <input
         id='sidebar'
         type='checkbox'
@@ -19,20 +19,12 @@ const Layout = ({ children }: { children: ReactNode }) => {
       />
       <main className='drawer-content pb-8'>{children}</main>
       <Sidebar session={session} />
-      <Toaster position='bottom-right'>
-        {(t) => (
-          <div className='toast'>
-            <div
-              className={`glassy alert ${
-                t.visible ? 'animate-slideUp' : 'animate-slideDown'
-              }`}
-            >
-              <ToastIcon toast={t} />
-              <p>{resolveValue(t.message, t)}</p>
-            </div>
-          </div>
-        )}
-      </Toaster>
+      <Toaster
+        position='bottom-right'
+        containerClassName='!inset-4 md:!inset-8'
+        gutter={16}
+        toastOptions={{ className: 'notification' }}
+      />
     </div>
   )
 }
