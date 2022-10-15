@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @layer base {
-  /* Firefox scrollbar:
+  /* Firefox scrollbar, note:
     --n  = bg-neutral
     --b1 = bg-base-100
   */
@@ -47,9 +47,19 @@
   .btn-group > .btn-icon:last-of-type {
     @apply rounded-r-lg;
   }
-}
 
-@layer utilities {
+  .dropdown-item {
+    @apply outline-none;
+  }
+
+  .dropdown-item span {
+    @apply rounded-md;
+  }
+
+  .dropdown-item:focus span {
+    @apply active;
+  }
+
   /* some of these "!important"s may be unnecessary */
   .notification {
     @apply !select-none !gap-2 !border-[1px] !border-base-content/40 !bg-base-content/5 !p-4 !text-current !backdrop-blur-sm !transition-colors hover:!bg-base-content/10;
@@ -58,70 +68,11 @@
   .notification div {
     @apply !m-0;
   }
+}
 
+@layer utilities {
   .ProseMirror.prose p.is-empty::before {
     content: attr(data-placeholder);
     @apply pointer-events-none absolute opacity-40;
   }
-}
-
-/* ------------BLOCKS------------ */
-div[data-slate-editor='true'] {
-  @apply p-4;
-  min-height: 8rem !important; /* !important overrides conflicting inline style */
-}
-
-.slate-h1 {
-  @apply text-5xl;
-}
-
-.slate-p:first-child {
-  @apply mt-0 mb-4;
-}
-
-.slate-p {
-  @apply mt-4;
-}
-
-.slate-p::before {
-  content: 'Type something...';
-  @apply pointer-events-none absolute opacity-30;
-}
-
-.slate-blockquote {
-  @apply my-4 border-l-4 border-l-base-content bg-base-content/10 py-2 pl-4 font-medium italic;
-}
-
-.slate-code_block {
-  @apply mockup-code my-4 min-w-fit p-4 before:hidden;
-}
-
-.slate-code_block pre::before {
-  @apply hidden;
-}
-
-.slate-code_line {
-  @apply max-w-[20ch] text-sm;
-}
-
-.slate-ul,
-.slate-ol {
-  @apply pl-4;
-}
-
-.slate-ul {
-  @apply list-disc;
-}
-
-.slate-ol {
-  @apply list-decimal;
-}
-
-/* ------------MARKS------------ */
-.slate-bold {
-  @apply font-medium;
-}
-
-.slate-code {
-  @apply rounded bg-base-content/10 p-1 font-mono text-sm text-red-400;
 }

@@ -1,13 +1,29 @@
+import {
+  Arrow as DropdownArrow,
+  Content as DropdownContent,
+  Group as DropdownGroup,
+  Item as DropdownItem,
+  Portal as DropdownPortal,
+  Root as DropdownRoot,
+  Trigger as DropdownTrigger,
+} from '@radix-ui/react-dropdown-menu'
 import dayjs from 'dayjs'
 import type { MouseEventHandler } from 'react'
-import { MdDelete, MdDeviceHub, MdEdit } from 'react-icons/md'
+import {
+  MdDelete,
+  MdDeviceHub,
+  MdEdit,
+  MdEditNote,
+  MdMoreVert,
+  MdShare,
+} from 'react-icons/md'
 
 type CardProps = {
   title: string
   amount: number
   createdAt: Date
   updatedAt: Date
-  onDelete: MouseEventHandler<HTMLButtonElement>
+  onDelete: MouseEventHandler<HTMLLIElement>
   onStudy: MouseEventHandler<HTMLButtonElement>
   onEdit: MouseEventHandler<HTMLButtonElement>
 }
@@ -23,11 +39,52 @@ const Card = ({
 }: CardProps) => (
   <div className='card bg-base-200/90 shadow'>
     <div className='card-body'>
-      <div className='flex gap-2'>
-        <h2 className='card-title flex-1'>{title}</h2>
-        <button className='btn-icon' onClick={onDelete}>
-          <MdDelete className='h-6 w-6' />
-        </button>
+      <div className='flex items-center gap-2'>
+        <h2 className='card-title block flex-1 truncate'>{title}</h2>
+        <DropdownRoot>
+          <DropdownTrigger asChild>
+            <button className='btn-icon'>
+              <MdMoreVert className='h-6 w-6' />
+            </button>
+          </DropdownTrigger>
+
+          <DropdownPortal>
+            <DropdownContent
+              loop
+              className='rounded-box border-2 border-base-content/40 bg-base-content/5 p-4 backdrop-blur-md'
+            >
+              <DropdownGroup asChild>
+                <ul className='menu'>
+                  <DropdownItem asChild>
+                    <li className='dropdown-item'>
+                      <span>
+                        <MdEditNote className='h-6 w-6' />
+                        Rename
+                      </span>
+                    </li>
+                  </DropdownItem>
+                  <DropdownItem asChild>
+                    <li className='dropdown-item' onClick={onDelete}>
+                      <span>
+                        <MdDelete className='h-6 w-6' />
+                        Delete
+                      </span>
+                    </li>
+                  </DropdownItem>
+                  <DropdownItem asChild>
+                    <li className='dropdown-item'>
+                      <span>
+                        <MdShare className='h-6 w-6' />
+                        Share
+                      </span>
+                    </li>
+                  </DropdownItem>
+                </ul>
+              </DropdownGroup>
+              <DropdownArrow className='m-[2px] fill-current text-base-content/40' />
+            </DropdownContent>
+          </DropdownPortal>
+        </DropdownRoot>
       </div>
       <div className='stats my-4 shadow'>
         <div className='stat py-3 px-5'>
