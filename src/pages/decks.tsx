@@ -1,17 +1,10 @@
 import { clsx } from 'clsx'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { MdPostAdd } from 'react-icons/md'
 import { twMerge } from 'tailwind-merge'
 import Card from '../components/Card'
-import {
-  Dialog,
-  DialogAction,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-} from '../components/Dialog'
 import EmptyFigure from '../components/EmptyFigure'
 import Spinner from '../components/Spinner'
 import Toolbar from '../components/Toolbar'
@@ -19,7 +12,6 @@ import { useContext, useMutation, useQuery } from '../utils/trpc'
 import type { NextPageWithLayout } from './_app'
 
 const Decks: NextPageWithLayout = () => {
-  const [deckId, setDeckId] = useState(-1)
   const router = useRouter()
   const utils = useContext()
 
@@ -108,9 +100,9 @@ const Decks: NextPageWithLayout = () => {
                 amount={deck.cards.length}
                 createdAt={deck.createdAt}
                 updatedAt={deck.updatedAt}
-                onDelete={() =>
-                  setDeckId((prev) => (prev !== deck.id ? deck.id : prev))
-                }
+                deckId={deck.id}
+                onRename={(renamedDeckId) => console.log(renamedDeckId)}
+                onDelete={(deletedDeckId) => deleteDeck({ id: deletedDeckId })}
                 onStudy={() => console.log('study')}
                 onEdit={() => router.push(`/edit/${deck.id}`)}
               />
@@ -118,32 +110,6 @@ const Decks: NextPageWithLayout = () => {
           </section>
         )}
       </div>
-
-      <Dialog
-        open={deckId >= 0 ? true : false}
-        onOpenChange={() => setDeckId((prev) => (prev >= 0 ? -1 : prev))}
-      >
-        <DialogContent>
-          <DialogTitle>Delete this deck</DialogTitle>
-          <DialogDescription>
-            The deck cannot be restored after the removal.
-          </DialogDescription>
-
-          <div className='modal-action'>
-            <DialogAction asChild>
-              <button className='btn btn-ghost'>Cancel</button>
-            </DialogAction>
-            <DialogAction asChild>
-              <button
-                className='btn btn-error'
-                onClick={() => deleteDeck({ id: deckId })}
-              >
-                Delete Deck
-              </button>
-            </DialogAction>
-          </div>
-        </DialogContent>
-      </Dialog>
     </>
   )
 }

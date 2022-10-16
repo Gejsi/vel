@@ -33,12 +33,12 @@ const EditorPage: NextPageWithLayout = () => {
     onMutate() {
       toast.loading('Saving...', { id: 'autosave-toast' })
     },
-    onError() {
-      utils.invalidateQueries(['deck.getById', { id }])
+    async onError() {
+      await utils.invalidateQueries(['deck.getById', { id }])
       toast.error('Unable to save', { id: 'autosave-toast' })
     },
-    onSuccess() {
-      utils.invalidateQueries(['deck.getById', { id }])
+    async onSuccess() {
+      await utils.invalidateQueries(['deck.getById', { id }])
       toast.success('Saved', { id: 'autosave-toast' })
     },
   })
