@@ -1,11 +1,3 @@
-import {
-  Close,
-  Content,
-  Description,
-  Portal,
-  Root,
-  Title,
-} from '@radix-ui/react-dialog'
 import { clsx } from 'clsx'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -13,6 +5,13 @@ import { useMemo, useState } from 'react'
 import { MdPostAdd } from 'react-icons/md'
 import { twMerge } from 'tailwind-merge'
 import Card from '../components/Card'
+import {
+  Dialog,
+  DialogAction,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from '../components/Dialog'
 import EmptyFigure from '../components/EmptyFigure'
 import Spinner from '../components/Spinner'
 import Toolbar from '../components/Toolbar'
@@ -120,35 +119,31 @@ const Decks: NextPageWithLayout = () => {
         )}
       </div>
 
-      {/* Modal for deleting a deck, it will probably be refactored into a component in the future */}
-      <Root
+      <Dialog
         open={deckId >= 0 ? true : false}
         onOpenChange={() => setDeckId((prev) => (prev >= 0 ? -1 : prev))}
       >
-        <Portal>
-          <div className='modal modal-open modal-bottom animate-fadeIn md:modal-middle'>
-            <Content className='modal-box z-[101] animate-slideUp'>
-              <Title className='text-2xl'>Delete this deck</Title>
-              <Description>
-                The deck cannot be restored after the removal.
-              </Description>
-              <div className='modal-action'>
-                <Close asChild>
-                  <button className='btn btn-ghost'>Cancel</button>
-                </Close>
-                <Close asChild>
-                  <button
-                    className='btn btn-error'
-                    onClick={() => deleteDeck({ id: deckId })}
-                  >
-                    Delete Deck
-                  </button>
-                </Close>
-              </div>
-            </Content>
+        <DialogContent>
+          <DialogTitle>Delete this deck</DialogTitle>
+          <DialogDescription>
+            The deck cannot be restored after the removal.
+          </DialogDescription>
+
+          <div className='modal-action'>
+            <DialogAction asChild>
+              <button className='btn btn-ghost'>Cancel</button>
+            </DialogAction>
+            <DialogAction asChild>
+              <button
+                className='btn btn-error'
+                onClick={() => deleteDeck({ id: deckId })}
+              >
+                Delete Deck
+              </button>
+            </DialogAction>
           </div>
-        </Portal>
-      </Root>
+        </DialogContent>
+      </Dialog>
     </>
   )
 }
