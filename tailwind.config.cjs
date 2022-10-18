@@ -18,10 +18,6 @@ module.exports = {
           '0%': { transform: 'translate3d(0, 100%, 0)' },
           '100%': { transform: 'translate3d(0, 0, 0)' },
         },
-        slideDown: {
-          '0%': { transform: 'translate3d(0, 0, 0)' },
-          '100%': { transform: 'translate3d(0, 200%, 0)' },
-        },
         wiggle: {
           '10%': { transform: 'rotate(5deg) scale(1.05)' },
           '20%': { transform: 'rotate(-5deg) scale(1.05)' },
@@ -33,7 +29,6 @@ module.exports = {
         fadeIn: 'fadeIn 200ms ease-out forwards',
         scaleIn: 'scaleIn 200ms cubic-bezier(.21,1.02,.73,1) forwards',
         slideUp: 'slideUp 350ms cubic-bezier(.21,1.02,.73,1) forwards',
-        slideDown: 'slideDown 400ms cubic-bezier(.06,.71,.55,1) forwards',
         wiggle: 'wiggle 1.3s ease infinite',
       },
       fontFamily: {
