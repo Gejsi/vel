@@ -1,4 +1,5 @@
 import { Prisma } from '@prisma/client'
+import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 import { createProtectedRouter } from './context'
 
@@ -10,6 +11,8 @@ const commonSelector = Prisma.validator<Prisma.DeckSelect>()({
   createdAt: true,
   updatedAt: true,
 })
+
+const titleSchema = z.string().min(1).max(100)
 
 export const deckRouter = createProtectedRouter()
   .query('getAll', {
@@ -46,5 +49,26 @@ export const deckRouter = createProtectedRouter()
     }),
     async resolve({ ctx, input }) {
       return await ctx.prisma.deck.delete({ where: { id: input.id } })
+    },
+  })
+  .mutation('rename', {
+    input: z.object({
+      id: z.number(),
+      title: titleSchema,
+    }),
+    async resolve({ ctx, input }) {
+      const title = input.title.trim()
+      const parsedTitle = titleSchema.safeParse(title)
+
+      if (!parsedTitle.success)
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'The new title must be between 1 and 100 characters',
+        })
+
+      return await ctx.prisma.deck.update({
+        where: { id: input.id },
+        data: { title },
+      })
     },
   })

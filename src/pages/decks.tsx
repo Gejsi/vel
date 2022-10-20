@@ -2,6 +2,7 @@ import { clsx } from 'clsx'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
+import { toast } from 'react-hot-toast'
 import { MdPostAdd } from 'react-icons/md'
 import { twMerge } from 'tailwind-merge'
 import Card from '../components/Card'
@@ -28,6 +29,20 @@ const Decks: NextPageWithLayout = () => {
       },
     }
   )
+
+  const { mutate: renameDeck } = useMutation('deck.rename', {
+    onMutate({ id }) {
+      toast.loading('Renaming deck', { id: id + '-toast' })
+    },
+    async onError(err, { id }) {
+      await utils.invalidateQueries(['deck.getAll'])
+      toast.error('Unable to rename deck', { id: id + '-toast' })
+    },
+    async onSuccess({ id }) {
+      await utils.invalidateQueries(['deck.getAll'])
+      toast.success('Deck renamed successfully', { id: id + '-toast' })
+    },
+  })
 
   const { mutate: deleteDeck } = useMutation('deck.delete', {
     async onMutate(deletedDeck) {
@@ -101,7 +116,9 @@ const Decks: NextPageWithLayout = () => {
                 createdAt={deck.createdAt}
                 updatedAt={deck.updatedAt}
                 deckId={deck.id}
-                onRename={(renamedDeckId) => console.log(renamedDeckId)}
+                onRename={(renamedDeckId, newTitle) =>
+                  renameDeck({ id: renamedDeckId, title: newTitle })
+                }
                 onDelete={(deletedDeckId) => deleteDeck({ id: deletedDeckId })}
                 onStudy={() => console.log('study')}
                 onEdit={() => router.push(`/edit/${deck.id}`)}

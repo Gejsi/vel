@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import { atom, useAtom } from 'jotai'
-import type { MouseEventHandler } from 'react'
+import { useState, type MouseEventHandler } from 'react'
 import {
   MdDelete,
   MdDeviceHub,
@@ -10,18 +10,18 @@ import {
   MdShare,
 } from 'react-icons/md'
 import {
-  Dialog,
-  DialogAction,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-} from './Dialog'
-import {
   Dropdown,
   DropdownContent,
   DropdownItem,
   DropdownTrigger,
 } from './Dropdown'
+import {
+  Modal,
+  ModalClose,
+  ModalContent,
+  ModalDescription,
+  ModalTitle,
+} from './Modal'
 
 type CardProps = {
   title: string
@@ -29,7 +29,7 @@ type CardProps = {
   createdAt: Date
   updatedAt: Date
   deckId: number
-  onRename: (renamedDeckId: number) => void
+  onRename: (renamedDeckId: number, newTitle: string) => void
   onDelete: (deletedDeckId: number) => void
   onStudy: MouseEventHandler<HTMLButtonElement>
   onEdit: MouseEventHandler<HTMLButtonElement>
@@ -52,6 +52,7 @@ const Card = ({
   onEdit,
 }: CardProps) => {
   const [dialog, setDialog] = useAtom(dialogAtom)
+  const [newTitle, setNewTitle] = useState('')
 
   return (
     <>
@@ -132,35 +133,49 @@ const Card = ({
         </div>
       </div>
 
-      <Dialog
+      <Modal
         open={dialog.deckId >= 0 && dialog.name === 'rename'}
-        onOpenChange={() =>
+        onOpenChange={() => {
           setDialog((prev) => ({
             deckId: prev.deckId >= 0 ? -1 : prev.deckId,
           }))
-        }
+          setNewTitle('')
+        }}
       >
-        <DialogContent>
-          <DialogTitle>Rename this deck</DialogTitle>
-          <div>Testing</div>
+        <ModalContent>
+          <ModalTitle>Rename deck</ModalTitle>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault()
+              console.log(title)
+              onRename(dialog.deckId, newTitle)
+              setDialog(() => ({ deckId: -1 })) // close dialog after submitting
+              setNewTitle('')
+            }}
+          >
+            <input
+              type='text'
+              placeholder='Type here...'
+              className='input input-bordered w-full'
+              value={newTitle}
+              min={1}
+              max={100}
+              onChange={(e) => setNewTitle(e.target.value)}
+            />
 
-          <div className='modal-action'>
-            <DialogAction asChild>
-              <button className='btn btn-ghost'>Cancel</button>
-            </DialogAction>
-            <DialogAction asChild>
-              <button
-                className='btn btn-primary'
-                onClick={() => onRename(dialog.deckId)}
-              >
+            <div className='modal-action'>
+              <ModalClose>
+                <button className='btn btn-ghost'>Cancel</button>
+              </ModalClose>
+              <button className='btn btn-primary' type='submit'>
                 Save
               </button>
-            </DialogAction>
-          </div>
-        </DialogContent>
-      </Dialog>
+            </div>
+          </form>
+        </ModalContent>
+      </Modal>
 
-      <Dialog
+      <Modal
         open={dialog.deckId >= 0 && dialog.name === 'delete'}
         onOpenChange={() =>
           setDialog((prev) => ({
@@ -168,27 +183,27 @@ const Card = ({
           }))
         }
       >
-        <DialogContent>
-          <DialogTitle>Delete this deck</DialogTitle>
-          <DialogDescription>
+        <ModalContent>
+          <ModalTitle>Delete deck</ModalTitle>
+          <ModalDescription>
             The deck cannot be restored after the removal.
-          </DialogDescription>
+          </ModalDescription>
 
           <div className='modal-action'>
-            <DialogAction asChild>
+            <ModalClose>
               <button className='btn btn-ghost'>Cancel</button>
-            </DialogAction>
-            <DialogAction asChild>
+            </ModalClose>
+            <ModalClose>
               <button
                 className='btn btn-error'
                 onClick={() => onDelete(dialog.deckId)}
               >
                 Delete
               </button>
-            </DialogAction>
+            </ModalClose>
           </div>
-        </DialogContent>
-      </Dialog>
+        </ModalContent>
+      </Modal>
     </>
   )
 }
