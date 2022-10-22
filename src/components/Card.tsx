@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import { atom, useAtom } from 'jotai'
-import { useState, type MouseEventHandler } from 'react'
+import { useState, type FormEventHandler, type MouseEventHandler } from 'react'
 import {
   MdDelete,
   MdDeviceHub,
@@ -9,6 +9,7 @@ import {
   MdMoreVert,
   MdShare,
 } from 'react-icons/md'
+import { MAX_RENAME_TITLE, titleSchema } from '../schemas/deck-title.schema'
 import {
   Dropdown,
   DropdownContent,
@@ -53,6 +54,24 @@ const Card = ({
 }: CardProps) => {
   const [dialog, setDialog] = useAtom(dialogAtom)
   const [newTitle, setNewTitle] = useState('')
+  const [renameError, setRenameError] = useState(false)
+
+  const handleRenameForm: FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault()
+
+    const title = newTitle.trim()
+    const parsedTitle = titleSchema.safeParse(title)
+
+    if (!parsedTitle.success) {
+      setRenameError(true)
+      return
+    }
+
+    onRename(dialog.deckId, title)
+    setDialog(() => ({ deckId: -1 })) // close dialog after submitting
+    setRenameError(false)
+    setNewTitle('')
+  }
 
   return (
     <>
@@ -139,29 +158,34 @@ const Card = ({
           setDialog((prev) => ({
             deckId: prev.deckId >= 0 ? -1 : prev.deckId,
           }))
+          setRenameError(false)
           setNewTitle('')
         }}
       >
         <ModalContent>
           <ModalTitle>Rename deck</ModalTitle>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault()
-              console.log(title)
-              onRename(dialog.deckId, newTitle)
-              setDialog(() => ({ deckId: -1 })) // close dialog after submitting
-              setNewTitle('')
-            }}
-          >
-            <input
-              type='text'
-              placeholder='Type here...'
-              className='input input-bordered w-full'
-              value={newTitle}
-              min={1}
-              max={100}
-              onChange={(e) => setNewTitle(e.target.value)}
-            />
+          <form onSubmit={handleRenameForm}>
+            <div className='form-control'>
+              <input
+                type='text'
+                placeholder='Type here...'
+                className='input input-bordered w-full out-of-range:input-error'
+                value={newTitle}
+                minLength={1}
+                maxLength={MAX_RENAME_TITLE}
+                onChange={(e) => setNewTitle(e.target.value)}
+              />
+
+              <label className='label'>
+                <span className='label-text-alt text-error'>
+                  {renameError &&
+                    `The new title must be between 1 and ${MAX_RENAME_TITLE} characters`}
+                </span>
+                <span className='label-text-alt'>
+                  {newTitle.length} / {MAX_RENAME_TITLE}
+                </span>
+              </label>
+            </div>
 
             <div className='modal-action'>
               <ModalClose>

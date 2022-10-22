@@ -1,6 +1,7 @@
 import { Prisma } from '@prisma/client'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
+import { titleSchema } from '../../schemas/deck-title.schema'
 import { createProtectedRouter } from './context'
 
 // deck common needed fields
@@ -11,8 +12,6 @@ const commonSelector = Prisma.validator<Prisma.DeckSelect>()({
   createdAt: true,
   updatedAt: true,
 })
-
-const titleSchema = z.string().min(1).max(100)
 
 export const deckRouter = createProtectedRouter()
   .query('getAll', {
@@ -60,11 +59,7 @@ export const deckRouter = createProtectedRouter()
       const title = input.title.trim()
       const parsedTitle = titleSchema.safeParse(title)
 
-      if (!parsedTitle.success)
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: 'The new title must be between 1 and 100 characters',
-        })
+      if (!parsedTitle.success) throw new TRPCError({ code: 'BAD_REQUEST' })
 
       return await ctx.prisma.deck.update({
         where: { id: input.id },
