@@ -6,24 +6,26 @@ import {
   Root,
   Title,
 } from '@radix-ui/react-dialog'
-import {
-  forwardRef,
-  type ComponentProps,
-  type ElementRef,
-  type ReactNode,
-} from 'react'
+import { forwardRef, type ComponentProps, type ElementRef } from 'react'
 
 export const Modal = Root
 
-export const ModalContent = ({ children }: { children: ReactNode }) => (
+export const ModalContent = forwardRef<
+  ElementRef<typeof Content>,
+  ComponentProps<typeof Content>
+>(({ children, ...props }, forwardedRef) => (
   <Portal>
     <div className='modal modal-open modal-bottom animate-fadeIn md:modal-middle'>
-      <Content className='modal-box z-[101] animate-slideUp'>
+      <Content
+        className='modal-box z-[101] animate-slideUp'
+        ref={forwardedRef}
+        {...props}
+      >
         {children}
       </Content>
     </div>
   </Portal>
-)
+))
 
 export const ModalClose = forwardRef<
   ElementRef<typeof Close>,

@@ -1,4 +1,9 @@
 import { z } from 'zod'
 
-export const MAX_RENAME_TITLE = 100
-export const titleSchema = z.string().min(1).max(MAX_RENAME_TITLE)
+export const MIN_DECK_TITLE_LENGTH = 1
+export const MAX_DECK_TITLE_LENGTH = 100
+
+export const titleSchema = z
+  .string()
+  .min(MIN_DECK_TITLE_LENGTH)
+  .max(MAX_DECK_TITLE_LENGTH)
