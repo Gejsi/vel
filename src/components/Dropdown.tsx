@@ -7,13 +7,21 @@ import {
   Root,
   Trigger,
 } from '@radix-ui/react-dropdown-menu'
-import type { ComponentProps, ReactNode } from 'react'
+import {
+  forwardRef,
+  type ComponentProps,
+  type ElementRef,
+  type ReactNode,
+} from 'react'
 
 export const Dropdown = Root
 
-export const DropdownTrigger = (props: ComponentProps<typeof Trigger>) => (
-  <Trigger asChild {...props} />
-)
+export const DropdownTrigger = forwardRef<
+  ElementRef<typeof Trigger>,
+  ComponentProps<typeof Trigger>
+>(({ asChild, ...props }, forwardedRef) => (
+  <Trigger asChild {...props} ref={forwardedRef} />
+))
 
 export const DropdownContent = ({ children }: { children: ReactNode }) => (
   <Portal>
@@ -26,10 +34,13 @@ export const DropdownContent = ({ children }: { children: ReactNode }) => (
   </Portal>
 )
 
-export const DropdownItem = (props: ComponentProps<typeof Item>) => (
-  <Item asChild {...props}>
+export const DropdownItem = forwardRef<
+  ElementRef<typeof Item>,
+  ComponentProps<typeof Item>
+>(({ asChild, children, ...props }, forwardedRef) => (
+  <Item asChild {...props} ref={forwardedRef}>
     <li className='dropdown-item'>
-      <span>{props.children}</span>
+      <span>{children}</span>
     </li>
   </Item>
-)
+))

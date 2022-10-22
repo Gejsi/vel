@@ -34,8 +34,11 @@ export const ModalClose = forwardRef<
   </Close>
 ))
 
-export const ModalTitle = (props: ComponentProps<typeof Title>) => (
-  <Title className='mb-4 text-2xl' {...props} />
-)
+export const ModalTitle = forwardRef<
+  ElementRef<typeof Title>,
+  ComponentProps<typeof Title>
+>(({ className, ...props }, forwardedRef) => (
+  <Title className='mb-4 text-2xl' {...props} ref={forwardedRef} />
+))
 
 export const ModalDescription = Description
