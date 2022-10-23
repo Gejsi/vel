@@ -56,9 +56,16 @@ const EditorPage: NextPageWithLayout = () => {
     }
   )
 
+  // this ref is used to track the amount of ongoing mutations
+  // and avoid flashing updates
+  const deleteCardMutationsCount = useRef(0)
+
   const { mutate: deleteCard } = useMutation(['card.delete'], {
+    mutationKey: 'card.delete',
     async onMutate(inputCard) {
+      deleteCardMutationsCount.current++
       toast.loading('Deleting card...', { id: 'delete-toast' })
+
       await utils.cancelQuery(['deck.getById', { id }])
       const prevData = utils.getQueryData(['deck.getById', { id }])
 
@@ -78,8 +85,12 @@ const EditorPage: NextPageWithLayout = () => {
         utils.setQueryData(['deck.getById', { id }], context.prevData)
     },
     onSettled() {
+      deleteCardMutationsCount.current--
       toast.success('Deleted card', { id: 'delete-toast' })
-      utils.invalidateQueries(['deck.getById', { id }])
+
+      if (deleteCardMutationsCount.current === 0) {
+        utils.invalidateQueries(['deck.getById', { id }])
+      }
     },
   })
 

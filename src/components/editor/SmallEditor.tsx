@@ -67,6 +67,9 @@ const SmallEditor = ({
         setEditor(editorProps.editor)
         forceUpdate((prev) => prev + 1)
       },
+      onDestroy() {
+        setEditor(null)
+      },
       content: {
         type: 'doc',
         content: initialContent,
