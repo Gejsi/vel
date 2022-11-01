@@ -27,20 +27,26 @@ export const ModalContent = forwardRef<
   </Portal>
 ))
 
+ModalContent.displayName = 'ModalContent'
+
 export const ModalClose = forwardRef<
   ElementRef<typeof Close>,
   ComponentProps<typeof Close>
->(({ asChild, children, ...props }, forwardedRef) => (
+>(({ children, ...props }, forwardedRef) => (
   <Close asChild {...props} ref={forwardedRef}>
     {children}
   </Close>
 ))
 
+ModalClose.displayName = 'ModalClose'
+
 export const ModalTitle = forwardRef<
   ElementRef<typeof Title>,
   ComponentProps<typeof Title>
->(({ className, ...props }, forwardedRef) => (
+>(({ ...props }, forwardedRef) => (
   <Title className='mb-4 text-2xl' {...props} ref={forwardedRef} />
 ))
+
+ModalTitle.displayName = 'ModalTitle'
 
 export const ModalDescription = Description

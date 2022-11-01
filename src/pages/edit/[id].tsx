@@ -12,8 +12,15 @@ import EmptyFigure from '../../components/EmptyFigure'
 import Error from '../../components/Error'
 import Spinner from '../../components/Spinner'
 import useDebouncedCallback from '../../hooks/use-debounced-callback'
+import useOptimisticUpdate from '../../hooks/use-optimistic-update'
 import type { JsonValue } from '../../types/json'
-import { useContext, useMutation, useQuery } from '../../utils/trpc'
+import {
+  useContext,
+  useMutation,
+  useQuery,
+  type inferMutationInput,
+  type inferQueryOutput,
+} from '../../utils/trpc'
 import type { NextPageWithLayout } from '../_app'
 
 const EditorPage: NextPageWithLayout = () => {
@@ -56,42 +63,16 @@ const EditorPage: NextPageWithLayout = () => {
     }
   )
 
-  // this ref is used to track the amount of ongoing mutations
-  // and avoid flashing updates
-  const deleteCardMutationsCount = useRef(0)
-
-  const { mutate: deleteCard } = useMutation(['card.delete'], {
+  const { mutate: deleteCard } = useOptimisticUpdate({
     mutationKey: 'card.delete',
-    async onMutate(inputCard) {
-      deleteCardMutationsCount.current++
-      toast.loading('Deleting card...', { id: 'delete-toast' })
-
-      await utils.cancelQuery(['deck.getById', { id }])
-      const prevData = utils.getQueryData(['deck.getById', { id }])
-
-      if (prevData)
-        utils.setQueryData(['deck.getById', { id }], () => ({
-          ...prevData,
-          cards: [
-            ...prevData.cards.filter((card) => card.id !== inputCard.cardId),
-          ],
-        }))
-
-      return { prevData }
-    },
-    onError(err, inputCard, context) {
-      toast.error('Unable to delete card', { id: 'delete-toast' })
-      if (context?.prevData)
-        utils.setQueryData(['deck.getById', { id }], context.prevData)
-    },
-    onSettled() {
-      deleteCardMutationsCount.current--
-      toast.success('Deleted card', { id: 'delete-toast' })
-
-      if (deleteCardMutationsCount.current === 0) {
-        utils.invalidateQueries(['deck.getById', { id }])
-      }
-    },
+    invalidatedQueryKey: ['deck.getById', { id }],
+    updateQueryData: (
+      prevData: inferQueryOutput<'deck.getById'>,
+      input: inferMutationInput<'card.delete'>
+    ) => ({
+      ...prevData,
+      cards: [...prevData.cards.filter((card) => card.id !== input.cardId)],
+    }),
   })
 
   const handleChange = useDebouncedCallback(

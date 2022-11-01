@@ -19,9 +19,11 @@ export const Dropdown = Root
 export const DropdownTrigger = forwardRef<
   ElementRef<typeof Trigger>,
   ComponentProps<typeof Trigger>
->(({ asChild, ...props }, forwardedRef) => (
+>(({ ...props }, forwardedRef) => (
   <Trigger asChild {...props} ref={forwardedRef} />
 ))
+
+DropdownTrigger.displayName = 'DropdownTrigger'
 
 export const DropdownContent = ({ children }: { children: ReactNode }) => (
   <Portal>
@@ -34,13 +36,17 @@ export const DropdownContent = ({ children }: { children: ReactNode }) => (
   </Portal>
 )
 
+DropdownContent.displayName = 'DropdownContent'
+
 export const DropdownItem = forwardRef<
   ElementRef<typeof Item>,
   ComponentProps<typeof Item>
->(({ asChild, children, ...props }, forwardedRef) => (
+>(({ children, ...props }, forwardedRef) => (
   <Item asChild {...props} ref={forwardedRef}>
     <li className='dropdown-item'>
       <span>{children}</span>
     </li>
   </Item>
 ))
+
+DropdownItem.displayName = 'DropdownItem'

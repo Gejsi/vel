@@ -13,16 +13,22 @@ import {
   ModalClose,
   ModalContent,
   ModalDescription,
-  ModalTitle,
+  ModalTitle
 } from '../components/Modal'
 import Spinner from '../components/Spinner'
 import Toolbar from '../components/Toolbar'
+import useOptimisticUpdate from '../hooks/use-optimistic-update'
 import {
   MAX_DECK_TITLE_LENGTH,
   MIN_DECK_TITLE_LENGTH,
-  titleSchema,
+  titleSchema
 } from '../schemas/deck-title.schema'
-import { useContext, useMutation, useQuery } from '../utils/trpc'
+import {
+  useContext,
+  useMutation,
+  useQuery,
+  type inferMutationInput, type inferQueryOutput
+} from '../utils/trpc'
 import type { NextPageWithLayout } from './_app'
 
 const dialogAtom = atom<{
@@ -73,30 +79,13 @@ const Decks: NextPageWithLayout = () => {
     },
   })
 
-  const { mutate: deleteDeck } = useMutation('deck.delete', {
-    async onMutate(deletedDeck) {
-      // cancel any outgoing refetches (so they don't overwrite the optimistic update)
-      await utils.cancelQuery(['deck.getAll'])
-      // save the previous value
-      const prevData = utils.getQueryData(['deck.getAll'])
-      // optimistically remove a deck by filtering old decks
-      utils.setQueryData(['deck.getAll'], (oldDecks) =>
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        oldDecks!.filter((deck) => deck.id !== deletedDeck.id)
-      )
-
-      // return a context object with the snapshotted value `prevData`
-      return { prevData }
-    },
-    // if the mutation fails, use the context to roll back
-    onError(err, deletedDeck, context) {
-      if (context?.prevData)
-        utils.setQueryData(['deck.getAll'], context.prevData)
-    },
-    // refetch after error or success
-    onSettled() {
-      utils.invalidateQueries(['deck.getAll'])
-    },
+  const { mutate: deleteDeck } = useOptimisticUpdate({
+    mutationKey: 'deck.delete',
+    invalidatedQueryKey: ['deck.getAll'],
+    updateQueryData: (
+      prevData: inferQueryOutput<'deck.getAll'>,
+      input: inferMutationInput<'deck.delete'>
+    ) => prevData.filter((deck) => deck.id !== input.id),
   })
 
   const ctaClassName = useMemo(
