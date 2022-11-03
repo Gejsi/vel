@@ -13,7 +13,7 @@ import {
   ModalClose,
   ModalContent,
   ModalDescription,
-  ModalTitle
+  ModalTitle,
 } from '../components/Modal'
 import Spinner from '../components/Spinner'
 import Toolbar from '../components/Toolbar'
@@ -21,13 +21,14 @@ import useOptimisticUpdate from '../hooks/use-optimistic-update'
 import {
   MAX_DECK_TITLE_LENGTH,
   MIN_DECK_TITLE_LENGTH,
-  titleSchema
+  titleSchema,
 } from '../schemas/deck-title.schema'
 import {
   useContext,
   useMutation,
   useQuery,
-  type inferMutationInput, type inferQueryOutput
+  type inferMutationInput,
+  type inferQueryOutput,
 } from '../utils/trpc'
 import type { NextPageWithLayout } from './_app'
 
@@ -69,13 +70,13 @@ const Decks: NextPageWithLayout = () => {
     onMutate({ id }) {
       toast.loading('Renaming deck', { id: id + '-toast' })
     },
-    async onError(err, { id }) {
-      await utils.invalidateQueries(['deck.getAll'])
+    onError(err, { id }) {
       toast.error('Unable to rename deck', { id: id + '-toast' })
+      return utils.invalidateQueries(['deck.getAll'])
     },
-    async onSuccess({ id }) {
-      await utils.invalidateQueries(['deck.getAll'])
+    onSuccess({ id }) {
       toast.success('Deck renamed successfully', { id: id + '-toast' })
+      return utils.invalidateQueries(['deck.getAll'])
     },
   })
 

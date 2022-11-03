@@ -1,4 +1,5 @@
 import { useRef } from 'react'
+import { toast } from 'react-hot-toast'
 import { useContext, useMutation } from '../utils/trpc'
 
 type MutationKey = Parameters<typeof useMutation>[0]
@@ -14,13 +15,19 @@ type OptimisticUpdateProps = {
   // since the types should be inferred rather than explicitly written:
   // this solution is limited because TS doesn't currently support partial inference.
   updateQueryData: (prevData: any, input: any) => SetQueryDataParameters[1]
+  toastOptions?: {
+    loading: string
+    error: string
+    success: string
+    id: string
+  }
 }
 
-// TODO: add notifications support
 const useOptimisticUpdate = ({
   mutationKey,
   invalidatedQueryKey,
   updateQueryData,
+  toastOptions,
 }: OptimisticUpdateProps) => {
   // this ref is used to track the amount of ongoing mutations and avoid flashing updates
   const mutationsCount = useRef(0)
@@ -29,6 +36,9 @@ const useOptimisticUpdate = ({
   return useMutation(mutationKey, {
     async onMutate(input) {
       mutationsCount.current++
+
+      toastOptions &&
+        toast.loading(toastOptions.loading, { id: toastOptions.id })
 
       // cancel any outgoing refetches (so they don't overwrite the optimistic update)
       await utils.cancelQuery(invalidatedQueryKey)
@@ -47,8 +57,15 @@ const useOptimisticUpdate = ({
     },
     // if the mutation fails, use the context to roll back
     onError(err, input, context) {
+      toastOptions && toast.error(toastOptions.error, { id: toastOptions.id })
+
       if (context?.prevData)
         utils.setQueryData(invalidatedQueryKey, context.prevData)
+    },
+    // if the mutation succeeds, show a successful notification
+    onSuccess() {
+      toastOptions &&
+        toast.success(toastOptions.success, { id: toastOptions.id })
     },
     // refetch after error or success
     onSettled() {

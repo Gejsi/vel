@@ -40,13 +40,13 @@ const EditorPage: NextPageWithLayout = () => {
     onMutate() {
       toast.loading('Saving...', { id: 'autosave-toast' })
     },
-    async onError() {
-      await utils.invalidateQueries(['deck.getById', { id }])
+    onError() {
       toast.error('Unable to save', { id: 'autosave-toast' })
+      utils.invalidateQueries(['deck.getById', { id }])
     },
-    async onSuccess() {
-      await utils.invalidateQueries(['deck.getById', { id }])
+    onSuccess() {
       toast.success('Saved', { id: 'autosave-toast' })
+      utils.invalidateQueries(['deck.getById', { id }])
     },
   })
 
@@ -73,6 +73,12 @@ const EditorPage: NextPageWithLayout = () => {
       ...prevData,
       cards: [...prevData.cards.filter((card) => card.id !== input.cardId)],
     }),
+    toastOptions: {
+      loading: 'Deleting card...',
+      error: 'Unable to delete card',
+      success: 'Deleted card',
+      id: 'delete-card-toast',
+    },
   })
 
   const handleChange = useDebouncedCallback(
