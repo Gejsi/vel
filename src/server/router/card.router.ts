@@ -17,7 +17,7 @@ export const cardRouter = createProtectedRouter()
     input: z.object({
       question: jsonSchema,
       answer: jsonSchema,
-      deckId: z.number(),
+      deckId: z.string(),
       cardId: z.number(),
     }),
     async resolve({ ctx, input }) {
@@ -43,7 +43,7 @@ export const cardRouter = createProtectedRouter()
   })
   .mutation('create', {
     input: z.object({
-      deckId: z.number(),
+      deckId: z.string(),
     }),
     async resolve({ ctx, input }) {
       const initialValue = [{ type: 'paragraph' }]
@@ -64,7 +64,7 @@ export const cardRouter = createProtectedRouter()
   })
   .mutation('delete', {
     input: z.object({
-      deckId: z.number(),
+      deckId: z.string(),
       cardId: z.number(),
     }),
     async resolve({ ctx, input }) {

@@ -91,7 +91,7 @@ const EditorPage: NextPageWithLayout = () => {
         question: question as JsonValue,
         answer: answer as JsonValue,
         cardId,
-        deckId: parseInt(id, 10),
+        deckId: id,
       })
     },
     600
@@ -126,7 +126,7 @@ const EditorPage: NextPageWithLayout = () => {
       <IconsToolbar>
         <button
           className={ctaClassName}
-          onClick={() => createCard({ deckId: parseInt(id, 10) })}
+          onClick={() => createCard({ deckId: id })}
         >
           {!isCreating && <MdAdd className='h-6 w-6' />}
           <span className='hidden md:block'>Add Flashcard</span>
@@ -155,9 +155,7 @@ const EditorPage: NextPageWithLayout = () => {
                   onChange={(question, answer) =>
                     handleChange(question, answer, card.id)
                   }
-                  onDelete={() =>
-                    deleteCard({ cardId: card.id, deckId: parseInt(id, 10) })
-                  }
+                  onDelete={() => deleteCard({ cardId: card.id, deckId: id })}
                 />
               ))
             )}

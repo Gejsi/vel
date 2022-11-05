@@ -27,10 +27,8 @@ export const deckRouter = createProtectedRouter()
       id: z.string(),
     }),
     async resolve({ ctx, input }) {
-      const parsedId = parseInt(input.id, 10)
-
       return await ctx.prisma.deck.findUniqueOrThrow({
-        where: { id: parsedId },
+        where: { id: input.id },
         select: commonSelector,
       })
     },
@@ -44,7 +42,7 @@ export const deckRouter = createProtectedRouter()
   })
   .mutation('delete', {
     input: z.object({
-      id: z.number(),
+      id: z.string(),
     }),
     async resolve({ ctx, input }) {
       return await ctx.prisma.deck.delete({ where: { id: input.id } })
@@ -52,7 +50,7 @@ export const deckRouter = createProtectedRouter()
   })
   .mutation('rename', {
     input: z.object({
-      id: z.number(),
+      id: z.string(),
       title: titleSchema,
     }),
     async resolve({ ctx, input }) {

@@ -52,7 +52,7 @@ const TwinEditor = ({
   )
 
   return (
-    <div className='animate-fadeIn'>
+    <div className='min-w-fit animate-fadeIn'>
       <div className='mt-6 flex items-center justify-center'>
         <div className='flex items-center gap-4 rounded-t-xl bg-base-300/80 px-2 py-1'>
           <h2 className='pl-4 text-sm font-bold uppercase'>

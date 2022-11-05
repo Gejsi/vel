@@ -33,10 +33,10 @@ import {
 import type { NextPageWithLayout } from './_app'
 
 const dialogAtom = atom<{
-  deckId: number
+  deckId?: string
   name?: 'rename' | 'delete'
 }>({
-  deckId: -1,
+  deckId: undefined,
   name: undefined,
 })
 
@@ -105,13 +105,14 @@ const Decks: NextPageWithLayout = () => {
     e.preventDefault()
 
     const title = renameValue.newTitle.trim()
+
     if (!titleSchema.safeParse(title).success) {
       setRenameValue({ newTitle: '', isError: true })
       return
     }
 
-    renameDeck({ id: dialog.deckId, title })
-    setDialog(() => ({ deckId: -1 })) // close dialog after submitting
+    dialog.deckId && renameDeck({ id: dialog.deckId, title })
+    setDialog(() => ({ deckId: undefined })) // close dialog after submitting
     setRenameValue({ newTitle: '', isError: false })
   }
 
@@ -130,8 +131,11 @@ const Decks: NextPageWithLayout = () => {
 
       <div className='px-4 lg:px-8'>
         <p className='prose max-w-full'>
-          Click <kbd className='kbd mx-1'>+ Create Deck</kbd> to add a new set
-          of flashcards. <br />
+          Click{' '}
+          <kbd className='kbd mx-1'>
+            <MdPostAdd className='mr-2 h-4 w-4' /> Create Deck
+          </kbd>{' '}
+          to add a new set of flashcards. <br />
           Edit your decks or simply start studying through your cards.
         </p>
 
@@ -148,18 +152,8 @@ const Decks: NextPageWithLayout = () => {
                 amount={deck.cards.length}
                 createdAt={deck.createdAt}
                 updatedAt={deck.updatedAt}
-                onRename={() =>
-                  setDialog({
-                    deckId: deck.id,
-                    name: 'rename',
-                  })
-                }
-                onDelete={() =>
-                  setDialog({
-                    deckId: deck.id,
-                    name: 'delete',
-                  })
-                }
+                onRename={() => setDialog({ deckId: deck.id, name: 'rename' })}
+                onDelete={() => setDialog({ deckId: deck.id, name: 'delete' })}
                 onStudy={() => console.log('study')}
                 onEdit={() => router.push(`/edit/${deck.id}`)}
               />
@@ -169,9 +163,9 @@ const Decks: NextPageWithLayout = () => {
       </div>
 
       <Modal
-        open={dialog.deckId >= 0 && dialog.name === 'rename'}
+        open={dialog.deckId !== undefined && dialog.name === 'rename'}
         onOpenChange={() => {
-          setDialog({ deckId: -1 })
+          setDialog({ deckId: undefined })
           setRenameValue({ newTitle: '', isError: false })
         }}
       >
@@ -223,8 +217,8 @@ const Decks: NextPageWithLayout = () => {
       </Modal>
 
       <Modal
-        open={dialog.deckId >= 0 && dialog.name === 'delete'}
-        onOpenChange={() => setDialog({ deckId: -1 })}
+        open={dialog.deckId !== undefined && dialog.name === 'delete'}
+        onOpenChange={() => setDialog({ deckId: undefined })}
       >
         <ModalContent>
           <ModalTitle>Delete deck</ModalTitle>
@@ -239,7 +233,9 @@ const Decks: NextPageWithLayout = () => {
             <ModalClose>
               <button
                 className='btn btn-error'
-                onClick={() => deleteDeck({ id: dialog.deckId })}
+                onClick={() =>
+                  dialog.deckId && deleteDeck({ id: dialog.deckId })
+                }
               >
                 Delete
               </button>
