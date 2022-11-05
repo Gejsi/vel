@@ -23,7 +23,7 @@ const IconsToolbar = ({ children }: { children?: ReactNode }) => {
   const editor = useAtomValue(editorAtom)
 
   return (
-    <nav className='sticky top-0 z-10 mb-4 bg-base-100 px-4 pt-4 lg:px-8'>
+    <nav className='sticky top-0 z-10 mb-4 bg-base-100 pt-4'>
       <div className='mb-6 flex items-center gap-4'>
         <MenuButton />
 

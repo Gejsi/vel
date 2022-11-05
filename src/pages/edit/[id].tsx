@@ -133,37 +133,35 @@ const EditorPage: NextPageWithLayout = () => {
         </button>
       </IconsToolbar>
 
-      <div className='px-4 lg:px-8'>
-        {isLoading ? (
-          <Spinner />
-        ) : (
-          <>
-            <h1 className='my-8 text-5xl font-bold'>{deck?.title}</h1>
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <>
+          <h1 className='my-8 text-5xl font-bold'>{deck?.title}</h1>
 
-            {deck?.cards.length === 0 ? (
-              <EmptyFigure
-                secondary
-                caption='This deck is empty. Create some flashcards!'
+          {deck?.cards.length === 0 ? (
+            <EmptyFigure
+              secondary
+              caption='This deck is empty. Create some flashcards!'
+            />
+          ) : (
+            deck?.cards.map((card, i) => (
+              <TwinEditor
+                key={card.id}
+                count={i + 1}
+                initialQuestion={card.question as JSONContent[]}
+                initialAnswer={card.answer as JSONContent[]}
+                onChange={(question, answer) =>
+                  handleChange(question, answer, card.id)
+                }
+                onDelete={() => deleteCard({ cardId: card.id, deckId: id })}
               />
-            ) : (
-              deck?.cards.map((card, i) => (
-                <TwinEditor
-                  key={card.id}
-                  count={i + 1}
-                  initialQuestion={card.question as JSONContent[]}
-                  initialAnswer={card.answer as JSONContent[]}
-                  onChange={(question, answer) =>
-                    handleChange(question, answer, card.id)
-                  }
-                  onDelete={() => deleteCard({ cardId: card.id, deckId: id })}
-                />
-              ))
-            )}
-          </>
-        )}
+            ))
+          )}
+        </>
+      )}
 
-        <div className='pointer-events-none pt-72 md:pt-48' ref={scrollRef} />
-      </div>
+      <div className='pointer-events-none pt-72 md:pt-48' ref={scrollRef} />
     </>
   )
 }

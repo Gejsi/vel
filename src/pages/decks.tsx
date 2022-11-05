@@ -129,38 +129,36 @@ const Decks: NextPageWithLayout = () => {
         </button>
       </Toolbar>
 
-      <div className='px-4 lg:px-8'>
-        <p className='prose max-w-full'>
-          Click{' '}
-          <kbd className='kbd mx-1'>
-            <MdPostAdd className='mr-2 h-4 w-4' /> Create Deck
-          </kbd>{' '}
-          to add a new set of flashcards. <br />
-          Edit your decks or simply start studying through your cards.
-        </p>
+      <p className='prose max-w-full'>
+        Click{' '}
+        <kbd className='kbd mx-1'>
+          <MdPostAdd className='mr-2 h-4 w-4' /> Create Deck
+        </kbd>{' '}
+        to add a new set of flashcards. <br />
+        Edit your decks or simply start studying through your cards.
+      </p>
 
-        {queryLoading ? (
-          <Spinner />
-        ) : decks?.length === 0 ? (
-          <EmptyFigure caption='This place is a desert. Create a deck!' />
-        ) : (
-          <section className='grid grid-cols-[repeat(auto-fill,_minmax(18rem,_1fr))] gap-4 py-4'>
-            {decks?.map((deck) => (
-              <Card
-                key={deck.id}
-                title={deck.title}
-                amount={deck.cards.length}
-                createdAt={deck.createdAt}
-                updatedAt={deck.updatedAt}
-                onRename={() => setDialog({ deckId: deck.id, name: 'rename' })}
-                onDelete={() => setDialog({ deckId: deck.id, name: 'delete' })}
-                onStudy={() => console.log('study')}
-                onEdit={() => router.push(`/edit/${deck.id}`)}
-              />
-            ))}
-          </section>
-        )}
-      </div>
+      {queryLoading ? (
+        <Spinner />
+      ) : decks?.length === 0 ? (
+        <EmptyFigure caption='This place is a desert. Create a deck!' />
+      ) : (
+        <section className='grid grid-cols-[repeat(auto-fill,_minmax(18rem,_1fr))] gap-4 py-4'>
+          {decks?.map((deck) => (
+            <Card
+              key={deck.id}
+              title={deck.title}
+              amount={deck.cards.length}
+              createdAt={deck.createdAt}
+              updatedAt={deck.updatedAt}
+              onRename={() => setDialog({ deckId: deck.id, name: 'rename' })}
+              onDelete={() => setDialog({ deckId: deck.id, name: 'delete' })}
+              onStudy={() => console.log('study')}
+              onEdit={() => router.push(`/edit/${deck.id}`)}
+            />
+          ))}
+        </section>
+      )}
 
       <Modal
         open={dialog.deckId !== undefined && dialog.name === 'rename'}
