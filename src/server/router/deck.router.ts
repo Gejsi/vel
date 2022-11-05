@@ -27,10 +27,14 @@ export const deckRouter = createProtectedRouter()
       id: z.string(),
     }),
     async resolve({ ctx, input }) {
-      return await ctx.prisma.deck.findUniqueOrThrow({
+      const deck = await ctx.prisma.deck.findUnique({
         where: { id: input.id },
         select: commonSelector,
       })
+
+      if (!deck) throw new TRPCError({ code: 'NOT_FOUND' })
+
+      return deck
     },
   })
   .mutation('create', {
