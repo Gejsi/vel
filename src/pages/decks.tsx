@@ -153,6 +153,7 @@ const Decks: NextPageWithLayout = () => {
               updatedAt={deck.updatedAt}
               onRename={() => setDialog({ deckId: deck.id, name: 'rename' })}
               onDelete={() => setDialog({ deckId: deck.id, name: 'delete' })}
+              onPreview={() => router.push(`/preview/${deck.id}`)}
               onStudy={() => console.log('study')}
               onEdit={() => router.push(`/edit/${deck.id}`)}
             />

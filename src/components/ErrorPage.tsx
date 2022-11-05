@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Toolbar from './Toolbar'
 
-const Error = ({
+const ErrorPage = ({
   title,
   statusCode = 500,
 }: {
@@ -30,4 +30,4 @@ const Error = ({
   </>
 )
 
-export default Error
+export default ErrorPage

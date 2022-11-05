@@ -9,7 +9,7 @@ import { twMerge } from 'tailwind-merge'
 import IconsToolbar from '../../components/editor/IconsToolbar'
 import TwinEditor from '../../components/editor/TwinEditor'
 import EmptyFigure from '../../components/EmptyFigure'
-import Error from '../../components/Error'
+import ErrorPage from '../../components/ErrorPage'
 import Spinner from '../../components/Spinner'
 import useDebouncedCallback from '../../hooks/use-debounced-callback'
 import useOptimisticUpdate from '../../hooks/use-optimistic-update'
@@ -111,7 +111,7 @@ const EditorPage: NextPageWithLayout = () => {
 
   if (queryError)
     return (
-      <Error
+      <ErrorPage
         title="This deck doesn't exist"
         statusCode={queryError.data?.httpStatus}
       />
@@ -137,7 +137,12 @@ const EditorPage: NextPageWithLayout = () => {
         <Spinner />
       ) : (
         <>
-          <h1 className='my-8 text-5xl font-bold'>{deck?.title}</h1>
+          <h1
+            className='my-8 truncate whitespace-normal text-4xl font-bold leading-tight'
+            title={deck?.title}
+          >
+            {deck?.title}
+          </h1>
 
           {deck?.cards.length === 0 ? (
             <EmptyFigure

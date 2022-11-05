@@ -49,7 +49,7 @@
   }
 
   .dropdown-container {
-    @apply rounded-box origin-[var(--radix-dropdown-menu-content-transform-origin)] animate-scaleIn border-2 border-base-content/40 bg-base-content/5 p-4 backdrop-blur-md;
+    @apply rounded-box origin-[var(--radix-dropdown-menu-content-transform-origin)] animate-scaleIn border-2 border-base-content/40 bg-base-content/5 p-2 backdrop-blur-md;
   }
 
   .dropdown-item {

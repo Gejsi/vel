@@ -7,6 +7,7 @@ import {
   MdEditNote,
   MdMoreVert,
   MdShare,
+  MdVisibility,
 } from 'react-icons/md'
 import {
   Dropdown,
@@ -22,6 +23,7 @@ type CardProps = {
   updatedAt: Date
   onRename: MouseEventHandler<HTMLDivElement>
   onDelete: MouseEventHandler<HTMLDivElement>
+  onPreview: MouseEventHandler<HTMLDivElement>
   onStudy: MouseEventHandler<HTMLButtonElement>
   onEdit: MouseEventHandler<HTMLButtonElement>
 }
@@ -33,6 +35,7 @@ const Card = ({
   updatedAt,
   onRename,
   onDelete,
+  onPreview,
   onStudy,
   onEdit,
 }: CardProps) => (
@@ -45,21 +48,25 @@ const Card = ({
         <Dropdown>
           <DropdownTrigger>
             <button className='btn-icon'>
-              <MdMoreVert className='h-6 w-6' />
+              <MdMoreVert className='h-5 w-5' />
             </button>
           </DropdownTrigger>
 
           <DropdownContent>
             <DropdownItem onClick={onRename}>
-              <MdEditNote className='h-6 w-6' />
+              <MdEditNote className='h-5 w-5' />
               Rename
             </DropdownItem>
             <DropdownItem onClick={onDelete}>
-              <MdDelete className='h-6 w-6' />
+              <MdDelete className='h-5 w-5' />
               Delete
             </DropdownItem>
+            <DropdownItem onClick={onPreview}>
+              <MdVisibility className='h-5 w-5' />
+              Preview
+            </DropdownItem>
             <DropdownItem>
-              <MdShare className='h-6 w-6' />
+              <MdShare className='h-5 w-5' />
               Share
             </DropdownItem>
           </DropdownContent>
