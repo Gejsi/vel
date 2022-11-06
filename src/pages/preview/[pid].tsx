@@ -8,20 +8,20 @@ import { useQuery } from '../../utils/trpc'
 import type { NextPageWithLayout } from '../_app'
 
 const Preview: NextPageWithLayout = () => {
-  const id = useRouter().query.pid as string
+  const deckId = useRouter().query.pid as string
 
   const {
     data: deck,
     isLoading,
     error: queryError,
-  } = useQuery(['deck.getById', { id }], {
+  } = useQuery(['deck.getById', { deckId }], {
     retry: false,
   })
 
   if (queryError)
     return (
       <ErrorPage
-        title="This deck doesn't exist"
+        title={queryError.message}
         statusCode={queryError.data?.httpStatus}
       />
     )
@@ -34,8 +34,8 @@ const Preview: NextPageWithLayout = () => {
 
       <Toolbar title='Preview'>
         <button className='btn btn-primary'>
-          <MdDeviceHub className='mr-2 h-6 w-6' />
-          <span className='hidden md:block'>Create deck</span>
+          <MdDeviceHub className='mr-0 h-6 w-6 md:mr-2' />
+          <span className='hidden md:block'>Study</span>
         </button>
       </Toolbar>
 

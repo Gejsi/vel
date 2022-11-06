@@ -24,7 +24,7 @@ import {
 import type { NextPageWithLayout } from '../_app'
 
 const EditorPage: NextPageWithLayout = () => {
-  const id = useRouter().query.id as string
+  const deckId = useRouter().query.id as string
   const utils = useContext()
   const scrollRef = useRef<HTMLDivElement>(null)
 
@@ -32,7 +32,7 @@ const EditorPage: NextPageWithLayout = () => {
     data: deck,
     isLoading,
     error: queryError,
-  } = useQuery(['deck.getById', { id }], {
+  } = useQuery(['deck.getById', { deckId: deckId }], {
     retry: false,
   })
 
@@ -42,11 +42,11 @@ const EditorPage: NextPageWithLayout = () => {
     },
     onError() {
       toast.error('Unable to save', { id: 'autosave-toast' })
-      utils.invalidateQueries(['deck.getById', { id }])
+      utils.invalidateQueries(['deck.getById', { deckId }])
     },
     onSuccess() {
       toast.success('Saved', { id: 'autosave-toast' })
-      utils.invalidateQueries(['deck.getById', { id }])
+      utils.invalidateQueries(['deck.getById', { deckId }])
     },
   })
 
@@ -57,7 +57,7 @@ const EditorPage: NextPageWithLayout = () => {
         toast.error('Unable to create a new card')
       },
       async onSuccess() {
-        await utils.invalidateQueries(['deck.getById', { id }])
+        await utils.invalidateQueries(['deck.getById', { deckId }])
         scrollRef.current?.scrollIntoView({ behavior: 'smooth' })
       },
     }
@@ -65,7 +65,7 @@ const EditorPage: NextPageWithLayout = () => {
 
   const { mutate: deleteCard } = useOptimisticUpdate({
     mutationKey: 'card.delete',
-    invalidatedQueryKey: ['deck.getById', { id }],
+    invalidatedQueryKey: ['deck.getById', { deckId }],
     updateQueryData: (
       prevData: inferQueryOutput<'deck.getById'>,
       input: inferMutationInput<'card.delete'>
@@ -91,7 +91,7 @@ const EditorPage: NextPageWithLayout = () => {
         question: question as JsonValue,
         answer: answer as JsonValue,
         cardId,
-        deckId: id,
+        deckId: deckId,
       })
     },
     600
@@ -112,7 +112,7 @@ const EditorPage: NextPageWithLayout = () => {
   if (queryError)
     return (
       <ErrorPage
-        title="This deck doesn't exist"
+        title={queryError.message}
         statusCode={queryError.data?.httpStatus}
       />
     )
@@ -126,7 +126,7 @@ const EditorPage: NextPageWithLayout = () => {
       <IconsToolbar>
         <button
           className={ctaClassName}
-          onClick={() => createCard({ deckId: id })}
+          onClick={() => createCard({ deckId: deckId })}
         >
           {!isCreating && <MdAdd className='h-6 w-6' />}
           <span className='hidden md:block'>Add Flashcard</span>
@@ -159,7 +159,7 @@ const EditorPage: NextPageWithLayout = () => {
                 onChange={(question, answer) =>
                   handleChange(question, answer, card.id)
                 }
-                onDelete={() => deleteCard({ cardId: card.id, deckId: id })}
+                onDelete={() => deleteCard({ cardId: card.id, deckId: deckId })}
               />
             ))
           )}

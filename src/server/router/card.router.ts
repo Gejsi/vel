@@ -1,6 +1,8 @@
 import type { Prisma } from '@prisma/client'
+import { TRPCError } from '@trpc/server'
 import dayjs from 'dayjs'
 import { z } from 'zod'
+import { deckIdSchema } from '../../schemas/deck-id.schema'
 import type { JsonValue } from '../../types/json'
 import { createProtectedRouter } from './context'
 
@@ -13,11 +15,29 @@ const jsonSchema: z.ZodType<JsonValue> = z.lazy(() =>
 type PrismaJson = Prisma.NullTypes.JsonNull | Prisma.InputJsonValue
 
 export const cardRouter = createProtectedRouter()
+  .middleware(async ({ next, rawInput, ctx }) => {
+    const parsedDeckId = z.object({ deckId: deckIdSchema }).safeParse(rawInput)
+
+    if (!parsedDeckId.success) throw new TRPCError({ code: 'BAD_REQUEST' })
+
+    const deck = await ctx.prisma.deck.findUnique({
+      where: { id: parsedDeckId.data.deckId },
+      select: { userId: true },
+    })
+
+    if (deck?.userId !== ctx.session.user.id)
+      throw new TRPCError({
+        code: 'UNAUTHORIZED',
+        message: 'Cannot access private deck',
+      })
+
+    return next()
+  })
   .mutation('save', {
     input: z.object({
       question: jsonSchema,
       answer: jsonSchema,
-      deckId: z.string(),
+      deckId: deckIdSchema,
       cardId: z.number(),
     }),
     async resolve({ ctx, input }) {
@@ -43,7 +63,7 @@ export const cardRouter = createProtectedRouter()
   })
   .mutation('create', {
     input: z.object({
-      deckId: z.string(),
+      deckId: deckIdSchema,
     }),
     async resolve({ ctx, input }) {
       const initialValue = [{ type: 'paragraph' }]
@@ -64,7 +84,7 @@ export const cardRouter = createProtectedRouter()
   })
   .mutation('delete', {
     input: z.object({
-      deckId: z.string(),
+      deckId: deckIdSchema,
       cardId: z.number(),
     }),
     async resolve({ ctx, input }) {

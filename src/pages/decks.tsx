@@ -19,9 +19,9 @@ import Spinner from '../components/Spinner'
 import Toolbar from '../components/Toolbar'
 import useOptimisticUpdate from '../hooks/use-optimistic-update'
 import {
+  deckTitleSchema,
   MAX_DECK_TITLE_LENGTH,
   MIN_DECK_TITLE_LENGTH,
-  titleSchema,
 } from '../schemas/deck-title.schema'
 import {
   useContext,
@@ -67,10 +67,10 @@ const Decks: NextPageWithLayout = () => {
   )
 
   const { mutate: renameDeck } = useMutation('deck.rename', {
-    onMutate({ id }) {
+    onMutate({ deckId: id }) {
       toast.loading('Renaming deck', { id: id + '-toast' })
     },
-    onError(err, { id }) {
+    onError(err, { deckId: id }) {
       toast.error('Unable to rename deck', { id: id + '-toast' })
       return utils.invalidateQueries(['deck.getAll'])
     },
@@ -86,7 +86,7 @@ const Decks: NextPageWithLayout = () => {
     updateQueryData: (
       prevData: inferQueryOutput<'deck.getAll'>,
       input: inferMutationInput<'deck.delete'>
-    ) => prevData.filter((deck) => deck.id !== input.id),
+    ) => prevData.filter((deck) => deck.id !== input.deckId),
   })
 
   const ctaClassName = useMemo(
@@ -106,12 +106,12 @@ const Decks: NextPageWithLayout = () => {
 
     const title = renameValue.newTitle.trim()
 
-    if (!titleSchema.safeParse(title).success) {
+    if (!deckTitleSchema.safeParse(title).success) {
       setRenameValue({ newTitle: '', isError: true })
       return
     }
 
-    dialog.deckId && renameDeck({ id: dialog.deckId, title })
+    dialog.deckId && renameDeck({ deckId: dialog.deckId, title })
     setDialog(() => ({ deckId: undefined })) // close dialog after submitting
     setRenameValue({ newTitle: '', isError: false })
   }
@@ -233,7 +233,7 @@ const Decks: NextPageWithLayout = () => {
               <button
                 className='btn btn-error'
                 onClick={() =>
-                  dialog.deckId && deleteDeck({ id: dialog.deckId })
+                  dialog.deckId && deleteDeck({ deckId: dialog.deckId })
                 }
               >
                 Delete
