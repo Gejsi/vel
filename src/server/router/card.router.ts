@@ -25,7 +25,7 @@ export const cardRouter = createProtectedRouter()
       select: { userId: true },
     })
 
-    if (deck?.userId !== ctx.session.user.id)
+    if (deck && deck.userId !== ctx.session.user.id)
       throw new TRPCError({
         code: 'UNAUTHORIZED',
         message: 'Cannot access private deck',

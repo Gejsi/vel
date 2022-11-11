@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import { type MouseEventHandler } from 'react'
+import type { MouseEventHandler } from 'react'
 import {
   MdDelete,
   MdDeviceHub,
