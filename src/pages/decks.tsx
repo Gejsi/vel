@@ -70,7 +70,7 @@ const Decks: NextPageWithLayout = () => {
     onMutate({ deckId: id }) {
       toast.loading('Renaming deck', { id: id + '-toast' })
     },
-    onError(err, { deckId: id }) {
+    onError(_, { deckId: id }) {
       toast.error('Unable to rename deck', { id: id + '-toast' })
       return utils.invalidateQueries(['deck.getAll'])
     },

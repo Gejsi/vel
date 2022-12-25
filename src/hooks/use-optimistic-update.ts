@@ -56,7 +56,7 @@ const useOptimisticUpdate = ({
       return { prevData }
     },
     // if the mutation fails, use the context to roll back
-    onError(err, input, context) {
+    onError(_err, _input, context) {
       toastOptions && toast.error(toastOptions.error, { id: toastOptions.id })
 
       if (context?.prevData)
