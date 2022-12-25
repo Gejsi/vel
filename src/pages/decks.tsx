@@ -1,28 +1,15 @@
 import { clsx } from 'clsx'
-import { atom, useAtom } from 'jotai'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { FormEventHandler, useMemo } from 'react'
+import { useMemo } from 'react'
 import { toast } from 'react-hot-toast'
 import { MdPostAdd } from 'react-icons/md'
 import { twMerge } from 'tailwind-merge'
 import Card from '../components/Card'
 import EmptyFigure from '../components/EmptyFigure'
-import {
-  Modal,
-  ModalClose,
-  ModalContent,
-  ModalDescription,
-  ModalTitle,
-} from '../components/Modal'
 import Spinner from '../components/Spinner'
 import Toolbar from '../components/Toolbar'
 import useOptimisticUpdate from '../hooks/use-optimistic-update'
-import {
-  deckTitleSchema,
-  MAX_DECK_TITLE_LENGTH,
-  MIN_DECK_TITLE_LENGTH,
-} from '../schemas/deck-title.schema'
 import {
   useContext,
   useMutation,
@@ -32,23 +19,7 @@ import {
 } from '../utils/trpc'
 import type { NextPageWithLayout } from './_app'
 
-const dialogAtom = atom<{
-  deckId?: string
-  name?: 'rename' | 'delete'
-}>({
-  deckId: undefined,
-  name: undefined,
-})
-
-const renameAtom = atom({
-  newTitle: '',
-  isError: false,
-})
-
 const Decks: NextPageWithLayout = () => {
-  const [dialog, setDialog] = useAtom(dialogAtom)
-  const [renameValue, setRenameValue] = useAtom(renameAtom)
-
   const router = useRouter()
   const utils = useContext()
 
@@ -101,21 +72,6 @@ const Decks: NextPageWithLayout = () => {
     [isCreating, decks?.length]
   )
 
-  const handleRename: FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault()
-
-    const title = renameValue.newTitle.trim()
-
-    if (!deckTitleSchema.safeParse(title).success) {
-      setRenameValue({ newTitle: '', isError: true })
-      return
-    }
-
-    dialog.deckId && renameDeck({ deckId: dialog.deckId, title })
-    setDialog(() => ({ deckId: undefined })) // close dialog after submitting
-    setRenameValue({ newTitle: '', isError: false })
-  }
-
   return (
     <>
       <Head>
@@ -151,8 +107,13 @@ const Decks: NextPageWithLayout = () => {
               amount={deck.cards.length}
               createdAt={deck.createdAt}
               updatedAt={deck.updatedAt}
-              onRename={() => setDialog({ deckId: deck.id, name: 'rename' })}
-              onDelete={() => setDialog({ deckId: deck.id, name: 'delete' })}
+              deckId={deck.id}
+              onRename={(renamedDeckId, newTitle) =>
+                renameDeck({ deckId: renamedDeckId, title: newTitle })
+              }
+              onDelete={(deletedDeckId) =>
+                deleteDeck({ deckId: deletedDeckId })
+              }
               onPreview={() => router.push(`/preview/${deck.id}`)}
               onStudy={() => console.log('study')}
               onEdit={() => router.push(`/edit/${deck.id}`)}
@@ -160,88 +121,6 @@ const Decks: NextPageWithLayout = () => {
           ))}
         </section>
       )}
-
-      <Modal
-        open={dialog.deckId !== undefined && dialog.name === 'rename'}
-        onOpenChange={() => {
-          setDialog({ deckId: undefined })
-          setRenameValue({ newTitle: '', isError: false })
-        }}
-      >
-        <ModalContent>
-          <ModalTitle>Rename deck</ModalTitle>
-          <form onSubmit={handleRename}>
-            <div className='form-control'>
-              <input
-                type='text'
-                placeholder='New title...'
-                className={twMerge(
-                  'input input-bordered w-full placeholder:opacity-40',
-                  clsx({ 'input-error': renameValue.isError })
-                )}
-                value={renameValue.newTitle}
-                minLength={MIN_DECK_TITLE_LENGTH}
-                maxLength={MAX_DECK_TITLE_LENGTH}
-                onChange={(e) =>
-                  setRenameValue({
-                    newTitle: e.target.value,
-                    isError:
-                      e.target.value.length < MIN_DECK_TITLE_LENGTH ||
-                      e.target.value.length > MAX_DECK_TITLE_LENGTH,
-                  })
-                }
-              />
-
-              <label className='label'>
-                <span className='label-text-alt text-error'>
-                  {renameValue.isError &&
-                    `The new title must be between ${MIN_DECK_TITLE_LENGTH} and ${MAX_DECK_TITLE_LENGTH} characters`}
-                </span>
-                <span className='label-text-alt'>
-                  {renameValue.newTitle.length} / {MAX_DECK_TITLE_LENGTH}
-                </span>
-              </label>
-            </div>
-
-            <div className='modal-action'>
-              <ModalClose>
-                <button className='btn btn-ghost'>Cancel</button>
-              </ModalClose>
-              <button className='btn btn-primary' type='submit'>
-                Save
-              </button>
-            </div>
-          </form>
-        </ModalContent>
-      </Modal>
-
-      <Modal
-        open={dialog.deckId !== undefined && dialog.name === 'delete'}
-        onOpenChange={() => setDialog({ deckId: undefined })}
-      >
-        <ModalContent>
-          <ModalTitle>Delete deck</ModalTitle>
-          <ModalDescription>
-            The deck cannot be restored after the removal.
-          </ModalDescription>
-
-          <div className='modal-action'>
-            <ModalClose>
-              <button className='btn btn-ghost'>Cancel</button>
-            </ModalClose>
-            <ModalClose>
-              <button
-                className='btn btn-error'
-                onClick={() =>
-                  dialog.deckId && deleteDeck({ deckId: dialog.deckId })
-                }
-              >
-                Delete
-              </button>
-            </ModalClose>
-          </div>
-        </ModalContent>
-      </Modal>
     </>
   )
 }
