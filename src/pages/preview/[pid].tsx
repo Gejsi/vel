@@ -8,6 +8,7 @@ import Spinner from '../../components/Spinner'
 import Toolbar from '../../components/Toolbar'
 import { useQuery } from '../../utils/trpc'
 import type { NextPageWithLayout } from '../_app'
+import type { JSONContent } from '@tiptap/react'
 
 const Preview: NextPageWithLayout = () => {
   const deckId = useRouter().query.pid as string
@@ -69,8 +70,15 @@ const Preview: NextPageWithLayout = () => {
             {deck?.title}
           </h1>
 
-          <RevealCard defaultOpen={defaultOpen} />
-          <RevealCard defaultOpen={defaultOpen} />
+          {deck?.cards.map((card, i) => (
+            <RevealCard
+              key={card.id}
+              count={i + 1}
+              initialQuestion={card.question as JSONContent[]}
+              initialAnswer={card.answer as JSONContent[]}
+              defaultOpen={defaultOpen}
+            />
+          ))}
         </>
       )}
     </>

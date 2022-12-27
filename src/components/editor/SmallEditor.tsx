@@ -16,14 +16,17 @@ export const editorAtom = atom<Editor | null>(null)
 // This atom is used to re-render forcefully icon buttons in the toolbar
 export const toolbarForcedAtom = atom(0)
 
+// TODO: abstract this component into two sub-components: readonly+editable editors
 const SmallEditor = ({
   className,
   placeholder,
+  editable = true,
   onUpdate,
   initialContent,
 }: {
   className: string
   placeholder: string
+  editable?: boolean
   onUpdate: EditorOptions['onUpdate']
   initialContent?: JSONContent[]
 }) => {
@@ -62,6 +65,7 @@ const SmallEditor = ({
           spellcheck: 'false',
         },
       },
+      editable,
       onUpdate,
       onTransaction(editorProps) {
         setEditor(editorProps.editor)

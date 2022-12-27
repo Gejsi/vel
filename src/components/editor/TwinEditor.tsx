@@ -3,7 +3,8 @@ import { MouseEventHandler, useCallback, useRef } from 'react'
 import { MdDelete } from 'react-icons/md'
 import SmallEditor from './SmallEditor'
 
-type EditorProps = {
+// TODO: Export this type into a refactored `Card` component
+export type CardProps = {
   /**
    *  Autoincremented client-side index (i.d. `map`'s second argument)
    */
@@ -16,6 +17,9 @@ type EditorProps = {
    * Initial value set for the answer editor
    */
   initialAnswer?: JSONContent[]
+}
+
+type EditorProps = CardProps & {
   /**
    * Event handler that returns changes from both editors
    */
