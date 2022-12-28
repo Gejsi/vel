@@ -1,7 +1,10 @@
 import type { Editor, EditorOptions } from '@tiptap/core'
 import { EditorContent, useEditor } from '@tiptap/react'
 import { atom, useAtom } from 'jotai'
-import { commonEditorOptions, EditorProps } from '../../utils/editor-options'
+import {
+  commonEditorOptions,
+  SmallEditorProps,
+} from '../../utils/editor-options'
 
 export const editorAtom = atom<Editor | null>(null)
 // This atom is used to re-render forcefully icon buttons in the toolbar
@@ -12,7 +15,7 @@ const SmallEditor = ({
   placeholder,
   initialContent,
   onUpdate,
-}: EditorProps & {
+}: SmallEditorProps & {
   onUpdate: EditorOptions['onUpdate']
 }) => {
   const [, setEditor] = useAtom(editorAtom)

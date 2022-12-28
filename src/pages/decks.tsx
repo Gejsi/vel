@@ -5,7 +5,7 @@ import { useMemo } from 'react'
 import { toast } from 'react-hot-toast'
 import { MdPostAdd } from 'react-icons/md'
 import { twMerge } from 'tailwind-merge'
-import Card from '../components/Card'
+import DeckCard from '../components/DeckCard'
 import EmptyFigure from '../components/EmptyFigure'
 import Spinner from '../components/Spinner'
 import Toolbar from '../components/Toolbar'
@@ -99,9 +99,9 @@ const Decks: NextPageWithLayout = () => {
       ) : decks?.length === 0 ? (
         <EmptyFigure caption='This place is a desert. Create a deck!' />
       ) : (
-        <section className='grid grid-cols-[repeat(auto-fill,_minmax(18rem,_1fr))] gap-4 py-4'>
+        <section className='auto-fill grid gap-4 py-4'>
           {decks?.map((deck) => (
-            <Card
+            <DeckCard
               key={deck.id}
               title={deck.title}
               amount={deck.cards.length}

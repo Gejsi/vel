@@ -6,7 +6,7 @@ import { Typography } from '@tiptap/extension-typography'
 import { Underline } from '@tiptap/extension-underline'
 import { StarterKit } from '@tiptap/starter-kit'
 
-export type EditorProps = {
+export type SmallEditorProps = {
   className: string
   placeholder: string
   initialContent?: JSONContent[]
@@ -16,7 +16,7 @@ export const commonEditorOptions = ({
   className,
   placeholder,
   initialContent,
-}: EditorProps): Partial<EditorOptions> => ({
+}: SmallEditorProps): Partial<EditorOptions> => ({
   extensions: [
     StarterKit.configure({
       heading: false,

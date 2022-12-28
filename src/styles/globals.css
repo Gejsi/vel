@@ -79,4 +79,12 @@
     content: attr(data-placeholder);
     @apply pointer-events-none absolute opacity-40;
   }
+
+  .auto-fit {
+    @apply grid-cols-[repeat(auto-fit,_minmax(18rem,_1fr))];
+  }
+
+  .auto-fill {
+    @apply grid-cols-[repeat(auto-fill,_minmax(18rem,_1fr))];
+  }
 }

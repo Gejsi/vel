@@ -1,25 +1,11 @@
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 import type { EditorOptions, JSONContent } from '@tiptap/react'
 import { MouseEventHandler, useCallback, useRef } from 'react'
 import { MdDelete } from 'react-icons/md'
+import { SplitCard, type SplitCardProps } from '../SplitCard'
 import SmallEditor from './SmallEditor'
 
-// TODO: Export this type into a refactored `Card` component
-export type CardProps = {
-  /**
-   *  Autoincremented client-side index (i.d. `map`'s second argument)
-   */
-  count: number
-  /**
-   * Initial value set for the question editor
-   */
-  initialQuestion?: JSONContent[]
-  /**
-   * Initial value set for the answer editor
-   */
-  initialAnswer?: JSONContent[]
-}
-
-type EditorProps = CardProps & {
+type EditorProps = SplitCardProps & {
   /**
    * Event handler that returns changes from both editors
    */
@@ -29,6 +15,14 @@ type EditorProps = CardProps & {
    */
   onDelete: MouseEventHandler<HTMLButtonElement>
 }
+
+const IconButton = ({ onDelete }: { onDelete: EditorProps['onDelete'] }) => (
+  <div className='tooltip' data-tip='Delete card'>
+    <button className='btn-icon' onClick={onDelete}>
+      <MdDelete className='h-5 w-5' />
+    </button>
+  </div>
+)
 
 const TwinEditor = ({
   count,
@@ -45,7 +39,7 @@ const TwinEditor = ({
     updatingQuestionEditor: boolean
   ) => void = useCallback(
     (editorProps, updatingQuestionEditor) => {
-      const content = editorProps.editor.getJSON().content
+      const { content } = editorProps.editor.getJSON()
 
       if (updatingQuestionEditor) questionRef.current = content
       else answerRef.current = content
@@ -56,34 +50,20 @@ const TwinEditor = ({
   )
 
   return (
-    <div className='min-w-fit animate-fadeIn'>
-      <div className='mt-10 flex items-center justify-center'>
-        <div className='flex items-center gap-4 rounded-t-xl bg-base-300/80 px-2 py-1'>
-          <h2 className='pl-4 text-sm font-bold uppercase'>
-            Card &#x2022; {count}
-          </h2>
-          <div className='tooltip' data-tip='Delete card'>
-            <button className='btn-icon' onClick={onDelete}>
-              <MdDelete className='h-5 w-5' />
-            </button>
-          </div>
-        </div>
-      </div>
-      <div className='grid min-w-fit grid-cols-[repeat(auto-fit,_minmax(18rem,_1fr))] rounded-xl bg-base-300 shadow-lg'>
-        <SmallEditor
-          className='selection:bg-primary/40'
-          placeholder='Write a question...'
-          initialContent={questionRef.current}
-          onUpdate={(editorProps) => handleUpdate(editorProps, true)}
-        />
-        <SmallEditor
-          className='rounded-xl bg-base-200 selection:bg-secondary/40'
-          placeholder='Write an answer...'
-          initialContent={answerRef.current}
-          onUpdate={(editorProps) => handleUpdate(editorProps, false)}
-        />
-      </div>
-    </div>
+    <SplitCard count={count} iconButton={<IconButton onDelete={onDelete} />}>
+      <SmallEditor
+        className='selection:bg-primary/40'
+        placeholder='Write a question...'
+        initialContent={questionRef.current}
+        onUpdate={(editorProps) => handleUpdate(editorProps, true)}
+      />
+      <SmallEditor
+        className='rounded-xl bg-base-200 selection:bg-secondary/40'
+        placeholder='Write an answer...'
+        initialContent={answerRef.current}
+        onUpdate={(editorProps) => handleUpdate(editorProps, false)}
+      />
+    </SplitCard>
   )
 }
 

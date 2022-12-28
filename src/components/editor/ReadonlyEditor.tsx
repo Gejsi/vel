@@ -1,11 +1,14 @@
 import { EditorContent, useEditor } from '@tiptap/react'
-import { commonEditorOptions, EditorProps } from '../../utils/editor-options'
+import {
+  commonEditorOptions,
+  SmallEditorProps,
+} from '../../utils/editor-options'
 
 const ReadonlyEditor = ({
   className,
   placeholder,
   initialContent,
-}: EditorProps) => {
+}: SmallEditorProps) => {
   const editor = useEditor(
     {
       ...commonEditorOptions({ className, placeholder, initialContent }),

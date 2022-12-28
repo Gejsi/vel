@@ -44,7 +44,7 @@ const renameAtom = atom({
   isWrong: false,
 })
 
-type CardProps = {
+type DeckCardProps = {
   title: string
   amount: number
   createdAt: Date
@@ -57,7 +57,7 @@ type CardProps = {
   onEdit: MouseEventHandler<HTMLButtonElement>
 }
 
-const Card = ({
+const DeckCard = ({
   title,
   amount,
   createdAt,
@@ -68,7 +68,7 @@ const Card = ({
   onPreview,
   onStudy,
   onEdit,
-}: CardProps) => {
+}: DeckCardProps) => {
   const [dialog, setDialog] = useAtom(dialogAtom)
   const [renameValue, setRenameValue] = useAtom(renameAtom)
 
@@ -245,4 +245,4 @@ const Card = ({
   )
 }
 
-export default Card
+export default DeckCard
