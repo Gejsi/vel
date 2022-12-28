@@ -1,7 +1,7 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { useEffect, useState } from 'react'
 import { MdVisibility, MdVisibilityOff } from 'react-icons/md'
-import SmallEditor from './editor/SmallEditor'
+import ReadonlyEditor from './editor/ReadonlyEditor'
 import { CardProps } from './editor/TwinEditor'
 
 type RevealCardProps = CardProps & {
@@ -53,20 +53,16 @@ const RevealCard = ({
         ref={autoAnimateRef}
         className='grid min-w-fit grid-cols-[repeat(auto-fit,_minmax(18rem,_1fr))] rounded-xl bg-base-300 shadow-lg'
       >
-        <SmallEditor
+        <ReadonlyEditor
           className='selection:bg-primary/40'
-          placeholder='This question is empty...'
+          placeholder='No question has been provided...'
           initialContent={initialQuestion}
-          editable={false}
-          onUpdate={() => null}
         />
         {open && (
-          <SmallEditor
+          <ReadonlyEditor
             className='rounded-xl bg-base-200 selection:bg-secondary/40'
-            placeholder='This answer is empty...'
+            placeholder='No answer has been provided...'
             initialContent={initialAnswer}
-            editable={false}
-            onUpdate={() => null}
           />
         )}
       </div>
